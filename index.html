@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="BYTELOG - Tecnologia, gaming, IA, hardware y apps para Latinoamerica"/>
-<title>BYTELOG — Tecnologia al dia</title>
+<title>BYTELOG â Tecnologia al dia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Serif+4:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="icon" type="image/jpeg" href="https://res.cloudinary.com/dwjy3y6va/image/upload/v1772839650/logo_tech_tp7fxp.jpg"/>
@@ -192,12 +192,12 @@ footer{background:#1a1814;color:#aaa;margin-top:0}
     </div>
     <div class="ad-slot ad-banner">
       <span>PUBLICIDAD</span>
-      <span style="font-size:9px">728×90</span>
+      <span style="font-size:9px">728Ã90</span>
     </div>
     <div class="search-area">
       <input type="text" id="searchInput" placeholder="Buscar..." oninput="handleSearch(this.value)" style="display:none"/>
-      <button class="search-btn" onclick="toggleSearch()">🔍</button>
-      <button class="hamburger" onclick="toggleMobileMenu()">☰</button>
+      <button class="search-btn" onclick="toggleSearch()">ð</button>
+      <button class="hamburger" onclick="toggleMobileMenu()">â°</button>
     </div>
   </div>
   <nav>
@@ -214,8 +214,8 @@ footer{background:#1a1814;color:#aaa;margin-top:0}
   <div class="container">
     <div class="footer-grid" id="footerGrid"></div>
     <div class="footer-bottom">
-      <span>© 2026 BYTELOG. <span id="footerRights">Todos los derechos reservados.</span></span>
-      <span style="color:#555">Hecho con ❤️ para Latinoamerica 🌎</span>
+      <span>Â© 2026 BYTELOG. <span id="footerRights">Todos los derechos reservados.</span></span>
+      <span style="color:#555">Hecho con â¤ï¸ para Latinoamerica ð</span>
     </div>
   </div>
 </footer>
@@ -223,7 +223,7 @@ footer{background:#1a1814;color:#aaa;margin-top:0}
 <!-- COOKIE BANNER -->
 <div class="cookie-banner" id="cookieBanner">
   <div class="cookie-text">
-    <span style="font-size:20px">🍪</span>
+    <span style="font-size:20px">ðª</span>
     <span id="cookieMsg">Usamos cookies para mejorar tu experiencia. <a href="#" onclick="showPage('cookies');return false" style="color:var(--red);text-decoration:underline">Politica de cookies</a></span>
   </div>
   <div style="display:flex;gap:8px">
@@ -235,14 +235,8 @@ footer{background:#1a1814;color:#aaa;margin-top:0}
 <script>
 // ===================== DATA =====================
 const TICKER_ITEMS = [
-  'NVIDIA confirma la serie RTX 50 con ray tracing mejorado',
-  'Apple lanza iOS 19 con nuevas funciones de IA nativa',
-  'Google Gemini supera benchmarks de razonamiento en 2026',
-  'Steam rompe record con 40 millones de usuarios simultaneos',
-  'Meta presenta gafas AR con pantalla holografica en CES',
-  'Samsung Galaxy S25 Ultra: camara de 200MP con IA avanzada',
-  'AMD RX 9070 XT destrona a NVIDIA en precio/rendimiento',
-  'OpenAI lanza GPT-5 con capacidades multimodales sin precedentes',
+  'La última tendencia tecnológica apunta a instalar centros de datos en el fondo del mar como estrategia para impulsar la inteligencia artificial, alejándose tanto de la nube como de la infraestructura terrestre.',
+  'Un estudio sueco revela que las grabaciones hechas con las gafas Ray-Ban Meta pasan por la supervisión de moderadores en África..',
 ];
 
 const ARTICLES = [
@@ -345,8 +339,8 @@ const ARTICLES = [
 const CATEGORIES = ['PORTADA','GAMING','HARDWARE','SOFTWARE','INTELIGENCIA ARTIFICIAL','APPS'];
 
 const I18N = {
-  es:{breakingNews:'ULTIMA HORA',readMore:'Leer mas',shareOn:'Compartir en',latestNews:'Lo mas reciente',featured:'Destacado',minRead:'min de lectura',search:'Buscar...',about:'Acerca de',privacy:'Privacidad',cookies:'Cookies',legal:'Aviso legal',allRights:'Todos los derechos reservados',cookieMsg:'Usamos cookies para mejorar tu experiencia.',cookieAccept:'Aceptar',cookieReject:'Rechazar',back:'← Volver al inicio',moreArticles:'Mas articulos',publishedOn:'Publicado el',by:'Por',tags:'Etiquetas',mostRead:'Mas leidos',sections:'Secciones',searchResults:'resultado(s) para',logoSub:'Tecnologia al dia'},
-  en:{breakingNews:'BREAKING NEWS',readMore:'Read more',shareOn:'Share on',latestNews:'Latest news',featured:'Featured',minRead:'min read',search:'Search...',about:'About',privacy:'Privacy',cookies:'Cookies',legal:'Legal notice',allRights:'All rights reserved',cookieMsg:'We use cookies to improve your experience.',cookieAccept:'Accept',cookieReject:'Reject',back:'← Back to home',moreArticles:'More articles',publishedOn:'Published on',by:'By',tags:'Tags',mostRead:'Most read',sections:'Sections',searchResults:'result(s) for',logoSub:'Tech up to date'},
+  es:{breakingNews:'ULTIMA HORA',readMore:'Leer mas',shareOn:'Compartir en',latestNews:'Lo mas reciente',featured:'Destacado',minRead:'min de lectura',search:'Buscar...',about:'Acerca de',privacy:'Privacidad',cookies:'Cookies',legal:'Aviso legal',allRights:'Todos los derechos reservados',cookieMsg:'Usamos cookies para mejorar tu experiencia.',cookieAccept:'Aceptar',cookieReject:'Rechazar',back:'â Volver al inicio',moreArticles:'Mas articulos',publishedOn:'Publicado el',by:'Por',tags:'Etiquetas',mostRead:'Mas leidos',sections:'Secciones',searchResults:'resultado(s) para',logoSub:'Tecnologia al dia'},
+  en:{breakingNews:'BREAKING NEWS',readMore:'Read more',shareOn:'Share on',latestNews:'Latest news',featured:'Featured',minRead:'min read',search:'Search...',about:'About',privacy:'Privacy',cookies:'Cookies',legal:'Legal notice',allRights:'All rights reserved',cookieMsg:'We use cookies to improve your experience.',cookieAccept:'Accept',cookieReject:'Reject',back:'â Back to home',moreArticles:'More articles',publishedOn:'Published on',by:'By',tags:'Tags',mostRead:'Most read',sections:'Sections',searchResults:'result(s) for',logoSub:'Tech up to date'},
 };
 
 // ===================== STATE =====================
@@ -374,7 +368,7 @@ function buildTicker(){
   document.getElementById('tickerLabel').textContent = t.breakingNews;
   const items = [...TICKER_ITEMS,...TICKER_ITEMS];
   document.getElementById('tickerTrack').innerHTML = items.map(item=>
-    `<span class="ticker-item"><span class="ticker-dot">●</span>${item}</span>`
+    `<span class="ticker-item"><span class="ticker-dot">â</span>${item}</span>`
   ).join('');
 }
 buildTicker();
@@ -546,7 +540,7 @@ function render(){
               ${featured.map(a=>renderFeaturedCard(a,t)).join('')}
             </div>
           ` : ''}
-          <div class="ad-slot" style="height:90px;margin-bottom:28px"><span>PUBLICIDAD</span><span style="font-size:9px">728×90</span></div>
+          <div class="ad-slot" style="height:90px;margin-bottom:28px"><span>PUBLICIDAD</span><span style="font-size:9px">728Ã90</span></div>
           <div class="section-label"><div class="section-bar"></div><div class="section-title">${activeCategory==='PORTADA'?t.latestNews:activeCategory}</div></div>
           ${rest.length===0 ? `<div style="text-align:center;padding:60px;color:#8a8480">No se encontraron articulos.</div>` : ''}
           <div style="display:flex;flex-direction:column;gap:12px">
@@ -554,7 +548,7 @@ function render(){
           </div>
         </div>
         <div class="sidebar-desktop">
-          <div class="ad-slot" style="height:250px;margin-bottom:20px"><span>PUBLICIDAD</span><span style="font-size:9px">300×250</span></div>
+          <div class="ad-slot" style="height:250px;margin-bottom:20px"><span>PUBLICIDAD</span><span style="font-size:9px">300Ã250</span></div>
           <div class="sidebar-box">
             <div class="sidebar-title">${t.mostRead}</div>
             ${ARTICLES.slice(0,5).map((a,i)=>`
@@ -566,7 +560,7 @@ function render(){
                 </div>
               </div>`).join('')}
           </div>
-          <div class="ad-slot" style="height:200px;margin-top:20px"><span>PUBLICIDAD</span><span style="font-size:9px">300×200</span></div>
+          <div class="ad-slot" style="height:200px;margin-top:20px"><span>PUBLICIDAD</span><span style="font-size:9px">300Ã200</span></div>
         </div>
       </div>
     </div>
@@ -588,8 +582,8 @@ function renderFeaturedCard(a,t){
       <h2 class="card-title">${title}</h2>
       <p class="card-excerpt">${excerpt}</p>
       <div class="card-footer">
-        <span class="card-meta">${date} · ${a.readTime} ${t.minRead}</span>
-        <button class="btn-red" style="font-size:11px;padding:6px 14px">${t.readMore} →</button>
+        <span class="card-meta">${date} Â· ${a.readTime} ${t.minRead}</span>
+        <button class="btn-red" style="font-size:11px;padding:6px 14px">${t.readMore} â</button>
       </div>
     </div>
   </div>`;
@@ -604,7 +598,7 @@ function renderSmallCard(a,t){
     <div class="card-sm-body">
       <span class="badge" style="${badgeStyle(a)}">${a.category}</span>
       <div class="card-sm-title">${title}</div>
-      <div style="font-size:11px;color:#8a8480">${date} · ${a.readTime} ${t.minRead}</div>
+      <div style="font-size:11px;color:#8a8480">${date} Â· ${a.readTime} ${t.minRead}</div>
     </div>
   </div>`;
 }
@@ -632,12 +626,12 @@ function renderArticlePage(a,t){
             <div class="author-avatar" style="background:${a.accent}">B</div>
             <div>
               <div style="font-weight:600;font-size:14px">${a.author}</div>
-              <div style="font-size:12px;color:#8a8480">${t.publishedOn} ${date} · ${a.readTime} ${t.minRead}</div>
+              <div style="font-size:12px;color:#8a8480">${t.publishedOn} ${date} Â· ${a.readTime} ${t.minRead}</div>
             </div>
           </div>
           <div class="share-bar">
             <span style="font-size:12px;color:#8a8480;font-weight:600">${t.shareOn}:</span>
-            <button class="share-btn" style="background:#000" onclick="share('Twitter/X','${title.replace(/'/g,"\\'")}')">𝕏 Twitter</button>
+            <button class="share-btn" style="background:#000" onclick="share('Twitter/X','${title.replace(/'/g,"\\'")}')">ð Twitter</button>
             <button class="share-btn" style="background:#1877f2" onclick="share('Facebook','${title.replace(/'/g,"\\'")}')">Facebook</button>
             <button class="share-btn" style="background:#25d366" onclick="share('WhatsApp','${title.replace(/'/g,"\\'")}')">WhatsApp</button>
           </div>
@@ -649,7 +643,7 @@ function renderArticlePage(a,t){
           <button class="btn-red" onclick="goBack()" style="margin-top:28px">${t.back}</button>
         </div>
         <div class="sidebar-desktop">
-          <div class="ad-slot" style="height:250px;margin-bottom:20px"><span>PUBLICIDAD</span><span style="font-size:9px">300×250</span></div>
+          <div class="ad-slot" style="height:250px;margin-bottom:20px"><span>PUBLICIDAD</span><span style="font-size:9px">300Ã250</span></div>
           ${related.length?`
             <div class="sidebar-box">
               <div class="sidebar-title">${t.moreArticles}</div>
@@ -661,7 +655,7 @@ function renderArticlePage(a,t){
                   </div>
                 </div>`).join('')}
             </div>`:''}
-          <div class="ad-slot" style="height:200px;margin-top:20px"><span>PUBLICIDAD</span><span style="font-size:9px">300×200</span></div>
+          <div class="ad-slot" style="height:200px;margin-top:20px"><span>PUBLICIDAD</span><span style="font-size:9px">300Ã200</span></div>
         </div>
       </div>
     </div>
@@ -670,7 +664,7 @@ function renderArticlePage(a,t){
 
 const STATIC_CONTENT = {
   about:{
-    es:{title:'Acerca de ByteLog',body:`<p>ByteLog es un medio digital independiente dedicado a cubrir las noticias mas importantes del mundo tecnologico para la audiencia hispanohablante de Latinoamerica y España.</p><h2>Nuestra mision</h2><p>Acercar la tecnologia a todos, con contenido claro, honesto y actualizado. Cubrimos gaming, inteligencia artificial, hardware, software y aplicaciones moviles.</p><h2>Nuestro equipo</h2><p>Somos un equipo de apasionados por la tecnologia comprometidos con el periodismo digital de calidad para toda Latinoamerica.</p><h2>Contacto</h2><p>contacto@bytelog.website</p>`},
+    es:{title:'Acerca de ByteLog',body:`<p>ByteLog es un medio digital independiente dedicado a cubrir las noticias mas importantes del mundo tecnologico para la audiencia hispanohablante de Latinoamerica y EspaÃ±a.</p><h2>Nuestra mision</h2><p>Acercar la tecnologia a todos, con contenido claro, honesto y actualizado. Cubrimos gaming, inteligencia artificial, hardware, software y aplicaciones moviles.</p><h2>Nuestro equipo</h2><p>Somos un equipo de apasionados por la tecnologia comprometidos con el periodismo digital de calidad para toda Latinoamerica.</p><h2>Contacto</h2><p>contacto@bytelog.website</p>`},
     en:{title:'About ByteLog',body:`<p>ByteLog is an independent digital media outlet dedicated to covering the most important tech news for Spanish-speaking audiences in Latin America and Spain.</p><h2>Our mission</h2><p>Bringing technology closer to everyone with clear, honest and updated content. We cover gaming, AI, hardware, software and mobile apps.</p><h2>Contact</h2><p>contact@bytelog.website</p>`}
   },
   privacy:{
@@ -682,7 +676,7 @@ const STATIC_CONTENT = {
     en:{title:'Cookie Policy',body:`<p>ByteLog uses cookies to improve your browsing experience and offer relevant advertising.</p><h2>Types of cookies</h2><p><strong>Technical cookies:</strong> Necessary for the basic functioning of the website.</p><p><strong>Analytics cookies:</strong> Help us understand how users interact with the site.</p><p><strong>Advertising cookies:</strong> Used to show relevant ads through Adsterra and Google AdSense.</p>`}
   },
   legal:{
-    es:{title:'Aviso Legal',body:`<p>ByteLog es un medio digital de informacion tecnologica operado de forma independiente.</p><h2>Titularidad</h2><p>Este sitio web es operado bajo la marca BYTELOG con cobertura para Latinoamerica y España.</p><h2>Propiedad intelectual</h2><p>Todos los contenidos publicados en ByteLog son propiedad de sus respectivos autores. Queda prohibida la reproduccion total o parcial sin autorizacion expresa y por escrito.</p><h2>Responsabilidad</h2><p>ByteLog no se responsabiliza por los contenidos de sitios externos enlazados desde este medio. Toda la informacion publicada es de caracter informativo.</p><h2>Legislacion aplicable</h2><p>Este aviso legal se rige por la legislacion vigente aplicable a medios digitales en Peru y la region latinoamericana.</p>`},
+    es:{title:'Aviso Legal',body:`<p>ByteLog es un medio digital de informacion tecnologica operado de forma independiente.</p><h2>Titularidad</h2><p>Este sitio web es operado bajo la marca BYTELOG con cobertura para Latinoamerica y EspaÃ±a.</p><h2>Propiedad intelectual</h2><p>Todos los contenidos publicados en ByteLog son propiedad de sus respectivos autores. Queda prohibida la reproduccion total o parcial sin autorizacion expresa y por escrito.</p><h2>Responsabilidad</h2><p>ByteLog no se responsabiliza por los contenidos de sitios externos enlazados desde este medio. Toda la informacion publicada es de caracter informativo.</p><h2>Legislacion aplicable</h2><p>Este aviso legal se rige por la legislacion vigente aplicable a medios digitales en Peru y la region latinoamericana.</p>`},
     en:{title:'Legal Notice',body:`<p>ByteLog is an independent digital technology information media outlet.</p><h2>Ownership</h2><p>This website is operated under the BYTELOG brand with coverage for Latin America and Spain.</p><h2>Intellectual property</h2><p>All content published on ByteLog is property of their respective authors. Reproduction without express written authorization is prohibited.</p><h2>Applicable law</h2><p>This legal notice is governed by applicable digital media legislation in Peru and the Latin American region.</p>`}
   }
 };
