@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ByteLog Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--red:#cc2200;--dark:#1a1814;--bg:#f8f7f4;--border:#e0dbd4}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh}
+
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#1a1814}
+.login-box{background:#fff;border-radius:12px;padding:40px;width:100%;max-width:380px;text-align:center}
+.login-logo{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:3px;margin-bottom:4px}
+.login-logo span{color:var(--red)}
+.login-sub{font-size:11px;letter-spacing:3px;color:#8a8480;text-transform:uppercase;margin-bottom:32px}
+.login-box input{width:100%;border:1.5px solid var(--border);border-radius:6px;padding:10px 14px;font-size:14px;font-family:inherit;outline:none;margin-bottom:12px;transition:border .2s}
+.login-box input:focus{border-color:var(--red)}
+.login-box input[type=password]{letter-spacing:3px}
+
+#adminApp{display:none}
+.admin-header{background:#1a1814;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.admin-logo{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:#fff}
+.admin-logo span{color:var(--red)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;display:inline-block;margin-right:6px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.admin-body{max-width:800px;margin:0 auto;padding:24px 16px}
+
+.tabs{display:flex;gap:4px;margin-bottom:24px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:4px}
+.tab{flex:1;padding:9px 4px;border:none;background:none;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.5px;border-radius:6px;font-family:inherit;color:#8a8480;transition:all .2s;text-align:center}
+.tab.active{background:var(--dark);color:#fff}
+
+.form-card{background:#fff;border-radius:10px;border:1px solid var(--border);padding:24px;margin-bottom:16px}
+.form-title{font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--dark)}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a8480;margin-bottom:6px}
+.form-group input,.form-group textarea{width:100%;border:1.5px solid var(--border);border-radius:6px;padding:10px 14px;font-size:14px;font-family:inherit;outline:none;transition:border .2s;background:#fafaf8;color:var(--dark)}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--red);background:#fff}
+.form-group textarea{resize:vertical;min-height:140px;line-height:1.7}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cat-pill{border:2px solid var(--border);border-radius:6px;padding:10px 8px;text-align:center;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:1px;transition:all .2s;background:#fff}
+
+.toggle-wrap{display:flex;align-items:center;gap:12px}
+.toggle{position:relative;width:48px;height:26px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.slider{position:absolute;inset:0;background:#ddd;border-radius:26px;cursor:pointer;transition:.3s}
+.slider:before{content:'';position:absolute;width:20px;height:20px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+.toggle input:checked + .slider{background:var(--red)}
+.toggle input:checked + .slider:before{transform:translateX(22px)}
+
+.img-preview{width:100%;height:160px;border-radius:6px;object-fit:cover;margin-top:8px;display:none}
+.img-preview.show{display:block}
+.img-placeholder{width:100%;height:100px;border-radius:6px;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;color:#bbb;font-size:12px;margin-top:8px;background:#f8f7f4}
+
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:6px;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-primary{background:var(--red);color:#fff;width:100%;justify-content:center;font-size:15px;padding:14px}
+.btn-primary:hover{background:#aa1800}
+.btn-primary:disabled{background:#ccc;cursor:not-allowed}
+.btn-ghost{background:transparent;color:var(--dark);border:1.5px solid var(--border);padding:6px 14px;font-size:12px}
+.btn-ghost:hover{border-color:var(--red);color:var(--red)}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1a1814;color:#fff;padding:14px 24px;border-radius:8px;font-size:14px;font-weight:600;z-index:999;transition:transform .3s;box-shadow:0 8px 30px rgba(0,0,0,.3);white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--red)}
+.toast.success{background:#16a34a}
+
+.article-item{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.article-item img{width:64px;height:48px;object-fit:cover;border-radius:4px;flex-shrink:0}
+
+.ticker-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ticker-row input{flex:1;border:1.5px solid var(--border);border-radius:6px;padding:8px 12px;font-size:13px;font-family:inherit;outline:none;background:#fafaf8}
+.ticker-row input:focus{border-color:var(--red);background:#fff;outline:none}
+.btn-del{background:#fee2e2;color:var(--red);border:none;border-radius:4px;width:32px;height:32px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.btn-del:hover{background:#fca5a5}
+.btn-add{background:#f0fdf4;color:#16a34a;border:1.5px solid #bbf7d0;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:4px}
+
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:500px){
+  .form-row{grid-template-columns:1fr}
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+  .admin-body{padding:16px 12px}
+}
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">BYTE<span>LOG</span></div>
+    <div class="login-sub">Panel de Administración</div>
+    <input type="password" id="tokenInput" placeholder="Pega tu GitHub Token aquí" autocomplete="off"/>
+    <button class="btn btn-primary" onclick="doLogin()" style="margin-top:4px">Entrar →</button>
+    <p style="font-size:11px;color:#bbb;margin-top:16px">Solo tú puedes acceder</p>
+  </div>
+</div>
+
+<div id="adminApp">
+  <div class="admin-header">
+    <div class="admin-logo">BYTE<span>LOG</span> <span style="font-size:11px;color:#555;font-family:'DM Sans',sans-serif;font-weight:400">ADMIN</span></div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="status-dot"></span><span style="color:#555;font-size:12px">Conectado</span>
+      <button class="btn btn-ghost" onclick="logout()">Salir</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('new')">✏️ Nueva Noticia</button>
+      <button class="tab" onclick="showTab('list')">📋 Noticias</button>
+      <button class="tab" onclick="showTab('ticker')">📡 Ticker</button>
+    </div>
+
+    <!-- NUEVA NOTICIA -->
+    <div id="tabNew">
+      <div class="form-card">
+        <div class="form-title">📝 Título y Resumen</div>
+        <div class="form-group">
+          <label>Título en Español *</label>
+          <input type="text" id="fTitle" placeholder="Ej: Las 5 mejores apps para editar videos en 2026"/>
+        </div>
+        <div class="form-group">
+          <label>Título en Inglés (opcional)</label>
+          <input type="text" id="fTitleEn" placeholder="Ej: The 5 best apps to edit videos in 2026"/>
+        </div>
+        <div class="form-group">
+          <label>Resumen corto * (aparece en la tarjeta de portada)</label>
+          <input type="text" id="fExcerpt" placeholder="2-3 líneas que enganchan al lector..."/>
+        </div>
+        <div class="form-group">
+          <label>Resumen en Inglés (opcional)</label>
+          <input type="text" id="fExcerptEn" placeholder="Short summary in English..."/>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-title">📄 Contenido del Artículo</div>
+        <div class="form-group">
+          <label>Contenido completo *</label>
+          <textarea id="fContent" placeholder="Escribe aquí el artículo completo...&#10;&#10;Para subtítulos escribe:&#10;## Tu subtítulo aquí&#10;&#10;Luego el párrafo debajo."></textarea>
+          <div style="font-size:11px;color:#aaa;margin-top:6px">💡 Usa <strong>## Subtítulo</strong> para crear secciones</div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-title">🗂️ Categoría *</div>
+        <div class="cat-grid">
+          <div class="cat-pill" data-cat="APPS" data-color="#f59e0b" onclick="selectCat(this)">📱 APPS</div>
+          <div class="cat-pill" data-cat="GAMING" data-color="#10b981" onclick="selectCat(this)">🎮 GAMING</div>
+          <div class="cat-pill" data-cat="HARDWARE" data-color="#ef4444" onclick="selectCat(this)">💻 HARDWARE</div>
+          <div class="cat-pill" data-cat="SOFTWARE" data-color="#3b82f6" onclick="selectCat(this)">⚙️ SOFTWARE</div>
+          <div class="cat-pill" data-cat="INTELIGENCIA ARTIFICIAL" data-color="#6366f1" onclick="selectCat(this)" style="grid-column:span 2">🤖 INTELIGENCIA ARTIFICIAL</div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-title">🖼️ Imagen de Portada</div>
+        <div class="form-group">
+          <label>URL de imagen *</label>
+          <input type="text" id="fImage" placeholder="https://images.unsplash.com/photo-...?w=800&q=80" oninput="previewImg(this.value)"/>
+          <div class="img-placeholder" id="imgPlaceholder">Vista previa aparecerá aquí</div>
+          <img class="img-preview" id="imgPreview" alt="preview"/>
+        </div>
+        <div style="font-size:12px;color:#8a8480">💡 <strong>unsplash.com</strong> → busca en inglés → clic derecho → Copiar dirección → pega aquí + <strong>?w=800&q=80</strong></div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-title">⚙️ Configuración</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Fecha</label>
+            <input type="text" id="fDate" placeholder="07 Mar 2026"/>
+          </div>
+          <div class="form-group">
+            <label>Minutos de lectura</label>
+            <input type="number" id="fReadTime" value="4" min="1" max="30"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>¿Aparece en DESTACADO? (foto grande arriba)</label>
+          <div class="toggle-wrap" style="margin-top:8px">
+            <label class="toggle"><input type="checkbox" id="fFeatured"/><span class="slider"></span></label>
+            <span style="font-size:13px;color:#4a4640">Activado = foto grande arriba &nbsp;|&nbsp; Desactivado = lista abajo<br/><span style="font-size:11px;color:#aaa">Máximo 2 noticias destacadas a la vez</span></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Tags (separados por comas)</label>
+          <input type="text" id="fTags" placeholder="apps, android, productividad"/>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="publishBtn" onclick="publishArticle()">🚀 Publicar en ByteLog</button>
+      <p style="text-align:center;font-size:11px;color:#aaa;margin-top:10px;margin-bottom:40px">Aparecerá en bytelog.lat en 1-2 minutos ✅</p>
+    </div>
+
+    <!-- NOTICIAS -->
+    <div id="tabList" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase">Artículos publicados</div>
+        <button class="btn btn-ghost" onclick="loadArticles()">↻ Actualizar</button>
+      </div>
+      <div id="articlesList"><div style="text-align:center;padding:40px;color:#bbb;font-size:13px">Cargando...</div></div>
+    </div>
+
+    <!-- TICKER -->
+    <div id="tabTicker" style="display:none">
+      <div class="form-card">
+        <div class="form-title">📡 Frases del Ticker "ULTIMA HORA"</div>
+        <p style="font-size:13px;color:#6a6460;margin-bottom:20px">Estas son las frases que se desplazan en la barra negra de arriba. Edítalas, agrégalas o elimínalas.</p>
+        <div id="tickerList"><div style="color:#bbb;font-size:13px">Cargando...</div></div>
+        <button class="btn-add" onclick="addTickerItem()">+ Agregar frase</button>
+      </div>
+      <button class="btn btn-primary" id="tickerBtn" onclick="saveTicker()">💾 Guardar Ticker</button>
+      <p style="text-align:center;font-size:11px;color:#aaa;margin-top:10px;margin-bottom:40px">Los cambios aparecerán en bytelog.lat en 1-2 minutos ✅</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const GITHUB_USER = 'HarrySytems';
+const GITHUB_REPO = 'bytelog';
+const GITHUB_FILE = 'index.html';
+let TOKEN = '';
+let selectedCat = '';
+let selectedAccent = '';
+let tickerItems = [];
+
+function doLogin(){
+  const t = document.getElementById('tokenInput').value.trim();
+  if(!t){ showToast('Pega tu GitHub Token', 'error'); return; }
+  TOKEN = t;
+  localStorage.setItem('bl_token', t);
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminApp').style.display = 'block';
+  setDefaultDate();
+  showToast('✅ Bienvenido a ByteLog Admin', 'success');
+}
+
+function logout(){
+  localStorage.removeItem('bl_token');
+  TOKEN = '';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('adminApp').style.display = 'none';
+  document.getElementById('tokenInput').value = '';
+}
+
+window.onload = function(){
+  const saved = localStorage.getItem('bl_token');
+  if(saved){ TOKEN=saved; document.getElementById('loginScreen').style.display='none'; document.getElementById('adminApp').style.display='block'; setDefaultDate(); }
+  document.getElementById('tokenInput').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+};
+
+function showTab(tab){
+  ['New','List','Ticker'].forEach(t => {
+    document.getElementById('tab'+t).style.display = t.toLowerCase()===tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach((el,i) => el.classList.toggle('active', ['new','list','ticker'][i]===tab));
+  if(tab==='list') loadArticles();
+  if(tab==='ticker') loadTicker();
+}
+
+function selectCat(el){
+  document.querySelectorAll('.cat-pill').forEach(p => { p.style.background=''; p.style.borderColor=''; p.style.color=''; });
+  el.style.background = el.dataset.color;
+  el.style.borderColor = el.dataset.color;
+  el.style.color = '#fff';
+  selectedCat = el.dataset.cat;
+  selectedAccent = el.dataset.color;
+}
+
+function previewImg(url){
+  const preview = document.getElementById('imgPreview');
+  const placeholder = document.getElementById('imgPlaceholder');
+  if(url.startsWith('http')){
+    preview.src = url;
+    preview.classList.add('show');
+    placeholder.style.display = 'none';
+    preview.onerror = () => { preview.classList.remove('show'); placeholder.style.display='flex'; };
+  } else {
+    preview.classList.remove('show');
+    placeholder.style.display = 'flex';
+  }
+}
+
+function setDefaultDate(){
+  const now = new Date();
+  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  document.getElementById('fDate').value = `${String(now.getDate()).padStart(2,'0')} ${months[now.getMonth()]} ${now.getFullYear()}`;
+}
+
+function formatContent(raw){
+  let html = '';
+  for(let line of raw.trim().split('\n')){
+    line = line.trim();
+    if(!line) continue;
+    if(line.startsWith('## ')) html += `<h2>${line.slice(3)}</h2>\n`;
+    else html += `<p>${line}</p>\n`;
+  }
+  return html;
+}
+
+async function getFile(){
+  const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+    headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github.v3+json' }
+  });
+  if(!res.ok) throw new Error('No se pudo leer el archivo. Verifica tu token.');
+  const data = await res.json();
+  return { content: atob(data.content.replace(/\n/g,'')), sha: data.sha };
+}
+
+async function pushFile(content, sha, message){
+  // Encoding seguro para UTF-8 con caracteres especiales
+  const bytes = new TextEncoder().encode(content);
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  const base64 = btoa(binary);
+  const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+    method: 'PUT',
+    headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message, content: base64, sha })
+  });
+  if(!res.ok){ const e = await res.json(); throw new Error(e.message || 'Error al guardar'); }
+}
+
+async function publishArticle(){
+  const title = document.getElementById('fTitle').value.trim();
+  const excerpt = document.getElementById('fExcerpt').value.trim();
+  const content = document.getElementById('fContent').value.trim();
+  const image = document.getElementById('fImage').value.trim();
+  const date = document.getElementById('fDate').value.trim();
+  const readTime = parseInt(document.getElementById('fReadTime').value) || 4;
+  const featured = document.getElementById('fFeatured').checked;
+  const tagsRaw = document.getElementById('fTags').value.trim();
+  const titleEn = document.getElementById('fTitleEn').value.trim();
+  const excerptEn = document.getElementById('fExcerptEn').value.trim();
+
+  if(!title){ showToast('Falta el título', 'error'); return; }
+  if(!excerpt){ showToast('Falta el resumen', 'error'); return; }
+  if(!content){ showToast('Falta el contenido', 'error'); return; }
+  if(!selectedCat){ showToast('Selecciona una categoría', 'error'); return; }
+  if(!image){ showToast('Falta la imagen', 'error'); return; }
+
+  const btn = document.getElementById('publishBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Publicando...';
+
+  try {
+    const {content: fileContent, sha} = await getFile();
+    const ids = [...fileContent.matchAll(/id:(\d+)/g)].map(m => parseInt(m[1]));
+    const nextId = ids.length ? Math.max(...ids) + 1 : 6;
+
+    const monthsEn = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const monthsEs = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    let dateEn = date;
+    monthsEs.forEach((m,i) => { dateEn = dateEn.replace(m, monthsEn[i]); });
+
+    const tags = tagsRaw ? tagsRaw.split(',').map(t => `'${t.trim()}'`).join(',') : `'${selectedCat.toLowerCase()}'`;
+    const htmlContent = formatContent(content);
+
+    const newArticle = `  {
+    id:${nextId}, title:'${title.replace(/'/g,"\\'")}',
+    titleEn:'${(titleEn||title).replace(/'/g,"\\'")}',
+    excerpt:'${excerpt.replace(/'/g,"\\'")}',
+    excerptEn:'${(excerptEn||excerpt).replace(/'/g,"\\'")}',
+    content:\`${htmlContent}\`,
+    category:'${selectedCat}', accent:'${selectedAccent}', author:'ByteLog', date:'${date}', dateEn:'${dateEn}',
+    readTime:${readTime}, featured:${featured}, tags:[${tags}],
+    image:'${image}',
+  },`;
+
+    const marker = 'const ARTICLES = [';
+    const idx = fileContent.indexOf(marker);
+    if(idx === -1) throw new Error('No se encontró ARTICLES en el archivo.');
+    const newContent = fileContent.slice(0, idx + marker.length) + '\n' + newArticle + '\n' + fileContent.slice(idx + marker.length);
+
+    await pushFile(newContent, sha, `Nueva noticia: ${title}`);
+    showToast('🎉 ¡Publicado! Aparece en 1-2 min', 'success');
+    resetForm();
+  } catch(err){
+    showToast('❌ ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🚀 Publicar en ByteLog';
+  }
+}
+
+function resetForm(){
+  ['fTitle','fTitleEn','fExcerpt','fExcerptEn','fContent','fImage','fTags'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fReadTime').value = '4';
+  document.getElementById('fFeatured').checked = false;
+  document.querySelectorAll('.cat-pill').forEach(p => { p.style.background=''; p.style.borderColor=''; p.style.color=''; });
+  selectedCat = ''; selectedAccent = '';
+  document.getElementById('imgPreview').classList.remove('show');
+  document.getElementById('imgPlaceholder').style.display = 'flex';
+  setDefaultDate();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function loadArticles(){
+  const list = document.getElementById('articlesList');
+  list.innerHTML = '<div style="text-align:center;padding:40px;color:#bbb;font-size:13px">Cargando...</div>';
+  try {
+    const {content} = await getFile();
+    const titleMatches = [...content.matchAll(/id:(\d+),\s*title:'([^']+)'/g)];
+    const catMatches = [...content.matchAll(/category:'([^']+)'/g)];
+    const imgMatches = [...content.matchAll(/image:'([^']+)'/g)];
+    const dateMatches = [...content.matchAll(/date:'([^']+)'/g)];
+    const catColors = {'APPS':'#f59e0b','GAMING':'#10b981','HARDWARE':'#ef4444','SOFTWARE':'#3b82f6','INTELIGENCIA ARTIFICIAL':'#6366f1'};
+    if(!titleMatches.length){ list.innerHTML = '<div style="text-align:center;padding:40px;color:#bbb">No hay artículos aún</div>'; return; }
+    list.innerHTML = [...titleMatches].reverse().map((m,i) => {
+      const idx = titleMatches.length - 1 - i;
+      const cat = catMatches[idx]?.[1] || '';
+      const img = imgMatches[idx]?.[1] || '';
+      const date = dateMatches[idx]?.[1] || '';
+      const color = catColors[cat] || '#888';
+      return `<div class="article-item">
+        ${img ? `<img src="${img}" onerror="this.style.display='none'"/>` : ''}
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px">${m[2]}</div>
+          <div style="font-size:11px;color:#8a8480"><span style="display:inline-block;padding:2px 7px;font-size:9px;font-weight:700;border-radius:2px;text-transform:uppercase;margin-right:6px;background:${color}20;color:${color}">${cat}</span>${date} · ID: ${m[1]}</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(err){
+    list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--red);font-size:13px">Error: ${err.message}</div>`;
+  }
+}
+
+async function loadTicker(){
+  document.getElementById('tickerList').innerHTML = '<div style="color:#bbb;font-size:13px;padding:10px">Cargando...</div>';
+  try {
+    const {content} = await getFile();
+    const match = content.match(/const TICKER_ITEMS = \[([\s\S]*?)\];/);
+    if(!match) throw new Error('No se encontró TICKER_ITEMS');
+    tickerItems = [...match[1].matchAll(/'([^']+)'/g)].map(m => m[1]);
+    renderTickerList();
+  } catch(err){
+    document.getElementById('tickerList').innerHTML = `<div style="color:var(--red);font-size:13px">${err.message}</div>`;
+  }
+}
+
+function renderTickerList(){
+  document.getElementById('tickerList').innerHTML = tickerItems.map((item,i) => `
+    <div class="ticker-row">
+      <input type="text" value="${item.replace(/"/g,'&quot;').replace(/'/g,"&#39;")}" oninput="tickerItems[${i}]=this.value" placeholder="Escribe la noticia..."/>
+      <button class="btn-del" onclick="removeTickerItem(${i})">×</button>
+    </div>`).join('');
+}
+
+function addTickerItem(){
+  tickerItems.push('');
+  renderTickerList();
+  const inputs = document.querySelectorAll('.ticker-row input');
+  if(inputs.length) inputs[inputs.length-1].focus();
+}
+
+function removeTickerItem(i){
+  tickerItems.splice(i,1);
+  renderTickerList();
+}
+
+async function saveTicker(){
+  document.querySelectorAll('.ticker-row input').forEach((inp,i) => { if(tickerItems[i]!==undefined) tickerItems[i]=inp.value; });
+  const clean = tickerItems.filter(t => t.trim());
+  if(!clean.length){ showToast('Agrega al menos una frase', 'error'); return; }
+  const btn = document.getElementById('tickerBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Guardando...';
+  try {
+    const {content, sha} = await getFile();
+    const newBlock = `const TICKER_ITEMS = [\n${clean.map(t => `  '${t.replace(/'/g,"\\'")}',`).join('\n')}\n];`;
+    const newContent = content.replace(/const TICKER_ITEMS = \[[\s\S]*?\];/, newBlock);
+    if(newContent === content) throw new Error('No se pudo encontrar el ticker.');
+    await pushFile(newContent, sha, 'Actualizar ticker ULTIMA HORA');
+    showToast('✅ Ticker guardado! Aparece en 1-2 min', 'success');
+    tickerItems = clean;
+    renderTickerList();
+  } catch(err){
+    showToast('❌ ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '💾 Guardar Ticker';
+  }
+}
+
+function showToast(msg, type=''){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+</script>
+</body>
+</html>
