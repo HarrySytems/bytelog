@@ -15,7 +15,7 @@
 :root{--bg:#f8f7f4;--bg2:#fff;--bg3:#f0ede8;--text:#1a1814;--text2:#4a4640;--muted:#8a8480;--border:#e0dbd4;--red:#cc2200;--dark:#1a1814}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;font-size:15px}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;font-size:15px;max-width:100vw}
 h1,h2,h3,h4{font-family:'Source Serif 4',serif;line-height:1.2}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block;object-fit:cover}
@@ -37,7 +37,7 @@ header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top
 .logo{cursor:pointer}
 .logo-text{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,5vw,46px);letter-spacing:3px;color:#1a1814;line-height:1}
 .logo-sub{font-size:9px;letter-spacing:4px;color:#8a8480;text-transform:uppercase;margin-top:2px}
-.ad-banner{flex:1;max-width:480px;height:70px}
+.ad-banner{flex:1;max-width:480px;height:70px;overflow:hidden;min-width:0}
 .search-area{display:flex;align-items:center;gap:8px;flex-shrink:0}
 #searchInput{border:1.5px solid var(--border);border-radius:4px;padding:7px 12px;font-size:13px;outline:none;width:200px;background:#f8f7f4;font-family:inherit;transition:border .2s}
 #searchInput:focus{border-color:var(--red)}
@@ -114,7 +114,7 @@ footer{background:#1a1814;color:#aaa;margin-top:0}
 .mobile-nav-btn{background:none;border:none;cursor:pointer;padding:13px 20px;font-size:13px;font-weight:700;letter-spacing:1px;text-align:left;border-bottom:1px solid var(--border);font-family:inherit;color:#4a4640}
 .mobile-nav-btn:hover,.mobile-nav-btn.active{color:var(--red);background:#faf8f5}
 @media(max-width:900px){.main-grid{grid-template-columns:1fr}.article-grid{grid-template-columns:1fr}.sidebar-desktop{display:none}.featured-grid{grid-template-columns:1fr}}
-@media(max-width:640px){.ad-banner{display:none}.hamburger{display:block}.nav-inner{display:none}.topbar-date{display:none}.footer-grid{grid-template-columns:1fr}.article-content-box{padding:20px}.static-content{padding:24px}}
+@media(max-width:640px){.ad-banner{display:none!important;width:0!important;overflow:hidden!important}.hamburger{display:block}.nav-inner{display:none}.topbar-date{display:none}.footer-grid{grid-template-columns:1fr}.article-content-box{padding:20px}.static-content{padding:24px}}
 @media(min-width:641px){.hamburger{display:none}.mobile-menu{display:none!important}}
 </style>
 <!-- Adsterra Popunder -->
