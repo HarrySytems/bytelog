@@ -540,7 +540,29 @@ function goBack(){
   document.querySelector('meta[name="description"]').setAttribute('content','BYTELOG - Tu fuente de noticias tecnologicas para Latinoamerica. Gaming, IA, hardware, software y apps.');
   render();window.scrollTo({top:0,behavior:'smooth'});
 }
-function share(platform,title){const url=encodeURIComponent(window.location.href);const text=encodeURIComponent(title);const links={'Twitter/X':'https://twitter.com/intent/tweet?text='+text+'&url='+url,'Facebook':'https://www.facebook.com/sharer/sharer.php?u='+url,'WhatsApp':'https://wa.me/?text='+text+'%20'+url};if(links[platform])window.open(links[platform],'_blank','width=600,height=400');}
+function share(platform,title){
+  const pageUrl=window.location.href;
+  const enc=encodeURIComponent;
+  const links={
+    'Twitter/X':'https://twitter.com/intent/tweet?text='+enc(title)+'&url='+enc(pageUrl),
+    'Facebook':'https://www.facebook.com/sharer/sharer.php?u='+enc(pageUrl),
+    'WhatsApp':'https://wa.me/?text='+enc(title+' – '+pageUrl)
+  };
+  if(!links[platform]) return;
+  // Web Share API para móvil (abre el menú nativo del sistema)
+  if(navigator.share && /Android|iPhone|iPad/i.test(navigator.userAgent)){
+    navigator.share({title:title, url:pageUrl}).catch(()=>{});
+    return;
+  }
+  // PC: abrir en pestaña nueva directamente (evita el popup blocker)
+  const a=document.createElement('a');
+  a.href=links[platform];
+  a.target='_blank';
+  a.rel='noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
 function buildFooter(){
   const t=I18N[lang];
   document.getElementById('footerGrid').innerHTML=
