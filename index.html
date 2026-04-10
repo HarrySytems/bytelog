@@ -89,30 +89,28 @@
         const file = e.target.files[0];
         if (!file) return;
 
-        status.innerText = "Cargando imagen...";
+        status.innerText = "Procesando...";
         const reader = new FileReader();
         
         reader.onload = function(event) {
             const img = new Image();
             img.onload = function() {
-                // Mostrar vista previa
                 preview.src = event.target.result;
                 preview.style.display = "inline-block";
                 
-                // Procesar
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 
                 if (currentMode === 'sticker') {
                     canvas.width = 512; canvas.height = 512;
-                    ctx.drawImage(img, 0, 0, 512, 512); [cite: 150, 173]
+                    ctx.drawImage(img, 0, 0, 512, 512);
                 } else {
                     canvas.width = img.width; canvas.height = img.height;
-                    ctx.drawImage(img, 0, 0); [cite: 177]
+                    ctx.drawImage(img, 0, 0);
                 }
 
                 const quality = currentMode === 'webp' ? 0.6 : 0.9;
-                const resultData = canvas.toDataURL('image/webp', quality); [cite: 134, 173]
+                const resultData = canvas.toDataURL('image/webp', quality);
 
                 downloadLink.href = resultData;
                 downloadLink.download = `bytelog_${currentMode}.webp`;
