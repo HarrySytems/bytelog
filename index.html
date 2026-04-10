@@ -3,52 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BYTELOG | Studio Multimedia Profesional</title>
+    <title>BYTELOG | Studio Multimedia All-in-One</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #f4f7f6; --card-bg: #ffffff; --text-main: #1a1a1a;
-            --text-muted: #666666; --accent: #cc2200; --border: #e0e0e0;
-        }
-        body.dark {
-            --bg: #0d0d0d; --card-bg: #161616; --text-main: #f5f5f5;
-            --text-muted: #999999; --border: #2a2a2a;
-        }
+        /* Estilos Pro (Mismos del diseño previo para mantener coherencia) */
+        :root { --bg: #f4f7f6; --card-bg: #ffffff; --accent: #cc2200; --text-main: #1a1a1a; --text-muted: #666; --border: #e0e0e0; }
+        body.dark { --bg: #0d0d0d; --card-bg: #161616; --text-main: #f5f5f5; --border: #2a2a2a; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); transition: 0.3s; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 25px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 25px; }
         
-        header { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 18px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        /* HEADER & NAV */
+        header { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 15px 0; position: sticky; top: 0; z-index: 100; }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-weight: 700; font-size: 24px; cursor: pointer; letter-spacing: -0.5px; }
+        .logo { font-weight: 700; font-size: 24px; cursor: pointer; }
         .logo span { color: var(--accent); }
-        
-        .hero { text-align: center; padding: 70px 0 40px; }
-        .hero h1 { font-size: 42px; font-weight: 700; margin-bottom: 15px; }
-        .hero p { color: var(--text-muted); font-size: 18px; max-width: 600px; margin: 0 auto; }
+        nav ul { display: flex; list-style: none; gap: 20px; }
+        nav ul li a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 14px; transition: 0.2s; }
+        nav ul li a:hover { color: var(--accent); }
 
-        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 40px; }
+        /* DASHBOARD GRID */
+        .hero { text-align: center; padding: 60px 0 30px; }
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
         .tool-card { 
             background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; 
-            padding: 40px 30px; text-align: center; cursor: pointer; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            padding: 30px; text-align: center; cursor: pointer; transition: 0.3s; 
         }
-        .tool-card:hover { transform: translateY(-8px); border-color: var(--accent); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
-        .tool-card h3 { font-size: 20px; margin-bottom: 12px; }
-        .tool-card p { font-size: 15px; color: var(--text-muted); line-height: 1.5; }
-        
-        #workspace { display: none; padding: 60px 0; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .tool-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .tool-card h3 { margin-top: 15px; font-size: 18px; }
+        .tool-card p { font-size: 14px; color: var(--text-muted); margin-top: 8px; }
 
-        .workspace-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.03); }
-        .drop-zone { border: 2px dashed var(--border); border-radius: 15px; padding: 60px 20px; background: var(--bg); margin: 30px 0; transition: 0.3s; }
-        .drop-zone:hover { border-color: var(--accent); }
-
-        .btn-primary { background: var(--accent); color: white; border: none; padding: 14px 35px; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; font-size: 16px; transition: 0.2s; }
-        .btn-primary:hover { background: #b31e00; transform: scale(1.02); }
-        .btn-secondary { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-bottom: 20px; }
-
-        #preview { max-width: 100%; max-height: 400px; border-radius: 12px; margin-top: 25px; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        #status { margin-top: 20px; font-weight: 600; color: var(--accent); font-size: 15px; }
+        /* WORKSPACE */
+        #workspace { display: none; padding: 50px 0; text-align: center; }
+        .workspace-box { background: var(--card-bg); border-radius: 20px; padding: 40px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+        .drop-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 50px 20px; background: var(--bg); margin: 20px 0; }
+        .btn-primary { background: var(--accent); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
+        #preview { max-width: 300px; border-radius: 10px; margin-top: 20px; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
@@ -56,6 +46,14 @@
 <header>
     <div class="container nav-inner">
         <div class="logo" onclick="location.reload()">BYTE<span>LOG</span></div>
+        <nav>
+            <ul>
+                <li><a href="#" onclick="filterTools('all')">TODO</a></li>
+                <li><a href="#" onclick="filterTools('video')">VIDEO</a></li>
+                <li><a href="#" onclick="filterTools('image')">IMAGEN</a></li>
+                <li><a href="#" onclick="filterTools('social')">SOCIAL</a></li>
+            </ul>
+        </nav>
         <button onclick="document.body.classList.toggle('dark')" style="background:none; border:none; cursor:pointer; font-size:20px;">🌙</button>
     </div>
 </header>
@@ -63,104 +61,86 @@
 <main class="container">
     <div id="home-view">
         <section class="hero">
-            <h1>Studio Multimedia Profesional</h1>
-            <p>Herramientas de alta fidelidad. Procesamiento local instantáneo sin pérdida de calidad.</p>
+            <h1>BYTELOG Studio</h1>
+            <p>Herramientas multimedia de alto rendimiento, 100% gratuitas y locales.</p>
         </section>
-        <div class="tools-grid">
-            <div class="tool-card" onclick="startTool('webp')">
-                <div style="font-size: 40px; margin-bottom: 15px;">🖼️</div>
-                <h3>Optimizar WebP</h3>
-                <p>Comprime imágenes manteniendo la nitidez profesional para sitios web.</p>
+
+        <div class="tools-grid" id="main-grid">
+            <div class="tool-card" data-cat="video" onclick="startTool('v-mp3')">
+                <div style="font-size:35px">🎵</div>
+                <h3>Video a MP3</h3>
+                <p>Extrae audio de cualquier video en alta fidelidad.</p>
             </div>
-            <div class="tool-card" onclick="startTool('sticker')">
-                <div style="font-size: 40px; margin-bottom: 15px;">✨</div>
-                <h3>Sticker WhatsApp</h3>
-                <p>Genera stickers HD (512x512px) con suavizado automático de bordes.</p>
+            <div class="tool-card" data-cat="video" onclick="startTool('v-gif')">
+                <div style="font-size:35px">🎞️</div>
+                <h3>Video a GIF</h3>
+                <p>Convierte clips de video en animaciones ligeras.</p>
+            </div>
+
+            <div class="tool-card" data-cat="image" onclick="startTool('webp')">
+                <div style="font-size:35px">📉</div>
+                <h3>Comprimir WebP</h3>
+                <p>Optimiza tus imágenes sin perder nitidez.</p>
+            </div>
+            <div class="tool-card" data-cat="image" onclick="startTool('bg-rem')">
+                <div style="font-size:35px">👤</div>
+                <h3>Borrar Fondo</h3>
+                <p>IA para eliminar fondos de fotos automáticamente.</p>
+            </div>
+
+            <div class="tool-card" data-cat="social" onclick="startTool('sticker')">
+                <div style="font-size:35px">✨</div>
+                <h3>Stickers WhatsApp</h3>
+                <p>Crea stickers HD listos para enviar.</p>
             </div>
         </div>
     </div>
 
     <div id="workspace">
-        <button class="btn-secondary" onclick="location.reload()">← Volver al Panel</button>
-        <div class="workspace-card">
-            <h2 id="tool-title" style="font-size: 28px;">Herramienta</h2>
+        <div class="workspace-box">
+            <h2 id="tool-title">Herramienta</h2>
             <div class="drop-zone">
-                <input type="file" id="fileInput" accept="image/png, image/jpeg" style="display:none">
-                <p style="margin-bottom: 20px; color: var(--text-muted);">Sube archivos PNG o JPG de alta resolución</p>
-                <button class="btn-primary" onclick="document.getElementById('fileInput').click()">Seleccionar Imagen</button>
+                <input type="file" id="fileInput" style="display:none">
+                <button class="btn-primary" onclick="document.getElementById('fileInput').click()">Seleccionar Archivo</button>
                 <br>
                 <img id="preview">
             </div>
             <div id="status"></div>
-            <a id="download-link" style="display:none" class="btn-primary">Descargar Archivo HD</a>
+            <a id="download-link" style="display:none" class="btn-primary">Descargar Resultado</a>
+            <br><br>
+            <button onclick="location.reload()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; text-decoration:underline;">← Volver al panel</button>
         </div>
     </div>
 </main>
 
 <script>
-    let currentMode = '';
-    const fileInput = document.getElementById('fileInput');
-    const downloadLink = document.getElementById('download-link');
-    const status = document.getElementById('status');
-    const preview = document.getElementById('preview');
-
-    function startTool(mode) {
-        currentMode = mode;
-        document.getElementById('home-view').style.display = 'none';
-        document.getElementById('workspace').style.display = 'block';
-        document.getElementById('tool-title').innerText = mode === 'webp' ? 'Compresor WebP Pro' : 'Creador de Stickers HD';
-        window.scrollTo(0,0);
+    // Lógica de navegación y filtrado
+    function filterTools(cat) {
+        const cards = document.querySelectorAll('.tool-card');
+        cards.forEach(card => {
+            if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        document.getElementById('home-view').style.display = 'block';
+        document.getElementById('workspace').style.display = 'none';
     }
 
-    fileInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        status.innerText = "Procesando en alta calidad...";
-        const reader = new FileReader();
-        
-        reader.onload = function(event) {
-            const img = new Image();
-            img.onload = function() {
-                preview.src = event.target.result;
-                preview.style.display = "inline-block";
-                
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                
-                if (currentMode === 'sticker') {
-                    // Algoritmo de redimensionado HD para evitar pixelado
-                    canvas.width = 512; 
-                    canvas.height = 512;
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-                    
-                    // Centrar imagen manteniendo proporción en el cuadro de 512
-                    const ratio = Math.min(512 / img.width, 512 / img.height);
-                    const nw = img.width * ratio;
-                    const nh = img.height * ratio;
-                    ctx.drawImage(img, (512 - nw) / 2, (512 - nh) / 2, nw, nh);
-                } else {
-                    canvas.width = img.width; 
-                    canvas.height = img.height;
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-                    ctx.drawImage(img, 0, 0);
-                }
-
-                // Alta calidad para WebP
-                const quality = currentMode === 'webp' ? 0.75 : 0.95;
-                const resultData = canvas.toDataURL('image/webp', quality);
-
-                downloadLink.href = resultData;
-                downloadLink.download = `bytelog_${currentMode}_hd.webp`;
-                downloadLink.style.display = "inline-block";
-                status.innerText = "¡Conversión HD exitosa!";
-            };
-            img.src = event.target.result;
+    function startTool(mode) {
+        const toolNames = {
+            'v-mp3': 'Convertidor Video a MP3 HD',
+            'v-gif': 'Generador de GIFs Animados',
+            'webp': 'Compresor WebP Profesional',
+            'bg-rem': 'Borrador de Fondos con IA',
+            'sticker': 'Creador de Stickers para WhatsApp'
         };
-        reader.readAsDataURL(file);
-    });
+        document.getElementById('home-view').style.display = 'none';
+        document.getElementById('workspace').style.display = 'block';
+        document.getElementById('tool-title').innerText = toolNames[mode];
+        // Aquí conectaremos los módulos .js de FFmpeg y TensorFlow progresivamente
+    }
 </script>
 </body>
 </html>
