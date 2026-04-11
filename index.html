@@ -311,7 +311,7 @@ select option{background:var(--bg2)}
               <button onclick="clrLog()" style="margin-left:auto;background:none;border:none;color:var(--text2);cursor:pointer;font-size:9px;font-family:inherit">limpiar</button>
             </div>
             <div class="con-b" id="lb">
-              <div class="ll i">// ByteLog Converter (Versión Estable)</div>
+              <div class="ll i">// ByteLog Converter (Versión Estable Definitiva)</div>
               <div class="ll i">// Sube un video para comenzar</div>
             </div>
           </div>
@@ -356,10 +356,10 @@ function setProg(pct, lbl='', st=''){
 
 const even = n => { const r=Math.round(n); return r%2===0?r:r-1; };
 
-// ── Cargar FFmpeg de Forma Segura (Bypass CORS) ────────────────
+// ── Cargar FFmpeg de Forma Segura (Bypass CORS del Worker) ────────────────
 async function loadFF(){
   if(loaded) return;
-  log('⏳ Descargando WebAssembly (Single-Thread)...','i');
+  log('⏳ Descargando WebAssembly y derivando restricciones...','i');
   prog.style.display='block';
   setProg(5,'Cargando Motor...','Instalando FFmpeg.wasm localmente');
 
@@ -379,12 +379,15 @@ async function loadFF(){
   });
 
   try {
-    // Usamos EXPLÍCITAMENTE single-thread (@ffmpeg/core)
-    // Esto evita 100% el error de Worker y SharedArrayBuffer en Vercel
-    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
+    const coreURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
+    const ffmpegURL = 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm';
+    
+    // EL TRUCO MAESTRO: Transformamos los 3 archivos a Blob URL. 
+    // Al pasar "classWorkerURL" como Blob, engañamos al navegador para evadir la seguridad Cross-Origin del Worker.
     await ff.load({
-      coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-      wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm')
+      coreURL: await toBlobURL(`${coreURL}/ffmpeg-core.js`, 'text/javascript'),
+      wasmURL: await toBlobURL(`${coreURL}/ffmpeg-core.wasm`, 'application/wasm'),
+      classWorkerURL: await toBlobURL(`${ffmpegURL}/worker.js`, 'text/javascript')
     });
     
     loaded=true;
