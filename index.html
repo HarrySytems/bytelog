@@ -3,123 +3,614 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BYTELOG | Studio Multimedia Profesional</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Convertidor a Vertical y Formatos | Pro Version</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --bg: #f4f7f6; --card-bg: #ffffff; --accent: #cc2200; --text-main: #1a1a1a; --text-muted: #666; --border: #e0e0e0; }
-        body.dark { --bg: #0d0d0d; --card-bg: #161616; --text-main: #f5f5f5; --border: #2a2a2a; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); transition: 0.3s; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 25px; }
-        header { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 15px 0; position: sticky; top: 0; z-index: 100; }
-        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-weight: 700; font-size: 24px; cursor: pointer; }
-        .logo span { color: var(--accent); }
-        nav ul { display: flex; list-style: none; gap: 20px; }
-        nav ul li a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 14px; cursor: pointer; }
-        .hero { text-align: center; padding: 60px 0 30px; }
-        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-        .tool-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 30px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .tool-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        #workspace { display: none; padding: 50px 0; text-align: center; }
-        .workspace-box { background: var(--card-bg); border-radius: 20px; padding: 40px; border: 1px solid var(--border); }
-        .drop-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 50px 20px; background: var(--bg); margin: 20px 0; }
-        .btn-primary { background: var(--accent); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
-        #preview { max-width: 100%; max-height: 300px; border-radius: 10px; margin-top: 20px; display: none; }
-        #status { margin-top: 15px; font-weight: 700; color: var(--accent); }
+        /* UI Core Styles */
+        #video-wrapper {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            max-width: 100%;
+            background-color: #111827;
+            user-select: none;
+        }
+        
+        #crop-box {
+            position: absolute;
+            border: 2px solid #10B981;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
+            cursor: grab;
+            display: none;
+            touch-action: none;
+            transition: border-color 0.2s;
+        }
+
+        #crop-box:active { cursor: grabbing; border-color: #34D399; }
+
+        /* Regla de Tercios */
+        .grid-lines {
+            position: absolute; inset: 0; display: grid;
+            grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr 1fr;
+            pointer-events: none;
+        }
+        .grid-lines div { border-right: 1px dashed rgba(255, 255, 255, 0.4); border-bottom: 1px dashed rgba(255, 255, 255, 0.4); }
+        .grid-lines div:nth-child(3n) { border-right: none; }
+        .grid-lines div:nth-child(n+7) { border-bottom: none; }
+
+        /* Handle para Redimensionar */
+        .resize-handle {
+            position: absolute;
+            width: 20px; height: 20px;
+            background: #10B981;
+            bottom: -10px; right: -10px;
+            cursor: se-resize;
+            border-radius: 50%;
+            border: 3px solid white;
+            z-index: 20;
+            box-shadow: 0 0 8px rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .resize-handle::after {
+            content: ""; width: 8px; height: 8px;
+            border-right: 2px solid white; border-bottom: 2px solid white;
+            transform: translate(-2px, -2px);
+        }
+
+        .loader {
+            border-top-color: #10B981;
+            -webkit-animation: spinner 1.5s linear infinite;
+            animation: spinner 1.5s linear infinite;
+        }
+
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
-<body>
-<header>
-    <div class="container nav-inner">
-        <div class="logo" onclick="location.reload()">BYTE<span>LOG</span></div>
-        <nav>
-            <ul>
-                <li><a onclick="filterTools('all')">TODO</a></li>
-                <li><a onclick="filterTools('video')">VIDEO</a></li>
-                <li><a onclick="filterTools('image')">IMAGEN</a></li>
-            </ul>
-        </nav>
-        <button onclick="document.body.classList.toggle('dark')" style="background:none; border:none; cursor:pointer;">🌙</button>
-    </div>
-</header>
-<main class="container">
-    <div id="home-view">
-        <section class="hero">
-            <h1>BYTELOG Studio</h1>
-            <p>Herramientas multimedia gratuitas de alto rendimiento y procesamiento local.</p>
-        </section>
-        <div class="tools-grid" id="main-grid">
-            <div class="tool-card" data-cat="video" onclick="startTool('v-mp3')"><div>🎵</div><h3>Video a MP3</h3><p>Extrae audio HD.</p></div>
-            <div class="tool-card" data-cat="image" onclick="startTool('webp')"><div>📉</div><h3>Compresor WebP</h3><p>Optimiza tus imágenes.</p></div>
-            <div class="tool-card" data-cat="image" onclick="startTool('sticker')"><div>✨</div><h3>Sticker WhatsApp</h3><p>Crea stickers HD.</p></div>
-        </div>
-    </div>
-    <div id="workspace">
-        <div class="workspace-box">
-            <h2 id="tool-title">Herramienta</h2>
-            <div class="drop-zone">
-                <input type="file" id="fileInput" style="display:none">
-                <button class="btn-primary" onclick="document.getElementById('fileInput').click()">Seleccionar Archivo</button>
-                <br><img id="preview">
-            </div>
-            <div id="status"></div>
-            <a id="download-link" style="display:none" class="btn-primary">Descargar Resultado</a>
-            <br><br><button onclick="location.reload()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; text-decoration:underline;">← Volver</button>
-        </div>
-    </div>
-</main>
-<script>
-    let currentMode = '';
-    const fileInput = document.getElementById('fileInput');
-    const downloadLink = document.getElementById('download-link');
-    const status = document.getElementById('status');
-    const preview = document.getElementById('preview');
+<body class="bg-gray-950 text-gray-100 min-h-screen font-sans selection:bg-emerald-500 selection:text-white pb-10">
 
-    function filterTools(cat) {
-        document.querySelectorAll('.tool-card').forEach(card => {
-            card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
-        });
-    }
-
-    function startTool(mode) {
-        currentMode = mode;
-        document.getElementById('home-view').style.display = 'none';
-        document.getElementById('workspace').style.display = 'block';
-        document.getElementById('tool-title').innerText = mode === 'webp' ? 'Compresor WebP Pro' : (mode === 'v-mp3' ? 'Video a MP3 (Beta)' : 'Sticker WhatsApp HD');
-    }
-
-    fileInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-        status.innerText = "Procesando...";
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
         
-        if(currentMode === 'webp' || currentMode === 'sticker') {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const img = new Image();
-                img.onload = () => {
-                    preview.src = event.target.result;
-                    preview.style.display = "inline-block";
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = currentMode === 'sticker' ? 512 : img.width;
-                    canvas.height = currentMode === 'sticker' ? 512 : img.height;
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    downloadLink.href = canvas.toDataURL('image/webp', 0.8);
-                    downloadLink.download = `bytelog_${currentMode}.webp`;
-                    downloadLink.style.display = "inline-block";
-                    status.innerText = "¡Listo!";
-                };
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
-        } else {
-            status.innerText = "Módulo de video requiere configuración de servidor COOP/COEP.";
+        <!-- Header -->
+        <header class="mb-10 text-center">
+            <h1 class="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 mb-2">
+                <i class="fa-solid fa-wand-magic-sparkles mr-2 text-emerald-400"></i>
+                Creador Vertical Pro
+            </h1>
+            <p class="text-gray-400 text-lg">Formatos dinámicos, Upscaling con IA (Lanczos) y Loop Infinito.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Columna Izquierda: Input, Ajustes y Efectos -->
+            <div class="lg:col-span-7 space-y-6">
+                
+                <!-- Sección 1: Input -->
+                <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl">
+                    <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fa-solid fa-cloud-arrow-up mr-2 text-emerald-500"></i> 1. Sube tu video</h2>
+                    <label class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-gray-700 rounded-lg cursor-pointer bg-gray-800/50 hover:bg-gray-800 transition-colors group">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <i class="fa-solid fa-film text-2xl text-gray-500 group-hover:text-emerald-400 transition-colors mb-1"></i>
+                            <p class="text-sm text-gray-400"><span class="font-semibold text-gray-300">Haz clic para subir</span> (MP4, MOV, WEBM)</p>
+                        </div>
+                        <input id="videoInput" type="file" class="hidden" accept="video/mp4,video/x-m4v,video/*" />
+                    </label>
+                </div>
+
+                <!-- Sección 2: Formato y Recorte -->
+                <div id="editorSection" class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl opacity-50 pointer-events-none transition-opacity duration-300">
+                    <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fa-solid fa-crop-simple mr-2 text-emerald-500"></i> 2. Formato y Ajustes Espaciales</h2>
+                    
+                    <div class="flex justify-center mb-6 bg-black rounded-lg border border-gray-800 p-2 relative">
+                        <div id="video-wrapper">
+                            <video id="previewVideo" class="max-w-full max-h-[45vh] object-contain block" muted loop playsinline></video>
+                            
+                            <div id="crop-box">
+                                <div class="grid-lines">
+                                    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                                </div>
+                                <div class="resize-handle" id="resizeHandle"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modo Selector -->
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="cropMode" value="center" class="peer sr-only">
+                            <div class="p-3 rounded-lg border border-gray-700 bg-gray-800 peer-checked:border-emerald-500 peer-checked:bg-emerald-900/20 transition-all hover:bg-gray-700 text-center">
+                                <i class="fa-solid fa-arrows-to-circle block text-xl mb-1 text-gray-400 peer-checked:text-emerald-400"></i>
+                                <span class="block font-semibold text-sm">Recorte Central</span>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer">
+                            <input type="radio" name="cropMode" value="blur" class="peer sr-only" checked>
+                            <div class="p-3 rounded-lg border border-gray-700 bg-gray-800 peer-checked:border-emerald-500 peer-checked:bg-emerald-900/20 transition-all hover:bg-gray-700 text-center">
+                                <i class="fa-solid fa-layer-group block text-xl mb-1 text-gray-400 peer-checked:text-emerald-400"></i>
+                                <span class="block font-semibold text-sm">Fondo Desenfocado</span>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer">
+                            <input type="radio" name="cropMode" value="pad" class="peer sr-only">
+                            <div class="p-3 rounded-lg border border-gray-700 bg-gray-800 peer-checked:border-emerald-500 peer-checked:bg-emerald-900/20 transition-all hover:bg-gray-700 text-center">
+                                <i class="fa-solid fa-bars block text-xl mb-1 text-gray-400 peer-checked:text-emerald-400"></i>
+                                <span class="block font-semibold text-sm">Mantener (Barras)</span>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer">
+                            <input type="radio" name="cropMode" value="manual" class="peer sr-only">
+                            <div class="p-3 rounded-lg border border-gray-700 bg-gray-800 peer-checked:border-emerald-500 peer-checked:bg-emerald-900/20 transition-all hover:bg-gray-700 text-center relative overflow-hidden">
+                                <i class="fa-solid fa-crop block text-xl mb-1 text-gray-400 peer-checked:text-emerald-400"></i>
+                                <span class="block font-semibold text-sm">Recorte Manual</span>
+                                <div class="absolute top-0 right-0 bg-cyan-600 text-[10px] font-bold px-2 py-0.5 rounded-bl-lg">PRO</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Panel Manual -->
+                    <div id="manualOptions" class="hidden bg-gray-800 p-4 rounded-lg border border-gray-700 shadow-inner">
+                        <label class="block text-sm font-semibold text-gray-300 mb-2"><i class="fa-solid fa-aspect-ratio mr-1"></i> Proporción del Recorte:</label>
+                        <select id="manualRatio" class="w-full bg-gray-900 border border-gray-600 text-white rounded-lg p-2.5 focus:border-emerald-500 outline-none transition-colors">
+                            <option value="9:16">9:16 (TikTok / Reels / Shorts)</option>
+                            <option value="1:1">1:1 (Instagram Cuadrado)</option>
+                            <option value="4:5">4:5 (Post Vertical)</option>
+                            <option value="16:9">16:9 (YouTube Horizontal)</option>
+                            <option value="free">Libre (Formato Personalizado)</option>
+                        </select>
+                        <p class="text-xs text-gray-400 mt-2"><i class="fa-solid fa-info-circle"></i> Arrastra la esquina verde para cambiar el tamaño.</p>
+                    </div>
+                </div>
+
+                <!-- Sección 3: Efectos y Exportación (NUEVA ESTRUCTURA) -->
+                <div id="effectsSection" class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl opacity-50 pointer-events-none transition-opacity duration-300">
+                    <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fa-solid fa-wand-magic-sparkles mr-2 text-cyan-500"></i> 3. Efectos y Calidad</h2>
+                    
+                    <!-- Calidad / Upscaling -->
+                    <div class="mb-5 bg-gray-800 rounded-lg p-4 border border-gray-700 shadow-inner">
+                        <label class="block font-bold text-gray-200 mb-2 flex items-center">
+                            <i class="fa-solid fa-display mr-2 text-cyan-400"></i> Calidad de Exportación (Upscaling)
+                        </label>
+                        <p class="text-xs text-gray-400 mb-3">Si subes un video 360p/480p, nuestro algoritmo Lanczos mejorará la calidad sin pixelar.</p>
+                        <select id="qualitySelect" class="w-full bg-gray-900 border border-gray-600 text-white rounded-lg p-2.5 focus:border-cyan-500 outline-none transition-colors">
+                            <option value="1080" selected>1080p (FHD) - Máxima Calidad Recomendada</option>
+                            <option value="720">720p (HD) - Balanceado / Rápido</option>
+                            <option value="480">480p (SD) - Ligero / Menor tamaño</option>
+                        </select>
+                    </div>
+
+                    <!-- Toggle Loop -->
+                    <div class="mb-6 bg-gray-800 rounded-lg p-4 border border-gray-700 flex items-center justify-between shadow-inner">
+                        <div class="pr-4">
+                            <h3 class="font-bold text-gray-200 flex items-center"><i class="fa-solid fa-infinity mr-2 text-emerald-400"></i> Bucle Infinito (Crossfade)</h3>
+                            <p class="text-xs text-gray-400 mt-1">Engancha el final con el inicio mediante un fundido suave para retener a la audiencia.</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                            <input type="checkbox" id="loopToggle" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                        </label>
+                    </div>
+
+                    <button id="convertBtn" class="w-full bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-bold py-4 px-4 rounded-xl transition-all shadow-lg shadow-emerald-900/30 flex justify-center items-center gap-2 text-lg transform hover:-translate-y-1">
+                        <i class="fa-solid fa-rocket"></i> Procesar y Generar Video
+                    </button>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Resultado -->
+            <div class="lg:col-span-5 space-y-6">
+                
+                <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl h-full flex flex-col sticky top-8">
+                    <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fa-solid fa-download mr-2 text-emerald-500"></i> 4. Resultado Final</h2>
+                    
+                    <div id="processStatus" class="hidden flex-col items-center justify-center flex-grow py-10">
+                        <div class="loader border-4 border-gray-700 rounded-full w-12 h-12 mb-4"></div>
+                        <p id="statusText" class="text-emerald-400 font-semibold mb-2 text-center">Inicializando Motor Engine...</p>
+                        
+                        <div class="w-full bg-gray-700 rounded-full h-3 mt-2 overflow-hidden shadow-inner">
+                            <div id="progressBar" class="bg-gradient-to-r from-emerald-500 to-cyan-500 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                        <p id="progressText" class="text-xs text-gray-400 mt-2 font-mono">0%</p>
+                    </div>
+
+                    <div id="resultSection" class="hidden flex-col items-center justify-center flex-grow">
+                        <video id="outputVideo" class="max-h-[55vh] rounded-lg shadow-2xl mb-6 border border-gray-700 object-contain w-full bg-black" controls></video>
+                        
+                        <a id="downloadBtn" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 px-4 rounded-lg transition-colors text-center shadow-lg shadow-cyan-900/20 flex items-center justify-center">
+                            <i class="fa-solid fa-cloud-arrow-down mr-2"></i> Descargar Video Mejorado
+                        </a>
+                    </div>
+
+                    <div id="placeholderStatus" class="flex flex-col items-center justify-center flex-grow py-20 text-gray-500 border-2 border-dashed border-gray-800 rounded-lg bg-gray-800/30">
+                        <i class="fa-solid fa-film text-5xl mb-4 opacity-40"></i>
+                        <p class="text-center text-sm px-4">Tu video exportado aparecerá aquí listo para descargar.</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Motor FFmpeg.wasm ESM -->
+    <script type="module">
+        import { FFmpeg } from 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js';
+        import { fetchFile } from 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js';
+
+        const UI = {
+            input: document.getElementById('videoInput'),
+            preview: document.getElementById('previewVideo'),
+            cropBox: document.getElementById('crop-box'),
+            resizeHandle: document.getElementById('resizeHandle'),
+            editorSection: document.getElementById('editorSection'),
+            effectsSection: document.getElementById('effectsSection'),
+            convertBtn: document.getElementById('convertBtn'),
+            radios: document.querySelectorAll('input[name="cropMode"]'),
+            manualOptions: document.getElementById('manualOptions'),
+            manualRatio: document.getElementById('manualRatio'),
+            loopToggle: document.getElementById('loopToggle'),
+            qualitySelect: document.getElementById('qualitySelect'), // Nuevo selector de calidad
+            
+            processStatus: document.getElementById('processStatus'),
+            statusText: document.getElementById('statusText'),
+            progressBar: document.getElementById('progressBar'),
+            progressText: document.getElementById('progressText'),
+            resultSection: document.getElementById('resultSection'),
+            outputVideo: document.getElementById('outputVideo'),
+            downloadBtn: document.getElementById('downloadBtn'),
+            placeholder: document.getElementById('placeholderStatus')
+        };
+
+        let ffmpeg = null;
+        let inputFile = null;
+        
+        // Mouse/Touch Interaction Variables
+        let isDragging = false;
+        let isResizing = false;
+        let dragStartX, dragStartY;
+        let boxStartLeft, boxStartTop, boxStartW, boxStartH;
+
+        const RATIOS = { '9:16': 9/16, '1:1': 1, '4:5': 4/5, '16:9': 16/9, 'free': null };
+
+        async function loadFFmpeg() {
+            if (ffmpeg) return ffmpeg;
+            ffmpeg = new FFmpeg();
+            
+            ffmpeg.on('progress', ({ progress, time }) => {
+                const percent = Math.max(0, Math.min(100, Math.round(progress * 100)));
+                UI.progressBar.style.width = `${percent}%`;
+                UI.progressText.innerText = `${percent}%`;
+                UI.statusText.innerText = 'Renderizando fotogramas (Alta Calidad)...';
+            });
+
+            UI.statusText.innerText = 'Cargando WebAssembly...';
+            const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
+            await ffmpeg.load({
+                coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+                wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+            });
+            return ffmpeg;
         }
-    });
-</script>
+
+        async function toBlobURL(url, mimeType) {
+            const resp = await fetch(url);
+            const blob = await resp.blob();
+            return URL.createObjectURL(new Blob([blob], { type: mimeType }));
+        }
+
+        UI.input.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            inputFile = file;
+            const fileURL = URL.createObjectURL(file);
+            
+            UI.preview.src = fileURL;
+            UI.preview.onloadedmetadata = () => {
+                UI.preview.play();
+                // Desbloquear secciones
+                UI.editorSection.classList.remove('opacity-50', 'pointer-events-none');
+                UI.effectsSection.classList.remove('opacity-50', 'pointer-events-none');
+                updateCropBox(true);
+            };
+        });
+
+        UI.radios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (radio.value === 'manual') {
+                    UI.cropBox.style.display = 'block';
+                    UI.manualOptions.classList.remove('hidden');
+                    updateCropBox(true);
+                } else {
+                    UI.cropBox.style.display = 'none';
+                    UI.manualOptions.classList.add('hidden');
+                }
+            });
+        });
+
+        UI.manualRatio.addEventListener('change', () => updateCropBox(true));
+        window.addEventListener('resize', () => updateCropBox(false));
+
+        function updateCropBox(resetPosition = false) {
+            if (document.querySelector('input[name="cropMode"]:checked').value !== 'manual') return;
+
+            const dispW = UI.preview.clientWidth;
+            const dispH = UI.preview.clientHeight;
+            const ratioKey = UI.manualRatio.value;
+            const aspect = RATIOS[ratioKey];
+
+            let boxH = UI.cropBox.offsetHeight || dispH * 0.8;
+            let boxW = UI.cropBox.offsetWidth || dispW * 0.8;
+
+            if (aspect) {
+                boxH = dispH * 0.8;
+                boxW = boxH * aspect;
+                if (boxW > dispW * 0.9) {
+                    boxW = dispW * 0.9;
+                    boxH = boxW / aspect;
+                }
+            }
+
+            UI.cropBox.style.width = `${boxW}px`;
+            UI.cropBox.style.height = `${boxH}px`;
+            
+            if (resetPosition || !UI.cropBox.style.left) {
+                UI.cropBox.style.left = `${(dispW - boxW) / 2}px`;
+                UI.cropBox.style.top = `${(dispH - boxH) / 2}px`;
+            }
+        }
+
+        // ==========================================
+        // LÓGICA DE ARRASTRE Y REDIMENSIÓN
+        // ==========================================
+        const startAction = (e, actionType) => {
+            e.preventDefault();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            dragStartX = clientX;
+            dragStartY = clientY;
+            boxStartLeft = parseFloat(UI.cropBox.style.left || 0);
+            boxStartTop = parseFloat(UI.cropBox.style.top || 0);
+            boxStartW = UI.cropBox.offsetWidth;
+            boxStartH = UI.cropBox.offsetHeight;
+
+            if (actionType === 'resize') isResizing = true;
+            else isDragging = true;
+        };
+
+        const onAction = (e) => {
+            if (!isDragging && !isResizing) return;
+            e.preventDefault();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            const deltaX = clientX - dragStartX;
+            const deltaY = clientY - dragStartY;
+
+            if (isResizing) {
+                let newW = boxStartW + deltaX;
+                let newH = boxStartH + deltaY;
+                const aspect = RATIOS[UI.manualRatio.value];
+
+                if (aspect) newH = newW / aspect;
+
+                const maxW = UI.preview.clientWidth - boxStartLeft;
+                const maxH = UI.preview.clientHeight - boxStartTop;
+                
+                if (newW > maxW) { newW = maxW; if (aspect) newH = newW / aspect; }
+                if (newH > maxH) { newH = maxH; if (aspect) newW = newH * aspect; }
+                
+                newW = Math.max(50, newW);
+                if (aspect) newH = newW / aspect; else newH = Math.max(50, newH);
+
+                UI.cropBox.style.width = `${newW}px`;
+                UI.cropBox.style.height = `${newH}px`;
+
+            } else if (isDragging) {
+                let newLeft = boxStartLeft + deltaX;
+                let newTop = boxStartTop + deltaY;
+
+                const maxLeft = UI.preview.clientWidth - UI.cropBox.offsetWidth;
+                const maxTop = UI.preview.clientHeight - UI.cropBox.offsetHeight;
+
+                newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+                newTop = Math.max(0, Math.min(newTop, maxTop));
+
+                UI.cropBox.style.left = `${newLeft}px`;
+                UI.cropBox.style.top = `${newTop}px`;
+            }
+        };
+
+        const endAction = () => { isDragging = false; isResizing = false; };
+
+        UI.resizeHandle.addEventListener('mousedown', (e) => { e.stopPropagation(); startAction(e, 'resize'); });
+        UI.cropBox.addEventListener('mousedown', (e) => startAction(e, 'drag'));
+        document.addEventListener('mousemove', onAction);
+        document.addEventListener('mouseup', endAction);
+
+        UI.resizeHandle.addEventListener('touchstart', (e) => { e.stopPropagation(); startAction(e, 'resize'); }, {passive: false});
+        UI.cropBox.addEventListener('touchstart', (e) => startAction(e, 'drag'), {passive: false});
+        document.addEventListener('touchmove', onAction, {passive: false});
+        document.addEventListener('touchend', endAction);
+
+
+        // ==========================================
+        // MOTOR FFMPEG (ESCALADO LANCZOS DINÁMICO)
+        // ==========================================
+        UI.convertBtn.addEventListener('click', async () => {
+            if (!inputFile) return alert('Por favor, selecciona un video primero.');
+
+            const mode = document.querySelector('input[name="cropMode"]:checked').value;
+            const isLoop = UI.loopToggle.checked;
+            const qualityValue = parseInt(UI.qualitySelect.value); // 1080, 720, o 480
+            
+            // Establecer Target H/W basado en la calidad elegida (Formato base vertical 9:16)
+            let tH = qualityValue === 1080 ? 1920 : (qualityValue === 720 ? 1280 : 854);
+            let tW = qualityValue === 1080 ? 1080 : (qualityValue === 720 ? 720 : 480);
+
+            UI.placeholder.classList.add('hidden');
+            UI.resultSection.classList.add('hidden');
+            UI.processStatus.classList.remove('hidden');
+            UI.processStatus.classList.add('flex');
+            UI.convertBtn.disabled = true;
+            UI.convertBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analizando Grafo...';
+            UI.progressBar.style.width = '0%';
+            UI.progressText.innerText = '0%';
+
+            try {
+                await loadFFmpeg();
+
+                UI.statusText.innerText = 'Asignando memoria WASM...';
+                const inputFileName = 'input.mp4';
+                const outputFileName = 'output.mp4';
+                
+                await ffmpeg.writeFile(inputFileName, await fetchFile(inputFile));
+
+                // 1. Grafo Espacial con Interpolación Lanczos (Chain of Thought - Senior)
+                let spatialFilter = '';
+                
+                if (mode === 'center') {
+                    // Escala el video usando Lanczos para máxima calidad, luego recorta el centro
+                    spatialFilter = `[0:v]scale=-1:${tH}:flags=lanczos,crop=${tW}:${tH}[vout]`;
+                } 
+                else if (mode === 'pad') {
+                    // Escala el video encajando a lo ancho, rellena el sobrante con negro
+                    spatialFilter = `[0:v]scale=${tW}:-1:flags=lanczos,pad=${tW}:${tH}:(ow-iw)/2:(oh-ih)/2:black[vout]`;
+                } 
+                else if (mode === 'blur') {
+                    // Escala y desenfoca fondo, superpone frente escalado con Lanczos
+                    spatialFilter = `[0:v]scale=${tW}:${tH}:force_original_aspect_ratio=increase:flags=lanczos,crop=${tW}:${tH},boxblur=luma_radius=15:luma_power=3[bg];[0:v]scale=${tW}:${tH}:force_original_aspect_ratio=decrease:flags=lanczos[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2[vout]`;
+                }
+                else if (mode === 'manual') {
+                    const scaleX = UI.preview.videoWidth / UI.preview.clientWidth;
+                    const scaleY = UI.preview.videoHeight / UI.preview.clientHeight;
+                    
+                    let rawW = Math.round(UI.cropBox.offsetWidth * scaleX);
+                    let rawH = Math.round(UI.cropBox.offsetHeight * scaleY);
+                    const rawX = Math.round(parseFloat(UI.cropBox.style.left) * scaleX);
+                    const rawY = Math.round(parseFloat(UI.cropBox.style.top) * scaleY);
+
+                    // Requerimiento de codecs: Resoluciones Pares
+                    rawW = rawW % 2 !== 0 ? rawW - 1 : rawW;
+                    rawH = rawH % 2 !== 0 ? rawH - 1 : rawH;
+
+                    // Lógica para Re-escalar el recorte a la Calidad HD/FHD (Upscaling Inteligente)
+                    let targetW = rawW, targetH = rawH;
+                    if (rawW > rawH) { // Recorte Horizontal (ej. YouTube)
+                        targetW = tH; // Usa el lado largo (ej 1920)
+                        targetH = Math.round(tH * (rawH / rawW));
+                    } else { // Recorte Vertical (ej. TikTok)
+                        targetH = tH; // Usa el lado largo
+                        targetW = Math.round(tH * (rawW / rawH));
+                    }
+                    
+                    targetW = targetW % 2 !== 0 ? targetW - 1 : targetW;
+                    targetH = targetH % 2 !== 0 ? targetH - 1 : targetH;
+
+                    // Aplica recorte y mejora la resolución resultante mediante Lanczos
+                    spatialFilter = `[0:v]crop=${rawW}:${rawH}:${rawX}:${rawY},scale=${targetW}:${targetH}:flags=lanczos[vout]`;
+                }
+
+                let ffmpegArgs = [];
+                let filterGraph = '';
+
+                // 2. Grafo Temporal (Loops) y Configuración Final
+                if (isLoop) {
+                    UI.statusText.innerText = 'Generando Puntos de Fundido (Crossfade)...';
+                    
+                    const duration = UI.preview.duration;
+                    const split = (duration / 2).toFixed(3); 
+                    const fadeDur = Math.min(1.5, duration * 0.15).toFixed(3);
+                    const offset = ((duration - split) - fadeDur).toFixed(3);
+
+                    const vLoop = `[vout]split[v1][v2]; [v1]trim=start=${split}:end=${duration},setpts=PTS-STARTPTS[vrest]; [v2]trim=start=0:end=${split},setpts=PTS-STARTPTS[vfirst]; [vrest][vfirst]xfade=transition=fade:duration=${fadeDur}:offset=${offset}[finalv]`;
+                    const aLoop = `[0:a]asplit[a1][a2]; [a1]atrim=start=${split}:end=${duration},asetpts=PTS-STARTPTS[arest]; [a2]atrim=start=0:end=${split},asetpts=PTS-STARTPTS[afirst]; [arest][afirst]acrossfade=d=${fadeDur}[finala]`;
+
+                    filterGraph = `${spatialFilter}; ${vLoop}; ${aLoop}`;
+
+                    ffmpegArgs = [
+                        '-i', inputFileName,
+                        '-filter_complex', filterGraph,
+                        '-map', '[finalv]',
+                        '-map', '[finala]',
+                        '-c:v', 'libx264', '-preset', 'fast', '-crf', '20', // CRF 20 para mayor calidad en upscaling
+                        '-c:a', 'aac', '-b:a', '128k',
+                        '-pix_fmt', 'yuv420p',
+                        outputFileName
+                    ];
+
+                    let execCode = await ffmpeg.exec(ffmpegArgs);
+                    if (execCode !== 0) {
+                        console.warn("[Recuperación] Pista de audio inexistente. Aplicando plan B (solo video)...");
+                        const fallbackGraph = `${spatialFilter}; ${vLoop}`;
+                        const argsNoAudio = [
+                            '-i', inputFileName,
+                            '-filter_complex', fallbackGraph,
+                            '-map', '[finalv]',
+                            '-c:v', 'libx264', '-preset', 'fast', '-crf', '20',
+                            '-pix_fmt', 'yuv420p',
+                            outputFileName
+                        ];
+                        execCode = await ffmpeg.exec(argsNoAudio);
+                        if(execCode !== 0) throw new Error("Fallo Crítico.");
+                    }
+
+                } else {
+                    filterGraph = spatialFilter;
+                    ffmpegArgs = [
+                        '-i', inputFileName,
+                        '-filter_complex', filterGraph,
+                        '-map', '[vout]',
+                        '-map', '0:a?', 
+                        '-c:v', 'libx264', '-preset', 'fast', '-crf', '20', // CRF mejorado
+                        '-c:a', 'aac', '-b:a', '128k',
+                        '-pix_fmt', 'yuv420p',
+                        outputFileName
+                    ];
+                    
+                    const code = await ffmpeg.exec(ffmpegArgs);
+                    if (code !== 0) throw new Error("Fallo en Grafo Estándar");
+                }
+
+                UI.statusText.innerText = 'Compilando paquete de alta calidad...';
+                const data = await ffmpeg.readFile(outputFileName);
+                
+                const blob = new Blob([data.buffer], { type: 'video/mp4' });
+                const finalUrl = URL.createObjectURL(blob);
+
+                UI.outputVideo.src = finalUrl;
+                UI.downloadBtn.href = finalUrl;
+                // Renombrar el archivo para indicar la calidad seleccionada
+                UI.downloadBtn.download = `Export_${qualityValue}p_${Date.now()}.mp4`;
+
+                await ffmpeg.deleteFile(inputFileName);
+                await ffmpeg.deleteFile(outputFileName);
+
+                UI.processStatus.classList.remove('flex');
+                UI.processStatus.classList.add('hidden');
+                UI.resultSection.classList.remove('hidden');
+                UI.resultSection.classList.add('flex');
+
+            } catch (error) {
+                console.error("Excepción en Motor:", error);
+                alert("Ocurrió un error en la renderización. Ver consola para debug.");
+                UI.processStatus.classList.remove('flex');
+                UI.processStatus.classList.add('hidden');
+                UI.placeholder.classList.remove('hidden');
+            } finally {
+                UI.convertBtn.disabled = false;
+                UI.convertBtn.innerHTML = '<i class="fa-solid fa-rocket"></i> Procesar y Generar Video';
+            }
+        });
+
+    </script>
 </body>
 </html>
