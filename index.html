@@ -3,417 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ByteLog Tools | Generador Seguro & Nicks</title>
+    <title>ByteLog Tools | Seguridad & Identidad Digital</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --bg: #030712;
-            --panel: rgba(17, 24, 39, 0.75);
-            --em: #10b981;
-            --cyan: #22d3ee;
+            --lp-red: #d32d27;
+            --lp-red-hover: #b0221e;
+            --lp-green: #15803d;
+            --lp-cyan: #22d3ee;
         }
         
-        /* ==========================================
-           PUNTERO PERSONALIZADO: MANDO GAMER (SVG)
-           ========================================== */
-        body, html {
-            background-color: var(--bg);
-            color: #e6edf3;
-            font-family: system-ui, -apple-system, sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="28" height="28" fill="%2322d3ee" stroke="white" stroke-width="15"><path d="M192 64C86 64 0 150 0 256S86 448 192 448H448c106 0 192-86 192-192s-86-192-192-192H192zM144 192h32v32h32v32H176v32H144V256H112V224h32V192zm272 96a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm64-64a32 32 0 1 1 0-64 32 32 0 1 1 0 64z"/></svg>') 14 14, auto;
+        body {
+            background-color: #ffffff;
+            color: #374151;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            cursor: default; /* Puntero Estándar Profesional */
         }
 
-        button, a, input[type="range"], label.cursor-pointer, .spoiler-container, select, input[type="text"], .custom-x-scrollbar::-webkit-scrollbar-thumb {
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="28" height="28" fill="%2310b981" stroke="white" stroke-width="15"><path d="M192 64C86 64 0 150 0 256S86 448 192 448H448c106 0 192-86 192-192s-86-192-192-192H192zM144 192h32v32h32v32H176v32H144V256H112V224h32V192zm272 96a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm64-64a32 32 0 1 1 0-64 32 32 0 1 1 0 64z"/></svg>') 14 14, pointer !important;
-        }
+        /* Scrollbars Corporativas */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        .mouse-particle {
-            position: absolute;
-            pointer-events: none;
-            z-index: 9999;
-            width: 8px; height: 8px;
-            background-color: var(--cyan);
-            border-radius: 2px;
-            box-shadow: 0 0 6px currentColor;
-            animation: fall 0.8s linear forwards;
+        /* Estilo Sliders */
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%;
+            background: #ffffff; border: 2px solid #111827; cursor: pointer; margin-top: -8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        @keyframes fall {
-            0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.8; }
-            100% { transform: translateY(30px) scale(0) rotate(90deg); opacity: 0; }
-        }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: #111827; border-radius: 2px; }
 
-        #soupCanvas {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 0; pointer-events: none; opacity: 0.6;
-        }
+        /* Checkbox Corporativo */
+        .corporate-checkbox input:checked + div { background-color: #111827; border-color: #111827; }
+        .corporate-checkbox input:checked + div i { opacity: 1; }
 
-        .glass-panel {
-            background: var(--panel);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            position: relative; z-index: 10;
-        }
+        /* Pestañas */
+        .tab-active { border-bottom: 3px solid var(--lp-red); color: var(--lp-red); font-weight: 700; }
+        .tab-inactive { border-bottom: 3px solid transparent; color: #6b7280; font-weight: 600; }
+        .tab-inactive:hover { color: #374151; border-bottom: 3px solid #d1d5db; }
 
-        .spoiler-container { position: relative; border-radius: 0.75rem; overflow: hidden; }
-        .spoiler-content {
-            filter: blur(10px); opacity: 0.4;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            user-select: none; word-break: break-all;
-        }
-        .spoiler-overlay {
-            position: absolute; inset: 0; background: rgba(31, 41, 55, 0.8);
-            display: flex; align-items: center; justify-content: center;
-            transition: opacity 0.3s ease; z-index: 2;
-        }
-        .spoiler-overlay::after {
-            content: '👀 Revelar Contraseña'; font-size: 0.85rem; font-weight: 700;
-            color: #d1d5db; background: rgba(0,0,0,0.6); padding: 6px 12px;
-            border-radius: 6px; letter-spacing: 0.5px;
-        }
-        .spoiler-container.revealed .spoiler-content { filter: blur(0); opacity: 1; user-select: text; }
-        .spoiler-container.revealed .spoiler-overlay { opacity: 0; pointer-events: none; }
+        /* Animaciones */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 0.4s ease forwards; }
 
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
-        
-        .custom-x-scrollbar { overscroll-behavior-x: contain; }
-        .custom-x-scrollbar::-webkit-scrollbar { height: 6px; }
-        .custom-x-scrollbar::-webkit-scrollbar-track { background: rgba(17, 24, 39, 0.5); border-radius: 8px; }
-        .custom-x-scrollbar::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 8px; }
-        .custom-x-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--em); }
-        
-        .nick-list-container { overscroll-behavior: contain; }
-        
+        /* Soporte Unicode Universal para fuentes raras */
         .unicode-text { font-family: "Segoe UI Symbol", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Arial Unicode MS", sans-serif; }
-
-        input[type=range] { accent-color: var(--em); }
-        @keyframes popIn {
-            0% { transform: scale(0.95) translateY(10px); opacity: 0; }
-            100% { transform: scale(1) translateY(0); opacity: 1; }
-        }
-        .animate-pop { animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        /* Línea Horizontal Scroll */
+        .custom-x-scrollbar { overscroll-behavior-x: contain; }
+        .custom-x-scrollbar::-webkit-scrollbar { height: 4px; }
+        .custom-x-scrollbar::-webkit-scrollbar-track { background: #f3f4f6; border-radius: 4px; }
+        .custom-x-scrollbar::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+        .custom-x-scrollbar::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        
+        /* Mascara de Contraseña Segura */
+        .pass-hidden { letter-spacing: 0.2em; font-family: 'Verdana', sans-serif; font-size: 1.8rem; }
+        
+        /* Blindaje de Secciones para que no colapsen (Fix Layout) */
+        .section-container { width: 100% !important; max-width: 1024px; margin: 0 auto; }
+        
+        /* Acordeón FAQ */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary i { transform: rotate(180deg); color: var(--lp-red); }
     </style>
 </head>
-<body class="relative pb-10">
+<body class="flex flex-col min-h-screen">
 
-    <canvas id="soupCanvas"></canvas>
-
-    <header class="relative z-20 border-b border-gray-800 bg-gray-950/80 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center text-xl shadow-lg shadow-emerald-500/20 text-white">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold tracking-tight">Byte<span class="text-emerald-500">Log</span> Tools</h1>
-                    <p class="text-[10px] text-gray-400 uppercase tracking-widest">Seguridad & Identidad Digital</p>
-                </div>
+    <!-- HEADER LIMPIO (Sin botones extraños) -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-[var(--lp-red)] text-2xl font-bold tracking-tight">ByteLog</span>
+                <span class="text-gray-500 text-sm font-medium border-l border-gray-300 pl-2 ml-2 hidden sm:inline-block">Tools</span>
             </div>
+            
+            <nav class="hidden md:flex items-center gap-8">
+                <button id="tabPass" class="tab-active pb-1 transition-colors" onclick="switchTab('pass')">Contraseñas</button>
+                <button id="tabNick" class="tab-inactive pb-1 transition-colors" onclick="switchTab('nick')">Usernames</button>
+                <button id="tabFaq" class="tab-inactive pb-1 transition-colors" onclick="switchTab('faq')">Preguntas frecuentes</button>
+            </nav>
+            
+            <div class="w-10 hidden md:block"></div>
+        </div>
+        
+        <!-- Menú Móvil -->
+        <div class="md:hidden flex border-t border-gray-100 px-4 overflow-x-auto custom-x-scrollbar">
+            <button id="tabPassMobile" class="tab-active py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('pass')">Contraseñas</button>
+            <button id="tabNickMobile" class="tab-inactive py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('nick')">Usernames</button>
+            <button id="tabFaqMobile" class="tab-inactive py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('faq')">Ayuda</button>
         </div>
     </header>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-4 py-8">
+    <main class="flex-grow bg-[#f9fafb] flex flex-col items-center">
         
-        <!-- PESTAÑAS -->
-        <div class="flex justify-center gap-2 sm:gap-4 mb-8">
-            <button id="tabPass" class="px-5 sm:px-8 py-3 rounded-full font-bold transition-all bg-emerald-600 text-white shadow-lg shadow-emerald-500/30 text-sm sm:text-base flex items-center gap-2">
-                <i class="fa-solid fa-key"></i> PassGen Pro
-            </button>
-            <button id="tabNick" class="px-5 sm:px-8 py-3 rounded-full font-bold transition-all bg-gray-800/80 text-gray-400 hover:text-white hover:bg-gray-700 border border-gray-700 text-sm sm:text-base flex items-center gap-2">
-                <i class="fa-solid fa-gamepad"></i> NickForge
-            </button>
-        </div>
-
-        <!-- GENERADOR DE CONTRASEÑAS -->
-        <section id="sectionPass" class="glass-panel rounded-2xl p-6 md:p-10 animate-pop block">
-            <div class="flex items-center justify-between mb-6 border-b border-gray-800/60 pb-4">
-                <div>
-                    <h2 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
-                        <i class="fa-solid fa-key text-emerald-500 mr-2"></i>PassGen Pro
-                    </h2>
-                    <p class="text-sm text-gray-400 mt-1">Genera claves de un solo uso con entropía de grado militar.</p>
-                </div>
+        <!-- SECCIÓN 1: CONTRASEÑAS -->
+        <section id="sectionPass" class="section-container px-4 py-12 animate-fade block">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl md:text-[38px] leading-tight font-extrabold text-gray-900 mb-4">Genere una contraseña aleatoria y segura al instante</h1>
+                <p class="text-gray-600 text-base md:text-lg">Privacidad Inteligente: Tiene una visualización de gracia. Tras verla y ocultarla por segunda vez, el sistema forjará una nueva por seguridad.</p>
             </div>
 
-            <div class="mb-8">
-                <div id="passSpoiler" class="spoiler-container bg-[#090d14] border border-gray-700 min-h-[110px] flex items-center justify-center p-5 shadow-inner">
-                    <div class="spoiler-overlay" id="passOverlay"></div>
-                    <div id="passOutput" class="spoiler-content text-2xl md:text-3xl font-mono text-center tracking-wider text-emerald-400">
-                        ••••••••••••••••
-                    </div>
-                </div>
-                <div class="flex gap-2 mt-3">
-                    <button id="btnCopyPass" class="flex-1 bg-gray-800/80 hover:bg-gray-700 text-gray-200 text-sm font-bold py-3 rounded-lg transition-colors border border-gray-700 flex items-center justify-center gap-2">
-                        <i class="fa-regular fa-copy"></i> Copiar Clave
-                    </button>
-                    <button id="btnResetPass" class="bg-gray-800/80 hover:bg-red-900/40 hover:text-red-400 text-gray-400 px-5 rounded-lg transition-colors border border-gray-700" title="Ocultar (Efecto Spoiler)">
-                        <i class="fa-solid fa-eye-slash"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="space-y-6">
-                <div class="bg-gray-900/40 p-4 rounded-xl border border-gray-800">
-                    <div class="flex justify-between mb-3">
-                        <label class="text-sm font-bold text-gray-300"><i class="fa-solid fa-ruler-horizontal mr-1 text-gray-500"></i> Longitud de la clave</label>
-                        <span id="lengthValue" class="text-emerald-400 font-mono font-bold bg-emerald-500/10 px-2 py-0.5 rounded">16</span>
-                    </div>
-                    <input type="range" id="passLength" min="8" max="64" value="16" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <label class="flex items-center p-4 bg-gray-900/50 border border-gray-800 rounded-xl cursor-pointer hover:border-emerald-500/50 transition-colors">
-                        <input type="checkbox" id="chkUpper" checked class="w-4 h-4 text-emerald-500 bg-gray-800 border-gray-600 rounded focus:ring-emerald-500">
-                        <span class="ml-3 text-sm font-medium text-gray-300">Mayúsculas (A-Z)</span>
-                    </label>
-                    <label class="flex items-center p-4 bg-gray-900/50 border border-gray-800 rounded-xl cursor-pointer hover:border-emerald-500/50 transition-colors">
-                        <input type="checkbox" id="chkLower" checked class="w-4 h-4 text-emerald-500 bg-gray-800 border-gray-600 rounded focus:ring-emerald-500">
-                        <span class="ml-3 text-sm font-medium text-gray-300">Minúsculas (a-z)</span>
-                    </label>
-                    <label class="flex items-center p-4 bg-gray-900/50 border border-gray-800 rounded-xl cursor-pointer hover:border-emerald-500/50 transition-colors">
-                        <input type="checkbox" id="chkNumbers" checked class="w-4 h-4 text-emerald-500 bg-gray-800 border-gray-600 rounded focus:ring-emerald-500">
-                        <span class="ml-3 text-sm font-medium text-gray-300">Números (0-9)</span>
-                    </label>
-                    <label class="flex items-center p-4 bg-gray-900/50 border border-gray-800 rounded-xl cursor-pointer hover:border-emerald-500/50 transition-colors">
-                        <input type="checkbox" id="chkSymbols" checked class="w-4 h-4 text-emerald-500 bg-gray-800 border-gray-600 rounded focus:ring-emerald-500">
-                        <span class="ml-3 text-sm font-medium text-gray-300">Símbolos (!@#)</span>
-                    </label>
-                    <label class="col-span-1 sm:col-span-2 flex items-center p-4 bg-emerald-900/20 border border-emerald-800/50 rounded-xl cursor-pointer hover:border-emerald-500 transition-colors relative overflow-hidden group">
-                        <div class="absolute right-0 top-0 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black text-[10px] font-extrabold px-3 py-0.5 rounded-bl-lg shadow-lg">PRO</div>
-                        <input type="checkbox" id="chkEmojis" class="w-4 h-4 text-emerald-500 bg-gray-800 border-gray-600 rounded focus:ring-emerald-500">
-                        <span class="ml-3 text-sm font-medium text-gray-200 group-hover:text-white transition-colors">Incluir Emojis en la clave (🔒🚀💎)</span>
-                    </label>
-                </div>
-
-                <button id="btnGeneratePass" class="w-full bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-bold py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] flex justify-center items-center gap-2 text-lg transform hover:-translate-y-1">
-                    <i class="fa-solid fa-rotate"></i> Generar Contraseña Aleatoria
-                </button>
-            </div>
-        </section>
-
-        <!-- GENERADOR DE NICKS -->
-        <section id="sectionNick" class="glass-panel rounded-2xl p-6 md:p-10 hidden flex-col">
-            <div class="flex items-center justify-between mb-6 border-b border-gray-800/60 pb-4">
-                <div>
-                    <h2 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-                        <i class="fa-solid fa-gamepad text-cyan-500 mr-2"></i>NickForge Ultimate
-                    </h2>
-                    <p class="text-sm text-gray-400 mt-1">Diseños 100% únicos y generados al vuelo. Cero errores Unicode.</p>
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <div class="relative group mb-4">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-cyan-400 text-gray-500">
-                        <i class="fa-solid fa-user-astronaut"></i>
-                    </div>
-                    <input type="text" id="nickInput" placeholder="Ej. harry y aldana..." autocomplete="off" spellcheck="false" class="w-full bg-[#090d14] border border-gray-700 text-white text-lg rounded-xl focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 block pl-12 p-4 transition-all outline-none placeholder-gray-600 shadow-inner">
-                </div>
-
-                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Elige tu Multiverso (Estilo)</label>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 md:p-10 mb-8">
                 
-                <div class="flex overflow-x-auto custom-x-scrollbar gap-2 pb-4">
-                    <label class="cursor-pointer shrink-0">
-                        <input type="radio" name="nickStyle" value="freefire" class="peer hidden" checked>
-                        <div class="px-5 py-3 border border-gray-700 rounded-lg text-center peer-checked:bg-red-500/20 peer-checked:border-red-500 peer-checked:text-red-400 transition-colors hover:bg-gray-800 bg-gray-900/50">
-                            <span class="font-bold text-sm"><i class="fa-solid fa-fire mr-1"></i> Tryhard</span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer shrink-0">
-                        <input type="radio" name="nickStyle" value="tiktok" class="peer hidden">
-                        <div class="px-5 py-3 border border-gray-700 rounded-lg text-center peer-checked:bg-pink-500/20 peer-checked:border-pink-500 peer-checked:text-pink-400 transition-colors hover:bg-gray-800 bg-gray-900/50">
-                            <span class="font-bold text-sm"><i class="fa-solid fa-sparkles mr-1"></i> Aesthetic</span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer shrink-0">
-                        <input type="radio" name="nickStyle" value="pixel" class="peer hidden">
-                        <div class="px-5 py-3 border border-gray-700 rounded-lg text-center peer-checked:bg-green-500/20 peer-checked:border-green-500 peer-checked:text-green-400 transition-colors hover:bg-gray-800 bg-gray-900/50">
-                            <span class="font-bold text-sm"><i class="fa-solid fa-gamepad mr-1"></i> 8-Bit Pixel</span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer shrink-0">
-                        <input type="radio" name="nickStyle" value="urban" class="peer hidden">
-                        <div class="px-5 py-3 border border-gray-700 rounded-lg text-center peer-checked:bg-yellow-500/20 peer-checked:border-yellow-500 peer-checked:text-yellow-400 transition-colors hover:bg-gray-800 bg-gray-900/50">
-                            <span class="font-bold text-sm"><i class="fa-solid fa-spray-can mr-1"></i> Urbano</span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer shrink-0">
-                        <input type="radio" name="nickStyle" value="techno" class="peer hidden">
-                        <div class="px-5 py-3 border border-gray-700 rounded-lg text-center peer-checked:bg-blue-500/20 peer-checked:border-blue-500 peer-checked:text-blue-400 transition-colors hover:bg-gray-800 bg-gray-900/50">
-                            <span class="font-bold text-sm"><i class="fa-brands fa-space-awesome mr-1"></i> Techno</span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer shrink-0">
-                        <input type="radio" name="nickStyle" value="script" class="peer hidden">
-                        <div class="px-5 py-3 border border-gray-700 rounded-lg text-center peer-checked:bg-purple-500/20 peer-checked:border-purple-500 peer-checked:text-purple-400 transition-colors hover:bg-gray-800 bg-gray-900/50">
-                            <span class="font-bold text-sm"><i class="fa-solid fa-pen-nib mr-1"></i> Script Arte</span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer shrink-0">
-                        <input type="radio" name="nickStyle" value="glitch" class="peer hidden">
-                        <div class="px-5 py-3 border border-gray-700 rounded-lg text-center peer-checked:bg-emerald-500/20 peer-checked:border-emerald-500 peer-checked:text-emerald-400 transition-colors hover:bg-gray-800 bg-gray-900/50">
-                            <span class="font-bold text-sm"><i class="fa-solid fa-bug mr-1"></i> Glitch Hacker</span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer shrink-0">
-                        <input type="radio" name="nickStyle" value="fantasy" class="peer hidden">
-                        <div class="px-5 py-3 border border-gray-700 rounded-lg text-center peer-checked:bg-orange-500/20 peer-checked:border-orange-500 peer-checked:text-orange-400 transition-colors hover:bg-gray-800 bg-gray-900/50">
-                            <span class="font-bold text-sm"><i class="fa-solid fa-dragon mr-1"></i> Fantasía</span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer shrink-0">
-                        <input type="radio" name="nickStyle" value="minimal" class="peer hidden">
-                        <div class="px-5 py-3 border border-gray-700 rounded-lg text-center peer-checked:bg-gray-200/20 peer-checked:border-gray-200 peer-checked:text-gray-200 transition-colors hover:bg-gray-800 bg-gray-900/50">
-                            <span class="font-bold text-sm"><i class="fa-regular fa-square mr-1"></i> Minimalista</span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer shrink-0">
-                        <input type="radio" name="nickStyle" value="mixed" class="peer hidden">
-                        <div class="px-5 py-3 border border-gray-700 rounded-lg text-center peer-checked:bg-cyan-500/20 peer-checked:border-cyan-500 peer-checked:text-cyan-400 transition-colors hover:bg-gray-800 bg-gray-900/50">
-                            <span class="font-bold text-sm"><i class="fa-solid fa-dice mr-1"></i> Caos Mixto</span>
-                        </div>
-                    </label>
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-2">
+                    <div class="w-full font-mono text-2xl md:text-3xl text-gray-800 tracking-wide break-all text-center md:text-left min-h-[40px] flex items-center" id="passOutputContainer">
+                        <span id="passText" class="pass-hidden">••••••••••••••••</span>
+                    </div>
+
+                    <div class="flex items-center gap-2 shrink-0 w-full md:w-auto justify-end">
+                        <button id="btnTogglePrivacy" class="text-gray-500 hover:text-[var(--lp-red)] p-3 transition-colors border border-gray-200 rounded-md bg-gray-50" title="Ver / Ocultar">
+                            <i id="eyeIcon" class="fa-solid fa-eye-slash text-xl"></i>
+                        </button>
+                        <button id="btnRefreshPass" class="text-gray-500 hover:text-gray-900 p-3 transition-colors border border-gray-200 rounded-md bg-gray-50" title="Generar nueva manualmente">
+                            <i class="fa-solid fa-arrows-rotate text-xl"></i>
+                        </button>
+                        <button id="btnCopyPass" class="bg-[var(--lp-red)] hover:bg-[var(--lp-red-hover)] text-white text-sm font-bold py-3.5 px-6 rounded transition-colors flex items-center justify-center gap-2 shadow-sm w-full md:w-auto">
+                            Copiar contraseña
+                        </button>
+                    </div>
                 </div>
 
-                <button id="btnGenerateNicks" class="w-full mt-4 bg-gray-800/80 hover:bg-gray-700 text-cyan-400 border border-gray-700 font-bold py-4 rounded-xl transition-all flex justify-center items-center gap-2 shadow-lg hover:shadow-cyan-900/30 text-lg">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Forjar 20 Nicks Épicos
-                </button>
-            </div>
-
-            <!-- Lista de Resultados -->
-            <div class="flex-1 bg-[#090d14] border border-gray-800 rounded-xl p-4 overflow-y-auto max-h-[450px] shadow-inner relative nick-list-container">
-                <div id="nickEmpty" class="absolute inset-0 flex flex-col items-center justify-center text-gray-600 transition-opacity">
-                    <i class="fa-solid fa-users-viewfinder text-5xl mb-4 opacity-20"></i>
-                    <p class="text-sm font-medium">Forja tus nuevos usernames aquí</p>
+                <div class="h-[3px] w-full bg-[var(--lp-green)] rounded-full mt-4"></div>
+                <div class="flex justify-end mt-2 mb-8">
+                    <span class="text-[10px] font-bold text-[var(--lp-green)] uppercase tracking-wider"><i class="fa-solid fa-shield-halved mr-1"></i> Segura</span>
                 </div>
-                <div id="nickList" class="flex flex-col gap-2.5 relative z-10">
-                    <!-- Nicks Inyectados Aquí -->
+
+                <div class="bg-[#f2f4f8] rounded-lg p-6 md:p-8 flex flex-col gap-8 border border-gray-200">
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
+                        <label class="text-sm font-bold text-gray-800 w-48 shrink-0">Longitud de la contraseña</label>
+                        <div class="flex items-center gap-6 flex-1 w-full">
+                            <span id="lengthValue" class="text-gray-900 font-bold text-base w-6 text-center">16</span>
+                            <input type="range" id="passLength" min="8" max="64" value="16">
+                        </div>
+                    </div>
+                    <div class="flex flex-col md:flex-row items-start gap-4 md:gap-8 border-t border-gray-200 pt-8">
+                        <label class="text-sm font-bold text-gray-800 w-48 shrink-0 mt-1">Caracteres usados</label>
+                        <div class="flex flex-wrap gap-x-8 gap-y-4 flex-1">
+                            <label class="flex items-center cursor-pointer corporate-checkbox">
+                                <input type="checkbox" id="chkUpper" checked class="hidden">
+                                <div class="w-4.5 h-4.5 border-2 border-gray-400 rounded-sm bg-white flex items-center justify-center transition-colors"><i class="fa-solid fa-check text-white text-[10px] opacity-0 transition-opacity"></i></div>
+                                <span class="ml-3 text-sm text-gray-700 font-medium">Mayúsculas</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer corporate-checkbox">
+                                <input type="checkbox" id="chkLower" checked class="hidden">
+                                <div class="w-4.5 h-4.5 border-2 border-gray-400 rounded-sm bg-white flex items-center justify-center transition-colors"><i class="fa-solid fa-check text-white text-[10px] opacity-0 transition-opacity"></i></div>
+                                <span class="ml-3 text-sm text-gray-700 font-medium">Minúsculas</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer corporate-checkbox">
+                                <input type="checkbox" id="chkNumbers" checked class="hidden">
+                                <div class="w-4.5 h-4.5 border-2 border-gray-400 rounded-sm bg-white flex items-center justify-center transition-colors"><i class="fa-solid fa-check text-white text-[10px] opacity-0 transition-opacity"></i></div>
+                                <span class="ml-3 text-sm text-gray-700 font-medium">Números</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer corporate-checkbox">
+                                <input type="checkbox" id="chkSymbols" checked class="hidden">
+                                <div class="w-4.5 h-4.5 border-2 border-gray-400 rounded-sm bg-white flex items-center justify-center transition-colors"><i class="fa-solid fa-check text-white text-[10px] opacity-0 transition-opacity"></i></div>
+                                <span class="ml-3 text-sm text-gray-700 font-medium">Símbolos</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer corporate-checkbox w-full mt-2 border-t border-gray-200 pt-4">
+                                <input type="checkbox" id="chkEmojis" class="hidden">
+                                <div class="w-4.5 h-4.5 border-2 border-gray-400 rounded-sm bg-white flex items-center justify-center transition-colors"><i class="fa-solid fa-check text-white text-[9px] opacity-0 transition-opacity"></i></div>
+                                <span class="ml-3 text-sm text-gray-700 font-bold">Incluir Emojis (🔒🚀💎)</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
+        <!-- SECCIÓN 2: USERNAMES -->
+        <section id="sectionNick" class="section-container px-4 py-12 hidden animate-fade flex-col">
+            <div class="text-center mb-10 max-w-3xl mx-auto">
+                <h2 class="text-3xl md:text-[38px] leading-tight font-extrabold text-gray-900 mb-4">Forjador de Identidades Únicas</h2>
+                <p class="text-gray-600 text-base md:text-lg">Generación procedural infinita con todas las fuentes. Respetamos sus espacios (Ej: "Gato y Raton").</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 md:p-8 mb-8">
+                <label class="block text-sm font-bold text-gray-800 mb-2">Nombre base o apodo:</label>
+                <input type="text" id="nickInput" placeholder="Ej. gato, gato y ratón, gamer el pro..." autocomplete="off" spellcheck="false" class="w-full bg-[#f9fafb] border border-gray-300 text-gray-900 text-lg rounded-md focus:ring-2 focus:ring-[var(--lp-red)] block p-4 outline-none mb-8 transition-all">
+
+                <label class="block text-sm font-bold text-gray-800 mb-3">Estilos Disponibles</label>
+                <div class="flex overflow-x-auto custom-x-scrollbar gap-3 pb-4 mb-4">
+                    <label class="cursor-pointer shrink-0"><input type="radio" name="nickStyle" value="minimal" class="peer hidden" checked><div class="px-5 py-2.5 border border-gray-300 rounded-md text-center peer-checked:bg-[#fff0f0] peer-checked:border-[var(--lp-red)] peer-checked:text-[var(--lp-red)] text-gray-600 font-semibold transition-colors hover:bg-gray-50">Minimalista</div></label>
+                    <label class="cursor-pointer shrink-0"><input type="radio" name="nickStyle" value="freefire" class="peer hidden"><div class="px-5 py-2.5 border border-gray-300 rounded-md text-center peer-checked:bg-[#fff0f0] peer-checked:border-[var(--lp-red)] peer-checked:text-[var(--lp-red)] text-gray-600 font-semibold transition-colors hover:bg-gray-50">Tryhard (Gótico)</div></label>
+                    <label class="cursor-pointer shrink-0"><input type="radio" name="nickStyle" value="tiktok" class="peer hidden"><div class="px-5 py-2.5 border border-gray-300 rounded-md text-center peer-checked:bg-[#fff0f0] peer-checked:border-[var(--lp-red)] peer-checked:text-[var(--lp-red)] text-gray-600 font-semibold transition-colors hover:bg-gray-50">Aesthetic</div></label>
+                    <label class="cursor-pointer shrink-0"><input type="radio" name="nickStyle" value="pixel" class="peer hidden"><div class="px-5 py-2.5 border border-gray-300 rounded-md text-center peer-checked:bg-[#fff0f0] peer-checked:border-[var(--lp-red)] peer-checked:text-[var(--lp-red)] text-gray-600 font-semibold transition-colors hover:bg-gray-50">8-Bit Pixel</div></label>
+                    <label class="cursor-pointer shrink-0"><input type="radio" name="nickStyle" value="urban" class="peer hidden"><div class="px-5 py-2.5 border border-gray-300 rounded-md text-center peer-checked:bg-[#fff0f0] peer-checked:border-[var(--lp-red)] peer-checked:text-[var(--lp-red)] text-gray-600 font-semibold transition-colors hover:bg-gray-50">Urbano (Graffiti)</div></label>
+                    <label class="cursor-pointer shrink-0"><input type="radio" name="nickStyle" value="techno" class="peer hidden"><div class="px-5 py-2.5 border border-gray-300 rounded-md text-center peer-checked:bg-[#fff0f0] peer-checked:border-[var(--lp-red)] peer-checked:text-[var(--lp-red)] text-gray-600 font-semibold transition-colors hover:bg-gray-50">Techno (Futurista)</div></label>
+                    <label class="cursor-pointer shrink-0"><input type="radio" name="nickStyle" value="script" class="peer hidden"><div class="px-5 py-2.5 border border-gray-300 rounded-md text-center peer-checked:bg-[#fff0f0] peer-checked:border-[var(--lp-red)] peer-checked:text-[var(--lp-red)] text-gray-600 font-semibold transition-colors hover:bg-gray-50">Script Arte</div></label>
+                    <label class="cursor-pointer shrink-0"><input type="radio" name="nickStyle" value="glitch" class="peer hidden"><div class="px-5 py-2.5 border border-gray-300 rounded-md text-center peer-checked:bg-[#fff0f0] peer-checked:border-[var(--lp-red)] peer-checked:text-[var(--lp-red)] text-gray-600 font-semibold transition-colors hover:bg-gray-50">Glitch Hacker</div></label>
+                    <label class="cursor-pointer shrink-0"><input type="radio" name="nickStyle" value="fantasy" class="peer hidden"><div class="px-5 py-2.5 border border-gray-300 rounded-md text-center peer-checked:bg-[#fff0f0] peer-checked:border-[var(--lp-red)] peer-checked:text-[var(--lp-red)] text-gray-600 font-semibold transition-colors hover:bg-gray-50">Fantasía (Runas)</div></label>
+                    <label class="cursor-pointer shrink-0"><input type="radio" name="nickStyle" value="mixed" class="peer hidden"><div class="px-5 py-2.5 border border-gray-300 rounded-md text-center peer-checked:bg-[#fff0f0] peer-checked:border-[var(--lp-red)] peer-checked:text-[var(--lp-red)] text-gray-600 font-semibold transition-colors hover:bg-gray-50">Mixto (Caos)</div></label>
+                </div>
+
+                <button id="btnGenerateNicks" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-4 rounded-md flex justify-center items-center gap-2 mt-4 text-lg transition-colors shadow-sm">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Forjar 20 Variantes Únicas
+                </button>
+            </div>
+
+            <div id="nickList" class="bg-white p-2 rounded-lg border border-gray-200 shadow-sm overflow-y-auto max-h-[500px] flex flex-col gap-2 relative w-full">
+                <div id="nickEmpty" class="flex flex-col items-center justify-center text-gray-400 py-16">
+                    <i class="fa-solid fa-list-ul text-4xl mb-3 opacity-30"></i>
+                    <p class="text-sm font-medium">Ingrese un nombre y presione Forjar.</p>
+                </div>
+                <!-- Nicks Inyectados Aquí -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: FAQ -->
+        <section id="sectionFaq" class="section-container px-4 py-16 hidden animate-fade flex-col">
+            <div class="text-center mb-12"><h2 class="text-3xl md:text-[38px] font-extrabold text-gray-900">Preguntas frecuentes</h2></div>
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm">
+                <details class="group border-b border-gray-200 p-6 transition-colors">
+                    <summary class="font-bold cursor-pointer list-none text-lg flex justify-between items-center text-gray-900 hover:text-[var(--lp-red)]">
+                        <span>¿Es seguro este generador de contraseñas?</span>
+                        <i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></i>
+                    </summary>
+                    <p class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">SÍ. ByteLog utiliza criptografía local pura. Ninguna contraseña sale de su navegador. Nuestro sistema de privacidad inteligente le permite revelar la contraseña oculta para copiarla. Al ocultarla por segunda vez, el sistema asume compromiso visual, la destruye y genera una nueva inmediatamente para protegerte.</p>
+                </details>
+                <details class="group border-b border-gray-200 p-6 transition-colors">
+                    <summary class="font-bold cursor-pointer list-none text-lg flex justify-between items-center text-gray-900 hover:text-[var(--lp-red)]">
+                        <span>¿Guardan mi información en servidores?</span>
+                        <i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></i>
+                    </summary>
+                    <p class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">No. No contamos con bases de datos ni backends externos para estas herramientas. Todo el código se ejecuta en la memoria RAM de su dispositivo local.</p>
+                </details>
+                <details class="group p-6 transition-colors">
+                    <summary class="font-bold cursor-pointer list-none text-lg flex justify-between items-center text-gray-900 hover:text-[var(--lp-red)]">
+                        <span>¿Por qué mis nicks se ven perfectos y no muestran errores ()?</span>
+                        <i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></i>
+                    </summary>
+                    <p class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">Utilizamos diccionarios de fuentes exactos y la función <code class="bg-gray-100 px-1 py-0.5 rounded text-[var(--lp-red)] font-mono text-sm">Array.from()</code>. Esto permite al motor mapear letra por letra respetando los espacios y el peso en bytes, impidiendo que los símbolos complejos Unicode se rompan al generar las variantes.</p>
+                </details>
+            </div>
+        </section>
     </main>
 
     <script>
         // ==========================================
-        // EFECTO DE PARTÍCULAS DEL RATÓN (8-Bit Pixels)
+        // SISTEMA DE PESTAÑAS (FIJACIÓN W-FULL)
         // ==========================================
-        document.addEventListener('mousemove', function(e) {
-            if(Math.random() > 0.15) return; 
-            const particle = document.createElement('div');
-            particle.className = 'mouse-particle';
-            particle.style.left = (e.pageX - 4) + 'px';
-            particle.style.top = (e.pageY - 4) + 'px';
-            particle.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 60%)`; 
-            document.body.appendChild(particle);
-            setTimeout(() => particle.remove(), 800);
-        });
+        function switchTab(type) {
+            const tabs = [
+                { id: 'pass', sec: document.getElementById('sectionPass'), btn: document.getElementById('tabPass'), btnM: document.getElementById('tabPassMobile') },
+                { id: 'nick', sec: document.getElementById('sectionNick'), btn: document.getElementById('tabNick'), btnM: document.getElementById('tabNickMobile') },
+                { id: 'faq', sec: document.getElementById('sectionFaq'), btn: document.getElementById('tabFaq'), btnM: document.getElementById('tabFaqMobile') }
+            ];
 
-        // ==========================================
-        // SISTEMA DE NAVEGACIÓN (PESTAÑAS)
-        // ==========================================
-        const tabPass = document.getElementById('tabPass');
-        const tabNick = document.getElementById('tabNick');
-        const sectionPass = document.getElementById('sectionPass');
-        const sectionNick = document.getElementById('sectionNick');
-
-        function switchTab(tab) {
-            sectionPass.classList.remove('animate-pop');
-            sectionNick.classList.remove('animate-pop');
-
-            if (tab === 'pass') {
-                sectionPass.classList.remove('hidden'); sectionPass.classList.add('block');
-                sectionNick.classList.add('hidden'); sectionNick.classList.remove('flex');
-                void sectionPass.offsetWidth; sectionPass.classList.add('animate-pop');
-                tabPass.className = "px-5 sm:px-8 py-3 rounded-full font-bold transition-all bg-emerald-600 text-white shadow-lg shadow-emerald-500/30 text-sm sm:text-base flex items-center gap-2";
-                tabNick.className = "px-5 sm:px-8 py-3 rounded-full font-bold transition-all bg-gray-800/80 text-gray-400 hover:text-white hover:bg-gray-700 border border-gray-700 text-sm sm:text-base flex items-center gap-2";
-            } else {
-                sectionPass.classList.add('hidden'); sectionPass.classList.remove('block');
-                sectionNick.classList.remove('hidden'); sectionNick.classList.add('flex');
-                void sectionNick.offsetWidth; sectionNick.classList.add('animate-pop');
-                tabNick.className = "px-5 sm:px-8 py-3 rounded-full font-bold transition-all bg-cyan-600 text-white shadow-lg shadow-cyan-500/30 text-sm sm:text-base flex items-center gap-2";
-                tabPass.className = "px-5 sm:px-8 py-3 rounded-full font-bold transition-all bg-gray-800/80 text-gray-400 hover:text-white hover:bg-gray-700 border border-gray-700 text-sm sm:text-base flex items-center gap-2";
-            }
-        }
-        tabPass.addEventListener('click', () => switchTab('pass'));
-        tabNick.addEventListener('click', () => switchTab('nick'));
-
-        // ==========================================
-        // 1. SISTEMA "SOPA DE CARACTERES" (CANVAS GPU)
-        // ==========================================
-        const canvas = document.getElementById('soupCanvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let particles = [];
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()_+{}[]|;:,.<>?/アイウエオカキクケコサシスセソ🚀👾🔥💎🛡️🔒💻⚡💀👁️‍🗨️";
-        const charArray = Array.from(chars); 
-
-        function initCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            particles = [];
-            const particleCount = window.innerWidth < 768 ? 70 : 150;
-            for (let i = 0; i < particleCount; i++) {
-                particles.push({
-                    x: Math.random() * width, y: Math.random() * height,
-                    char: charArray[Math.floor(Math.random() * charArray.length)],
-                    size: Math.random() * 22 + 10, opacity: Math.random(),
-                    fadeSpeed: (Math.random() * 0.015) + 0.005, fadeDir: Math.random() > 0.5 ? 1 : -1,
-                    baseColor: `16, 185, 129`
-                });
-            }
-        }
-
-        function animateSoup() {
-            ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => {
-                p.opacity += p.fadeSpeed * p.fadeDir;
-                if (p.opacity >= 0.7) p.fadeDir = -1;
-                if (p.opacity <= 0) {
-                    p.fadeDir = 1; p.x = Math.random() * width; p.y = Math.random() * height;
-                    p.char = charArray[Math.floor(Math.random() * charArray.length)];
+            tabs.forEach(t => {
+                if (t.id === type) {
+                    t.sec.classList.remove('hidden');
+                    // Block fluye mejor para la calculadora de pass, flex col para los otros.
+                    t.sec.classList.add(t.id === 'pass' ? 'block' : 'flex'); 
+                    if (t.btn) t.btn.className = "tab-active pb-1 transition-colors";
+                    if (t.btnM) t.btnM.className = "tab-active py-3 px-4 text-sm whitespace-nowrap";
+                } else {
+                    t.sec.classList.add('hidden');
+                    t.sec.classList.remove('block', 'flex');
+                    if (t.btn) t.btn.className = "tab-inactive pb-1 transition-colors";
+                    if (t.btnM) t.btnM.className = "tab-inactive py-3 px-4 text-sm whitespace-nowrap";
                 }
-                ctx.font = `${p.size}px monospace`;
-                if (/\p{Emoji}/u.test(p.char)) ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
-                else ctx.fillStyle = `rgba(${p.baseColor}, ${p.opacity})`;
-                ctx.fillText(p.char, p.x, p.y);
             });
-            requestAnimationFrame(animateSoup);
         }
-        window.addEventListener('resize', initCanvas);
-        initCanvas();
-        animateSoup();
 
         // ==========================================
-        // 2. GENERADOR DE CONTRASEÑAS (CRYPTO API)
+        // 1. GENERADOR DE CONTRASEÑAS Y LÓGICA DE PRIVACIDAD
         // ==========================================
+        let currentRawPassword = "";
+        let isPasswordVisible = false;
+        let privacyViewCount = 0; 
+
+        const passText = document.getElementById('passText');
         const passLength = document.getElementById('passLength');
         const lengthValue = document.getElementById('lengthValue');
-        const chkUpper = document.getElementById('chkUpper');
-        const chkLower = document.getElementById('chkLower');
-        const chkNumbers = document.getElementById('chkNumbers');
-        const chkSymbols = document.getElementById('chkSymbols');
-        const chkEmojis = document.getElementById('chkEmojis');
-        const btnGenPass = document.getElementById('btnGeneratePass');
-        const btnCopyPass = document.getElementById('btnCopyPass');
-        const btnResetPass = document.getElementById('btnResetPass');
-        const passSpoiler = document.getElementById('passSpoiler');
-        const passOutput = document.getElementById('passOutput');
-
-        const UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const LOWER = "abcdefghijklmnopqrstuvwxyz";
-        const NUMS = "0123456789";
-        const SYMS = "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+        const eyeIcon = document.getElementById('eyeIcon');
         const EMOJIS = ["😀","🚀","🌟","🔥","👾","💡","💎","🛡️","🔑","🔒","⚡","👑","🐉","🧿","🌌","🕹️","🤖","🧩"];
-
-        passLength.addEventListener('input', (e) => lengthValue.textContent = e.target.value);
 
         function getSecureRandomInt(max) {
             const array = new Uint32Array(1);
@@ -423,97 +292,149 @@
 
         function generatePassword() {
             let charset = "";
-            let useEmojis = chkEmojis.checked;
-            let length = parseInt(passLength.value);
+            const useEmojis = document.getElementById('chkEmojis').checked;
+            const length = parseInt(passLength.value);
             
-            if (chkUpper.checked) charset += UPPER;
-            if (chkLower.checked) charset += LOWER;
-            if (chkNumbers.checked) charset += NUMS;
-            if (chkSymbols.checked) charset += SYMS;
+            if (document.getElementById('chkUpper').checked) charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            if (document.getElementById('chkLower').checked) charset += "abcdefghijklmnopqrstuvwxyz";
+            if (document.getElementById('chkNumbers').checked) charset += "0123456789";
+            if (document.getElementById('chkSymbols').checked) charset += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
 
-            if (charset === "" && !useEmojis) { alert("Selecciona al menos un tipo de carácter."); return; }
+            if (charset === "" && !useEmojis) { 
+                charset += "abcdefghijklmnopqrstuvwxyz"; 
+                document.getElementById('chkLower').checked = true; 
+            }
 
-            let password = "";
-            let charArrayForPass = Array.from(charset);
+            let passwordArray = [];
+            let charSource = Array.from(charset);
 
             for (let i = 0; i < length; i++) {
-                if (useEmojis && getSecureRandomInt(100) < 12) {
-                    password += EMOJIS[getSecureRandomInt(EMOJIS.length)];
-                } else if (charArrayForPass.length > 0) {
-                    password += charArrayForPass[getSecureRandomInt(charArrayForPass.length)];
+                if (useEmojis && Math.random() < 0.25) {
+                    passwordArray.push(EMOJIS[getSecureRandomInt(EMOJIS.length)]);
+                } else if (charSource.length > 0) {
+                    passwordArray.push(charSource[getSecureRandomInt(charSource.length)]);
                 } else {
-                    password += EMOJIS[getSecureRandomInt(EMOJIS.length)];
+                    passwordArray.push(EMOJIS[getSecureRandomInt(EMOJIS.length)]);
                 }
             }
-            passOutput.textContent = password;
-            passSpoiler.classList.remove('revealed');
-            btnGenPass.classList.add('scale-95');
-            setTimeout(() => btnGenPass.classList.remove('scale-95'), 150);
+
+            if (useEmojis && !EMOJIS.some(e => passwordArray.includes(e))) {
+                passwordArray[getSecureRandomInt(passwordArray.length)] = EMOJIS[getSecureRandomInt(EMOJIS.length)];
+            }
+
+            currentRawPassword = passwordArray.join('');
+            
+            // Reiniciar estados de privacidad al crear nueva clave
+            isPasswordVisible = false;
+            privacyViewCount = 0;
+            updatePasswordDisplay();
         }
 
-        btnGenPass.addEventListener('click', generatePassword);
-        passSpoiler.addEventListener('click', () => passSpoiler.classList.add('revealed'));
-        btnResetPass.addEventListener('click', () => passSpoiler.classList.remove('revealed'));
+        function updatePasswordDisplay() {
+            if (isPasswordVisible) {
+                passText.textContent = currentRawPassword;
+                passText.classList.remove('pass-hidden');
+                eyeIcon.className = 'fa-solid fa-eye';
+            } else {
+                passText.textContent = "•".repeat(currentRawPassword.length || 16);
+                passText.classList.add('pass-hidden');
+                eyeIcon.className = 'fa-solid fa-eye-slash';
+            }
+        }
 
-        btnCopyPass.addEventListener('click', async () => {
-            const text = passOutput.textContent;
-            if (text === "••••••••••••••••") return;
-            try {
-                await navigator.clipboard.writeText(text);
-                showCopiedFeedback(btnCopyPass);
-            } catch (err) {
-                const el = document.createElement('textarea'); el.value = text;
-                document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
-                showCopiedFeedback(btnCopyPass);
+        // LÓGICA DE PRIVACIDAD
+        document.getElementById('btnTogglePrivacy').addEventListener('click', () => {
+            if (isPasswordVisible) {
+                isPasswordVisible = false;
+                updatePasswordDisplay();
+                // REGLA HARRY: Permite ocultar 1 vez sin borrar. A la 2da vez que se oculta, se QUEMA por seguridad.
+                if (privacyViewCount >= 2) {
+                    generatePassword();
+                }
+            } else {
+                isPasswordVisible = true;
+                privacyViewCount++;
+                updatePasswordDisplay();
             }
         });
 
-        function showCopiedFeedback(btn) {
+        // Eventos
+        passLength.addEventListener('input', (e) => { lengthValue.textContent = e.target.value; generatePassword(); });
+        ['chkUpper', 'chkLower', 'chkNumbers', 'chkSymbols', 'chkEmojis'].forEach(id => {
+            document.getElementById(id).addEventListener('change', generatePassword);
+        });
+        document.getElementById('btnRefreshPass').addEventListener('click', () => {
+            generatePassword();
+            const icon = document.querySelector('#btnRefreshPass i');
+            icon.classList.add('fa-spin');
+            setTimeout(() => icon.classList.remove('fa-spin'), 300);
+        });
+
+        document.getElementById('btnCopyPass').addEventListener('click', async () => {
+            if (!currentRawPassword) return;
+            try {
+                await navigator.clipboard.writeText(currentRawPassword);
+                showCopiedFeedback();
+            } catch (err) {
+                const el = document.createElement('textarea'); el.value = currentRawPassword;
+                document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
+                showCopiedFeedback();
+            }
+        });
+
+        function showCopiedFeedback() {
+            const btn = document.getElementById('btnCopyPass');
             const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-check text-emerald-500"></i> ¡Copiado!';
-            btn.classList.add('border-emerald-500', 'text-emerald-400');
-            setTimeout(() => { btn.innerHTML = originalHTML; btn.classList.remove('border-emerald-500', 'text-emerald-400'); }, 2000);
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> ¡Copiada!';
+            btn.classList.replace('bg-[var(--lp-red)]', 'bg-[var(--lp-green)]');
+            btn.classList.replace('hover:bg-[var(--lp-red-hover)]', 'hover:bg-[#16a34a]');
+            setTimeout(() => { 
+                btn.innerHTML = originalHTML; 
+                btn.classList.replace('bg-[var(--lp-green)]', 'bg-[var(--lp-red)]');
+                btn.classList.replace('hover:bg-[#16a34a]', 'hover:bg-[var(--lp-red-hover)]');
+            }, 1500);
         }
 
+
         // ==========================================
-        // 3. GENERADOR DE NICKS ULTIMATE (NickForge)
-        // Arquitectura Procedural Infinita (Cero Repeticiones)
+        // 2. MOTOR DE USERNAMES (DICCIONARIOS COMPLETOS Y ROBUSTOS)
         // ==========================================
         const nickInput = document.getElementById('nickInput');
-        const btnGenNicks = document.getElementById('btnGenerateNicks');
-        const nickList = document.getElementById('nickList');
         const nickEmpty = document.getElementById('nickEmpty');
+        const nickList = document.getElementById('nickList');
 
-        // MAPEOS EXACTOS DE FUENTES 
+        // MAPEOS EXACTOS DE FUENTES UNICODE
         const MAP_FRAKTUR = {'a':'𝖆','b':'𝖇','c':'𝖈','d':'𝖉','e':'𝖊','f':'𝖋','g':'𝖌','h':'𝖍','i':'𝖎','j':'𝖏','k':'𝖐','l':'𝖑','m':'𝖒','n':'𝖓','o':'𝖔','p':'𝖕','q':'𝖖','r':'𝖗','s':'𝖘','t':'𝖙','u':'𝖚','v':'𝖛','w':'𝖜','x':'𝖝','y':'𝖞','z':'𝖟','A':'𝕬','B':'𝕭','C':'𝕮','D':'𝕯','E':'𝕰','F':'𝕱','G':'𝕲','H':'𝕳','I':'𝕴','J':'𝕵','K':'𝕶','L':'𝕷','M':'𝕸','N':'𝕹','O':'𝕺','P':'𝕻','Q':'𝕼','R':'𝕽','S':'𝕾','T':'𝕿','U':'𝖀','V':'𝖁','W':'𝖂','X':'𝖃','Y':'𝖄','Z':'𝖅'};
         const MAP_FULLWIDTH = {'a':'ａ','b':'ｂ','c':'ｃ','d':'ｄ','e':'ｅ','f':'ｆ','g':'ｇ','h':'ｈ','i':'ｉ','j':'ｊ','k':'ｋ','l':'ｌ','m':'ｍ','n':'ｎ','o':'ｏ','p':'ｐ','q':'ｑ','r':'ｒ','s':'ｓ','t':'ｔ','u':'ｕ','v':'ｖ','w':'ｗ','x':'ｘ','y':'ｙ','z':'ｚ','A':'Ａ','B':'Ｂ','C':'Ｃ','D':'Ｄ','E':'Ｅ','F':'Ｆ','G':'Ｇ','H':'Ｈ','I':'Ｉ','J':'Ｊ','K':'Ｋ','L':'Ｌ','M':'Ｍ','N':'Ｎ','O':'Ｏ','P':'Ｐ','Q':'Ｑ','R':'Ｒ','S':'Ｓ','T':'Ｔ','U':'Ｕ','V':'Ｖ','W':'Ｗ','X':'Ｘ','Y':'Ｙ','Z':'Ｚ'};
-        const MAP_SANS = {'a':'𝗮','b':'𝗯','c':'𝗰','d':'𝗱','e':'𝗲','f':'𝗳','g':'𝗴','h':'𝗵','i':'𝗶','j':'𝗷','k':'𝗸','l':'𝗹','m':'𝗺','n':'𝗻','o':'𝗼','p':'𝗽','q':'𝗾','r':'𝗿','s':'𝘀','t':'𝘁','u':'𝘂','v':'𝘃','w':'𝘄','x':'𝘅','y':'𝘆','z':'𝘇','A':'𝗔','B':'𝗕','C':'𝗖','D':'𝗗','E':'𝗘','F':'𝗙','G':'𝗚','H':'𝗛','I':'𝗜','J':'𝗝','K':'𝗞','L':'𝗟','M':'𝗠','N':'𝗡','O':'𝗢','P':'𝗣','Q':'𝗤','R':'𝗥','S':'𝗦','T':'𝗧','U':'𝗨','V':'𝗩','W':'𝗪','X':'𝗫','Y':'𝗬','Z':'𝗭'};
+        const MAP_SANS = {'a':'𝗮','b':'𝗯','c':'𝗰','d':'𝗱','e':'𝗲','f':'𝗳','g':'𝗴','h':'𝗵','i':'𝗶','j':'𝗷','k':'𝗸','l':'𝗹','m':'𝗺','n':'𝗻','o':'𝗼','p':'𝗽','q':'𝗾','r':'𝗿','s':'𝘀','t':'𝘁','u':'𝘂','v':'𝘃','w':'𝘄','x':'𝘅','y':'𝘆','z':'𝘇','A':'𝗔','B':'𝗕','C':'𝗖','D':'𝗗','E':'𝗘','F':'𝗙','G':'𝗚','H':'𝗛','I':'𝗜','J':'Ｊ','K':'𝗞','L':'𝗟','M':'𝗠','N':'𝗡','O':'𝗢','P':'𝗣','Q':'𝗤','R':'Ｒ','S':'𝗦','T':'𝗧','U':'Ｕ','V':'𝗩','W':'𝗪','X':'𝗫','Y':'𝗬','Z':'𝗭'};
         const MAP_SCRIPT = {'a':'𝒶','b':'𝒷','c':'𝒸','d':'𝒹','e':'𝑒','f':'𝒻','g':'𝑔','h':'𝒽','i':'𝒾','j':'𝒿','k':'𝓀','l':'𝓁','m':'𝓂','n':'𝓃','o':'𝑜','p':'𝓅','q':'𝓆','r':'𝓇','s':'𝓈','t':'𝓉','u':'𝓊','v':'𝓋','w':'𝓌','x':'𝓍','y':'𝓎','z':'𝓏','A':'𝒜','B':'ℬ','C':'𝒞','D':'𝒟','E':'ℰ','F':'ℱ','G':'𝒢','H':'ℋ','I':'ℐ','J':'𝒥','K':'𝒦','L':'ℒ','M':'ℳ','N':'𝒩','O':'𝒪','P':'𝒫','Q':'𝒬','R':'ℛ','S':'𝒮','T':'𝒯','U':'𝒰','V':'𝒱','W':'𝒲','X':'𝒳','Y':'𝒴','Z':'𝒵'};
         const MAP_SMALLCAPS = {'a':'ᴀ','b':'ʙ','c':'ᴄ','d':'ᴅ','e':'ᴇ','f':'ғ','g':'ɢ','h':'ʜ','i':'ɪ','j':'ᴊ','k':'ᴋ','l':'ʟ','m':'ᴍ','n':'ɴ','o':'ᴏ','p':'ᴘ','q':'ǫ','r':'ʀ','s':'s','t':'ᴛ','u':'ᴜ','v':'ᴠ','w':'ᴡ','x':'x','y':'ʏ','z':'ᴢ','A':'A','B':'B','C':'C','D':'D','E':'E','F':'F','G':'G','H':'H','I':'I','J':'J','K':'K','L':'L','M':'M','N':'N','O':'O','P':'P','Q':'Q','R':'R','S':'S','T':'T','U':'U','V':'V','W':'W','X':'X','Y':'Y','Z':'Z'};
         const MAP_TECHNO = {'a':'卂','b':'乃','c':'匚','d':'刀','e':'乇','f':'千','g':'Ꮆ','h':'卄','i':'丨','j':'丁','k':'长','l':'ㄥ','m':'爪','n':'几','o':'ㄖ','p':'卩','q':'Ɋ','r':'尺','s':'丂','t':'ㄒ','u':'ㄩ','v':'ᐯ','w':'山','x':'乂','y':'丫','z':'乙','A':'卂','B':'乃','C':'匚','D':'刀','E':'乇','F':'千','G':'Ꮆ','H':'卄','I':'丨','J':'丁','K':'长','L':'ㄥ','M':'爪','N':'几','O':'ㄖ','P':'卩','Q':'Ɋ','R':'尺','S':'丂','T':'ㄒ','U':'ㄩ','V':'ᐯ','W':'山','X':'乂','Y':'丫','Z':'乙'};
         const MAP_RUNES = {'a':'ᚫ','b':'ᛒ','c':'ᚳ','d':'ᛞ','e':'ᛖ','f':'ᚠ','g':'ᚷ','h':'ᚻ','i':'ᛁ','j':'ᛃ','k':'ᚲ','l':'ᛚ','m':'ᛗ','n':'ᚾ','o':'ᚩ','p':'ᛈ','q':'ᛩ','r':'ᚱ','s':'ᛋ','t':'ᛏ','u':'ᚢ','v':'ᚡ','w':'ᚹ','x':'ᛪ','y':'ᚣ','z':'ᛉ','A':'ᚫ','B':'ᛒ','C':'ᚳ','D':'ᛞ','E':'ᛖ','F':'ᚠ','G':'ᚷ','H':'ᚻ','I':'ᛁ','J':'ᛃ','K':'ᚲ','L':'ᛚ','M':'ᛗ','N':'ᚾ','O':'ᚩ','P':'ᛈ','Q':'ᛩ','R':'ᚱ','S':'ᛋ','T':'ᛏ','U':'ᚢ','V':'ᚡ','W':'ᚹ','X':'ᛪ','Y':'ᚣ','Z':'ᛉ'};
 
-        // Utilidades Helper
         const rnd = (arr) => arr[Math.floor(Math.random() * arr.length)];
         const flip = (prob = 0.5) => Math.random() < prob;
-        
+
         function applyMapFont(text, mapDict) { 
+            // Array.from asegura que no se rompan los caracteres y respeta los espacios
             return Array.from(text).map(c => mapDict[c] || c).join(''); 
         }
+
         function toLeetSpeak(text) { 
             return text.replace(/a/gi, '4').replace(/e/gi, '3').replace(/i/gi, '1').replace(/o/gi, '0').replace(/s/gi, '5').replace(/t/gi, '7'); 
         }
+        
         function toZalgo(text) {
             const marks = ['\u030d', '\u030e', '\u0304', '\u0305', '\u033f', '\u0311', '\u0306', '\u0310', '\u0352', '\u0351', '\u0300', '\u0320', '\u0322', '\u0327', '\u0328', '\u032a', '\u032b', '\u032c', '\u032d', '\u032e', '\u032f', '\u0330', '\u0331', '\u0332', '\u0333', '\u0339', '\u033a', '\u033b', '\u033c'];
             return Array.from(text).map(c => { 
-                if(c === ' ') return c; 
-                let z=c; 
-                for(let i=0; i<Math.floor(Math.random()*2)+1; i++) z+=rnd(marks); 
+                if(c === ' ') return c; // Proteger el espacio
+                let z = c; 
+                for(let i=0; i<Math.floor(Math.random()*2)+1; i++) z += rnd(marks); 
                 return z; 
             }).join('');
         }
 
-        // --- MOTORES PROCEDURALES (Combinaciones Infinitas) ---
+        // FUNCIONES GENERADORAS ESPECÍFICAS
         function genTryhard(base) { 
             const decors = [ ["꧁༒•", "•༒꧂"], ["『", "』"], ["乂", "ツ"], ["【", "】★"], ["๖ۣۜ", " ☠︎"], ["", " 亗"], ["", " 〆"], ["L-G ", ""], ["", " ︻╦デ╤━"], ["★", "★"], ["☠︎ ", " ☠︎"], ["GOD ", ""], ["TOP ", ""] ];
             const tags = ["TTV", "YT", "PRO", "GOD", "KING", "KILLER", "VIP", "1SHOT"];
@@ -646,7 +567,6 @@
                 () => `${name}.js`,
                 () => `${name}_x`,
                 () => `i.am.${name}`,
-                // LA SOLUCIÓN DEL ESPACIADO: Usar Array.from() protege el Unicode
                 () => Array.from(name).join(' '),
                 () => Array.from(name).join('.'),
                 () => `${name}™`,
@@ -656,10 +576,10 @@
             return rnd(formats)();
         }
 
-        // --- Orquestador Principal Procedural ---
+        // --- ORQUESTADOR PRINCIPAL ---
         function generateNicks() {
             let base = nickInput.value.trim();
-            if (!base) base = "Ghost"; 
+            if (!base) base = "Usuario"; 
             
             const style = document.querySelector('input[name="nickStyle"]:checked').value;
             let nicks = new Set();
@@ -667,7 +587,7 @@
             const ALL_STYLES = ['freefire', 'tiktok', 'pixel', 'urban', 'techno', 'script', 'glitch', 'fantasy', 'minimal'];
             let attempts = 0;
 
-            // Generamos dinámicamente llamando a las funciones procedurales
+            // Motor de Generación Segura Infinita (No se congele)
             while (nicks.size < 20 && attempts < 500) {
                 let currentStyle = style === 'mixed' ? rnd(ALL_STYLES) : style;
                 let nick = "";
@@ -684,7 +604,7 @@
                     case 'minimal': nick = genMinimal(base); break;
                 }
 
-                // Asegurar que se guarde. Si hay duplicado rarísimo, le sumamos entropía real.
+                // Seguridad contra repeticiones
                 if (!nicks.has(nick)) {
                     nicks.add(nick);
                 } else if (attempts > 50) {
@@ -698,48 +618,38 @@
         }
 
         function renderNicks(nicksArray) {
-            nickEmpty.style.opacity = '0';
-            setTimeout(() => { nickEmpty.style.display = 'none'; }, 300);
-            
+            nickEmpty.style.display = 'none';
             nickList.innerHTML = '';
 
             nicksArray.forEach((nick, index) => {
                 const div = document.createElement('div');
-                div.className = "flex justify-between items-center bg-gray-800/40 p-3.5 rounded-xl border border-gray-700/50 animate-pop hover:border-cyan-500/50 hover:bg-gray-800 transition-all group";
-                const delay = Math.min(index * 0.03, 0.5);
-                div.style.animationDelay = `${delay}s`; 
+                div.className = "flex justify-between items-center p-4 bg-white border border-gray-200 rounded shadow-sm hover:border-gray-400 transition-all animate-fade";
+                div.style.animationDelay = `${Math.min(index * 0.02, 0.4)}s`; 
                 
                 div.innerHTML = `
-                    <span class="text-lg text-gray-100 tracking-wide select-all truncate pr-4 unicode-text">${nick}</span>
-                    <button class="copy-nick shrink-0 text-gray-400 bg-gray-900/50 hover:bg-cyan-500/20 hover:text-cyan-400 p-2.5 rounded-lg transition-all border border-gray-700 group-hover:border-cyan-500/30" data-nick="${nick}" title="Copiar Nick">
+                    <span class="text-lg text-gray-800 unicode-text truncate pr-4" style="line-height: 1.5;">${nick}</span>
+                    <button class="shrink-0 text-gray-500 bg-gray-50 hover:bg-gray-100 hover:text-gray-900 p-2.5 rounded transition-all border border-gray-200" onclick="copyN('${nick.replace(/'/g, "\\'")}', this)" title="Copiar Nick">
                         <i class="fa-regular fa-copy"></i>
                     </button>
                 `;
                 nickList.appendChild(div);
             });
-
-            document.querySelectorAll('.copy-nick').forEach(btn => {
-                btn.addEventListener('click', async function() {
-                    const text = this.getAttribute('data-nick');
-                    const icon = this.querySelector('i');
-                    try {
-                        await navigator.clipboard.writeText(text);
-                    } catch (e) {
-                        const el = document.createElement('textarea');
-                        el.value = text; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
-                    }
-                    icon.className = 'fa-solid fa-check text-cyan-400';
-                    this.classList.add('border-cyan-500', 'bg-cyan-500/10');
-                    setTimeout(() => { 
-                        icon.className = 'fa-regular fa-copy'; 
-                        this.classList.remove('border-cyan-500', 'bg-cyan-500/10');
-                    }, 1500);
-                });
-            });
         }
 
-        btnGenNicks.addEventListener('click', generateNicks);
-        nickInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') generateNicks(); });
+        window.copyN = (t, b) => {
+            navigator.clipboard.writeText(t);
+            const i = b.querySelector('i'); i.className = 'fa-solid fa-check text-[var(--lp-green)]';
+            b.classList.add('border-[var(--lp-green)]', 'bg-green-50');
+            setTimeout(() => { 
+                i.className = 'fa-regular fa-copy'; 
+                b.classList.remove('border-[var(--lp-green)]', 'bg-green-50');
+            }, 1500);
+        }
+
+        document.getElementById('btnGenerateNicks').addEventListener('click', generateNicks);
+        document.getElementById('nickInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') generateNicks(); });
+
+        window.addEventListener('DOMContentLoaded', () => { generatePassword(); });
 
     </script>
 </body>
