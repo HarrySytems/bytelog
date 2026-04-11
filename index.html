@@ -84,20 +84,6 @@
 </head>
 <body class="flex flex-col min-h-screen relative">
 
-    <!-- ADSTERRA: SIDEBAR DERECHO (Solo visible en monitores grandes XL) -->
-    <div class="hidden xl:block fixed top-1/2 right-4 transform -translate-y-1/2 z-40 bg-gray-50 rounded shadow-sm border border-gray-200 overflow-hidden">
-        <script type="text/javascript">
-            atOptions = {
-                'key' : 'aba0b8323a56e1219bc542e467e172bb',
-                'format' : 'iframe',
-                'height' : 300,
-                'width' : 160,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="https://glamourpicklessteward.com/aba0b8323a56e1219bc542e467e172bb/invoke.js"></script>
-    </div>
-
     <!-- HEADER LIMPIO Y CORPORATIVO -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
@@ -329,22 +315,6 @@
                 <p>Creemos en el software limpio (Clean Code), interfaces minimalistas y el respeto a tus datos. No operamos bases de datos de almacenamiento, garantizando que todo lo que generes en nuestra web, se quede exclusivamente en tus manos.</p>
             </div>
         </section>
-        
-        <!-- ADSTERRA: BANNERS INFERIORES -->
-        <div class="w-full flex justify-center mt-4 mb-8">
-            <div class="block md:hidden text-center w-[300px] h-[250px] bg-gray-50 flex items-center justify-center rounded overflow-hidden shadow-sm border border-gray-100">
-                <script type="text/javascript">
-                    atOptions = { 'key' : 'd9e4e84c1d4a3082a7d37c5f9605bc63', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
-                </script>
-                <script type="text/javascript" src="https://glamourpicklessteward.com/d9e4e84c1d4a3082a7d37c5f9605bc63/invoke.js"></script>
-            </div>
-            <div class="hidden md:flex text-center w-[728px] h-[90px] bg-gray-50 items-center justify-center rounded overflow-hidden shadow-sm border border-gray-100">
-                <script type="text/javascript">
-                    atOptions = { 'key' : '322396c7c5b6f02fcce8ce726fd0392e', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
-                </script>
-                <script type="text/javascript" src="https://glamourpicklessteward.com/322396c7c5b6f02fcce8ce726fd0392e/invoke.js"></script>
-            </div>
-        </div>
 
     </main>
 
@@ -362,7 +332,7 @@
         </div>
     </footer>
 
-    <!-- MODAL LEGAL -->
+    <!-- MODAL LEGAL (DOCUMENTOS PDF SIMULADOS) -->
     <div id="legalModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-gray-900/60 backdrop-blur-sm p-4 animate-fade">
         <div class="bg-white border border-gray-300 w-full max-w-3xl h-[80vh] rounded-lg shadow-2xl flex flex-col overflow-hidden">
             <div class="bg-gray-50 px-6 py-4 flex justify-between items-center border-b border-gray-200">
@@ -381,6 +351,7 @@
                 </div>
             </div>
             <div class="flex-1 bg-white p-8 md:p-12 overflow-y-auto text-gray-800 font-serif text-sm leading-relaxed" id="legalContent">
+                <!-- Inyectado dinámicamente -->
             </div>
         </div>
     </div>
@@ -405,7 +376,7 @@
 
     <script>
         // ==========================================
-        // SISTEMA LEGAL Y COOKIES 
+        // SISTEMA LEGAL Y COOKIES (Texto natural y seguro)
         // ==========================================
         const cookieBanner = document.getElementById('cookieBanner');
         const legalModal = document.getElementById('legalModal');
@@ -419,8 +390,8 @@
                 <p style="margin-bottom: 1.5rem;">En ByteLog, nos tomamos muy en serio su privacidad. Al ser una aplicación diseñada bajo la arquitectura "Lado del Cliente", garantizamos que <strong>no recopilamos, almacenamos ni transmitimos</strong> ninguna información personal, contraseñas generadas o nombres de usuario a ningún servidor externo.</p>
                 <h2 style="font-size: 1.3rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #111827; font-family: sans-serif;">1. Procesamiento Local Seguro</h2>
                 <p style="margin-bottom: 1.5rem;">Toda la generación de datos, incluyendo la entropía para crear contraseñas seguras, se realiza utilizando los algoritmos nativos de seguridad de su propio dispositivo y navegador web. Una vez que cierra la pestaña o limpia su sesión, la información generada se destruye permanentemente.</p>
-                <h2 style="font-size: 1.3rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #111827; font-family: sans-serif;">2. Transparencia y Patrocinadores</h2>
-                <p style="margin-bottom: 1.5rem;">ByteLog Tools opera bajo estrictos estándares de confidencialidad. Para mantener la herramienta gratuita, utilizamos banners de patrocinadores que operan en secciones estrictamente delimitadas sin tener acceso a los datos de la herramienta que está utilizando.</p>
+                <h2 style="font-size: 1.3rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #111827; font-family: sans-serif;">2. Transparencia y Sin Rastreadores</h2>
+                <p style="margin-bottom: 1.5rem;">ByteLog Tools opera bajo estrictos estándares de confidencialidad. No implementamos rastreadores invasivos de terceros ni compartimos perfiles de uso con redes de anunciantes de dudosa procedencia.</p>
                 <br><hr style="border-top: 1px solid #e5e7eb; margin: 2rem 0;"><br>
                 <p style="font-size: 0.85rem; color: #9ca3af; text-align: center; font-family: sans-serif;">Documento Generado Localmente - Sin Validez Jurídica Externa.</p>
             `,
@@ -430,7 +401,7 @@
                 <h2 style="font-size: 1.3rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #111827; font-family: sans-serif;">Cookies Estrictamente Necesarias</h2>
                 <p style="margin-bottom: 1.5rem;">Utilizamos preferencias de sesión para recordar ajustes de la interfaz, tales como la aceptación de nuestro aviso inicial de cookies. Esto evita interrupciones visuales en sus visitas concurrentes.</p>
                 <h2 style="font-size: 1.3rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #111827; font-family: sans-serif;">Gestión de Privacidad</h2>
-                <p style="margin-bottom: 1.5rem;">Nuestra plataforma ha sido diseñada para priorizar su seguridad. Los scripts de optimización técnica y patrocinios cargan de forma asíncrona, garantizando que su identidad, contraseñas generadas y patrones de navegación se mantengan protegidos y anónimos.</p>
+                <p style="margin-bottom: 1.5rem;">Nuestra plataforma ha sido diseñada para priorizar su seguridad. Los scripts de optimización técnica cargan de forma asíncrona, garantizando que su identidad, contraseñas generadas y patrones de navegación se mantengan protegidos y anónimos.</p>
             `
         };
 
@@ -462,7 +433,7 @@
         }
 
         // ==========================================
-        // SISTEMA DE PESTAÑAS
+        // SISTEMA DE PESTAÑAS (FIJACIÓN W-FULL)
         // ==========================================
         function switchTab(type) {
             const tabs = [
@@ -475,14 +446,8 @@
             tabs.forEach(t => {
                 if (t.id === type) {
                     t.sec.classList.remove('hidden');
-                    t.sec.classList.add('flex', 'w-full');
-                    if (t.id === 'pass') t.sec.classList.replace('flex', 'block');
-                    
-                    // Reiniciar animación
-                    t.sec.style.animation = 'none';
-                    void t.sec.offsetWidth; 
-                    t.sec.style.animation = 'fadeIn 0.4s ease forwards';
-                    
+                    // Block fluye mejor para la calculadora de pass, flex col para los otros.
+                    t.sec.classList.add(t.id === 'pass' ? 'block' : 'flex'); 
                     if (t.btn) t.btn.className = "tab-active pb-1 transition-colors whitespace-nowrap";
                     if (t.btnM) t.btnM.className = "tab-active py-3 px-4 text-sm whitespace-nowrap";
                 } else {
@@ -495,7 +460,7 @@
         }
 
         // ==========================================
-        // 1. GENERADOR DE CONTRASEÑAS (LOGICA PRIVACIDAD)
+        // 1. GENERADOR DE CONTRASEÑAS Y LÓGICA DE PRIVACIDAD
         // ==========================================
         let currentRawPassword = "";
         let isPasswordVisible = false;
@@ -571,7 +536,10 @@
             if (isPasswordVisible) {
                 isPasswordVisible = false;
                 updatePasswordDisplay();
-                if (privacyViewCount >= 2) { generatePassword(); }
+                // REGLA HARRY: Permite ocultar 1 vez sin borrar. A la 2da vez que se oculta, se QUEMA por seguridad.
+                if (privacyViewCount >= 2) {
+                    generatePassword();
+                }
             } else {
                 isPasswordVisible = true;
                 privacyViewCount++;
@@ -616,7 +584,7 @@
         }
 
         // ==========================================
-        // 2. MOTOR DE USERNAMES (DICCIONARIOS MÁSTER)
+        // 2. MOTOR DE USERNAMES (DICCIONARIOS MÁSTER COMPLETOS)
         // ==========================================
         const nickInput = document.getElementById('nickInput');
         const nickEmpty = document.getElementById('nickEmpty');
@@ -624,7 +592,7 @@
 
         const MAP_FRAKTUR = {'a':'𝖆','b':'𝖇','c':'𝖈','d':'𝖉','e':'𝖊','f':'𝖋','g':'𝖌','h':'𝖍','i':'𝖎','j':'𝖏','k':'𝖐','l':'𝖑','m':'𝖒','n':'𝖓','o':'𝖔','p':'𝖕','q':'𝖖','r':'𝖗','s':'𝖘','t':'𝖙','u':'𝖚','v':'𝖛','w':'𝖜','x':'𝖝','y':'𝖞','z':'𝖟','A':'𝕬','B':'𝕭','C':'𝕮','D':'𝕯','E':'𝕰','F':'𝕱','G':'𝕲','H':'𝕳','I':'𝕴','J':'𝕵','K':'𝕶','L':'𝕷','M':'𝕸','N':'𝕹','O':'𝕺','P':'𝕻','Q':'𝕼','R':'𝕽','S':'𝕾','T':'𝕿','U':'𝖀','V':'𝖁','W':'𝖂','X':'𝖃','Y':'𝖄','Z':'𝖅'};
         const MAP_FULLWIDTH = {'a':'ａ','b':'ｂ','c':'ｃ','d':'ｄ','e':'ｅ','f':'ｆ','g':'ｇ','h':'ｈ','i':'ｉ','j':'ｊ','k':'ｋ','l':'ｌ','m':'ｍ','n':'ｎ','o':'ｏ','p':'ｐ','q':'ｑ','r':'ｒ','s':'ｓ','t':'ｔ','u':'ｕ','v':'ｖ','w':'ｗ','x':'ｘ','y':'ｙ','z':'ｚ','A':'Ａ','B':'Ｂ','C':'Ｃ','D':'Ｄ','E':'Ｅ','F':'Ｆ','G':'Ｇ','H':'Ｈ','I':'Ｉ','J':'Ｊ','K':'Ｋ','L':'Ｌ','M':'Ｍ','N':'Ｎ','O':'Ｏ','P':'Ｐ','Q':'Ｑ','R':'Ｒ','S':'Ｓ','T':'Ｔ','U':'Ｕ','V':'Ｖ','W':'Ｗ','X':'Ｘ','Y':'Ｙ','Z':'Ｚ'};
-        const MAP_SANS = {'a':'𝗮','b':'𝗯','c':'𝗰','d':'𝗱','e':'𝗲','f':'𝗳','g':'𝗴','h':'𝗵','i':'𝗶','j':'𝗷','k':'𝗸','l':'𝗹','m':'𝗺','n':'𝗻','o':'𝗼','p':'𝗽','q':'𝗾','r':'𝗿','s':'𝘀','t':'𝘁','u':'𝘂','v':'𝘃','w':'𝘄','x':'𝘅','y':'𝘆','z':'𝘇','A':'𝗔','B':'𝗕','C':'𝗖','D':'𝗗','E':'𝗘','F':'𝗙','G':'𝗚','H':'Ｈ','I':'𝗜','J':'Ｊ','K':'𝗞','L':'𝗟','M':'Ｍ','N':'𝗡','O':'Ｏ','P':'𝗣','Q':'𝗤','R':'Ｒ','S':'𝗦','T':'𝗧','U':'Ｕ','V':'𝗩','W':'𝗪','X':'𝗫','Y':'𝗬','Z':'𝗭'};
+        const MAP_SANS = {'a':'𝗮','b':'𝗯','c':'𝗰','d':'𝗱','e':'𝗲','f':'𝗳','g':'𝗴','h':'𝗵','i':'𝗶','j':'𝗷','k':'𝗸','l':'𝗹','m':'𝗺','n':'𝗻','o':'𝗼','p':'𝗽','q':'𝗾','r':'𝗿','s':'𝘀','t':'𝘁','u':'𝘂','v':'𝘃','w':'𝘄','x':'𝘅','y':'𝘆','z':'𝘇','A':'𝗔','B':'𝗕','C':'𝗖','D':'𝗗','E':'𝗘','F':'𝗙','G':'𝗚','H':'Ｈ','I':'𝗜','J':'Ｊ','K':'𝗞','L':'𝗟','M':'Ｍ','N':'𝗡','O':'𝗢','P':'𝗣','Q':'𝗤','R':'Ｒ','S':'𝗦','T':'Ｔ','U':'Ｕ','V':'𝗩','W':'𝗪','X':'𝗫','Y':'𝗬','Z':'𝗭'};
         const MAP_SCRIPT = {'a':'𝒶','b':'𝒷','c':'𝒸','d':'𝒹','e':'𝑒','f':'𝒻','g':'𝑔','h':'𝒽','i':'𝒾','j':'𝒿','k':'𝓀','l':'𝓁','m':'𝓂','n':'𝓃','o':'𝑜','p':'𝓅','q':'𝓆','r':'𝓇','s':'𝓈','t':'𝓉','u':'𝓊','v':'𝓋','w':'𝓌','x':'𝓍','y':'𝓎','z':'𝓏','A':'𝒜','B':'ℬ','C':'𝒞','D':'𝒟','E':'ℰ','F':'ℱ','G':'𝒢','H':'ℋ','I':'ℐ','J':'𝒥','K':'𝒦','L':'ℒ','M':'ℳ','N':'𝒩','O':'𝒪','P':'𝒫','Q':'𝒬','R':'ℛ','S':'𝒮','T':'𝒯','U':'𝒰','V':'𝒱','W':'𝒲','X':'𝒳','Y':'𝒴','Z':'𝒵'};
         const MAP_SMALLCAPS = {'a':'ᴀ','b':'ʙ','c':'ᴄ','d':'ᴅ','e':'ᴇ','f':'ғ','g':'ɢ','h':'ʜ','i':'ɪ','j':'ᴊ','k':'ᴋ','l':'ʟ','m':'ᴍ','n':'ɴ','o':'ᴏ','p':'ᴘ','q':'ǫ','r':'ʀ','s':'s','t':'ᴛ','u':'ᴜ','v':'ᴠ','w':'ᴡ','x':'x','y':'ʏ','z':'ᴢ','A':'A','B':'B','C':'C','D':'D','E':'E','F':'F','G':'G','H':'H','I':'I','J':'J','K':'K','L':'L','M':'M','N':'N','O':'O','P':'P','Q':'Q','R':'R','S':'S','T':'T','U':'U','V':'V','W':'W','X':'X','Y':'Y','Z':'Z'};
         const MAP_TECHNO = {'a':'卂','b':'乃','c':'匚','d':'刀','e':'乇','f':'千','g':'Ꮆ','h':'卄','i':'丨','j':'丁','k':'长','l':'ㄥ','m':'爪','n':'几','o':'ㄖ','p':'卩','q':'Ɋ','r':'尺','s':'丂','t':'ㄒ','u':'ㄩ','v':'ᐯ','w':'山','x':'乂','y':'丫','z':'乙','A':'卂','B':'乃','C':'匚','D':'刀','E':'乇','F':'千','G':'Ꮆ','H':'卄','I':'丨','J':'丁','K':'长','L':'ㄥ','M':'爪','N':'几','O':'ㄖ','P':'卩','Q':'Ɋ','R':'尺','S':'丂','T':'ㄒ','U':'ㄩ','V':'ᐯ','W':'山','X':'乂','Y':'丫','Z':'乙'};
