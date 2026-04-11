@@ -305,7 +305,7 @@
                     <li class="flex gap-4">
                         <div class="text-[var(--lp-cyan)] mt-1"><i class="fa-solid fa-wand-magic-sparkles text-xl"></i></div>
                         <div>
-                            <strong class="text-gray-900 block mb-1">NickForge (Forjador de Identidades)</strong>
+                            <strong class="text-gray-900 block mb-1">Generador de Usernames (Para Gamers y Creadores)</strong>
                             Sabemos que en el ecosistema Gaming y de Creación de Contenido, tu identidad digital lo es todo. Por eso creamos un motor generativo capaz de forjar nicknames y nombres de usuario únicos. Utilizamos estéticas avanzadas (desde Pixel 8-Bit hasta Glitch y Techno) para que tu nombre destaque en las tablas de clasificación, servidores de rol (RPG) o streams en vivo, garantizando que ninguna fuente se rompa y siempre tengas una variante disponible.
                         </div>
                     </li>
@@ -318,7 +318,7 @@
 
     </main>
 
-    <!-- FOOTER CORPORATIVO CON CONTACTO Y LEGALES -->
+    <!-- FOOTER CORPORATIVO CON CONTACTO Y ENLACES A PÁGINAS FÍSICAS -->
     <footer class="bg-white border-t border-gray-200 mt-auto w-full relative z-10">
         <div class="max-w-7xl mx-auto px-4 md:px-8 py-8 flex flex-col md:flex-row items-center md:items-start justify-between gap-6 text-sm text-gray-500">
             <div class="flex flex-col items-center md:items-start gap-2">
@@ -326,45 +326,21 @@
                 <span>Contacto de soporte: <a href="mailto:contacto@harrysystems.website" class="text-[var(--lp-red)] hover:underline font-medium">contacto@harrysystems.website</a></span>
             </div>
             <div class="flex gap-6 font-medium">
-                <button onclick="openLegalModal('privacidad')" class="hover:text-[var(--lp-red)] transition-colors">Aviso de Privacidad</button>
-                <button onclick="openLegalModal('cookies')" class="hover:text-[var(--lp-red)] transition-colors">Política de Cookies</button>
+                <a href="privacidad.html" class="hover:text-[var(--lp-red)] transition-colors">Aviso de Privacidad</a>
+                <a href="cookies.html" class="hover:text-[var(--lp-red)] transition-colors">Política de Cookies</a>
             </div>
         </div>
     </footer>
 
-    <!-- MODAL LEGAL (DOCUMENTOS PDF SIMULADOS) -->
-    <div id="legalModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-gray-900/60 backdrop-blur-sm p-4 animate-fade">
-        <div class="bg-white border border-gray-300 w-full max-w-3xl h-[80vh] rounded-lg shadow-2xl flex flex-col overflow-hidden">
-            <div class="bg-gray-50 px-6 py-4 flex justify-between items-center border-b border-gray-200">
-                <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-file-pdf text-[var(--lp-red)] text-2xl"></i>
-                    <div>
-                        <h3 id="legalTitle" class="text-gray-900 font-bold">Documento_Legal.pdf</h3>
-                        <p class="text-xs text-gray-500">Documento de cumplimiento corporativo</p>
-                    </div>
-                </div>
-                <div class="flex gap-4 items-center">
-                    <button onclick="downloadLegalPDF()" class="text-gray-500 hover:text-gray-900 font-semibold text-sm transition-colors flex items-center gap-1">
-                        <i class="fa-solid fa-download"></i> Descargar
-                    </button>
-                    <button onclick="closeLegalModal()" class="text-gray-400 hover:text-[var(--lp-red)] transition-colors"><i class="fa-solid fa-xmark text-2xl"></i></button>
-                </div>
-            </div>
-            <div class="flex-1 bg-white p-8 md:p-12 overflow-y-auto text-gray-800 font-serif text-sm leading-relaxed" id="legalContent">
-                <!-- Inyectado dinámicamente -->
-            </div>
-        </div>
-    </div>
-
-    <!-- BANNER DE COOKIES -->
+    <!-- BANNER DE COOKIES (Enlaza a páginas físicas) -->
     <div id="cookieBanner" class="fixed bottom-0 left-0 w-full z-[90] bg-[#373a3c] border-t border-gray-700 text-white shadow-2xl transform translate-y-full transition-transform duration-500 flex flex-col xl:flex-row items-center justify-between p-4 md:px-8 md:py-4 gap-6 hidden">
         <div class="flex-1 text-xs md:text-sm text-gray-300 leading-relaxed">
-            Utilizamos cookies y tecnologías similares para el funcionamiento del sitio y mejora de la experiencia del usuario. Para obtener más información, consulte nuestro <button onclick="openLegalModal('privacidad')" class="text-[var(--lp-cyan)] hover:underline font-semibold">Aviso de privacidad</button> y <button onclick="openLegalModal('cookies')" class="text-[var(--lp-cyan)] hover:underline font-semibold">Política de cookies</button>. Puede optar por dar su consentimiento o rechazar el uso de cookies no esenciales.
+            Utilizamos cookies y tecnologías similares para el funcionamiento del sitio y mejora de la experiencia del usuario. Para obtener más información, consulte nuestro <a href="privacidad.html" class="text-[var(--lp-cyan)] hover:underline font-semibold">Aviso de privacidad</a> y <a href="cookies.html" class="text-[var(--lp-cyan)] hover:underline font-semibold">Política de cookies</a>. Puede optar por dar su consentimiento o rechazar el uso de cookies no esenciales.
         </div>
         <div class="flex flex-col sm:flex-row gap-3 shrink-0 w-full xl:w-auto items-center">
-            <button onclick="openLegalModal('cookies')" class="bg-transparent hover:bg-gray-700 border border-gray-300 text-white font-bold py-2.5 px-6 rounded-full text-sm transition-colors w-full sm:w-auto">
+            <a href="cookies.html" class="bg-transparent hover:bg-gray-700 border border-gray-300 text-white font-bold py-2.5 px-6 rounded-full text-sm transition-colors w-full sm:w-auto text-center">
                 Configuración
-            </button>
+            </a>
             <button onclick="acceptCookies()" class="bg-[var(--lp-red)] hover:bg-[#b0221e] text-white font-bold py-2.5 px-6 rounded-full text-sm transition-colors w-full sm:w-auto">
                 Rechazar Opcionales
             </button>
@@ -375,61 +351,10 @@
     </div>
 
     <script>
-        // ==========================================
-        // SISTEMA LEGAL Y COOKIES (Texto natural y seguro)
-        // ==========================================
-        const cookieBanner = document.getElementById('cookieBanner');
-        const legalModal = document.getElementById('legalModal');
-        const legalTitle = document.getElementById('legalTitle');
-        const legalContent = document.getElementById('legalContent');
-
-        const TEXTOS_LEGALES = {
-            privacidad: `
-                <h1 style="font-size: 1.8rem; font-weight: bold; margin-bottom: 1.5rem; color: #111827; font-family: sans-serif;">Aviso de Privacidad de ByteLog</h1>
-                <p style="margin-bottom: 1.5rem; color: #4b5563;"><strong>Última actualización:</strong> Abril 2026</p>
-                <p style="margin-bottom: 1.5rem;">En ByteLog, nos tomamos muy en serio su privacidad. Al ser una aplicación diseñada bajo la arquitectura "Lado del Cliente", garantizamos que <strong>no recopilamos, almacenamos ni transmitimos</strong> ninguna información personal, contraseñas generadas o nombres de usuario a ningún servidor externo.</p>
-                <h2 style="font-size: 1.3rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #111827; font-family: sans-serif;">1. Procesamiento Local Seguro</h2>
-                <p style="margin-bottom: 1.5rem;">Toda la generación de datos, incluyendo la entropía para crear contraseñas seguras, se realiza utilizando los algoritmos nativos de seguridad de su propio dispositivo y navegador web. Una vez que cierra la pestaña o limpia su sesión, la información generada se destruye permanentemente.</p>
-                <h2 style="font-size: 1.3rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #111827; font-family: sans-serif;">2. Transparencia y Sin Rastreadores</h2>
-                <p style="margin-bottom: 1.5rem;">ByteLog Tools opera bajo estrictos estándares de confidencialidad. No implementamos rastreadores invasivos de terceros ni compartimos perfiles de uso con redes de anunciantes de dudosa procedencia.</p>
-                <br><hr style="border-top: 1px solid #e5e7eb; margin: 2rem 0;"><br>
-                <p style="font-size: 0.85rem; color: #9ca3af; text-align: center; font-family: sans-serif;">Documento Generado Localmente - Sin Validez Jurídica Externa.</p>
-            `,
-            cookies: `
-                <h1 style="font-size: 1.8rem; font-weight: bold; margin-bottom: 1.5rem; color: #111827; font-family: sans-serif;">Política de Cookies</h1>
-                <p style="margin-bottom: 1.5rem; color: #4b5563;">Este sitio web utiliza tecnologías estándar de almacenamiento local en su dispositivo con el único fin de mejorar la experiencia técnica y mostrar recomendaciones relevantes.</p>
-                <h2 style="font-size: 1.3rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #111827; font-family: sans-serif;">Cookies Estrictamente Necesarias</h2>
-                <p style="margin-bottom: 1.5rem;">Utilizamos preferencias de sesión para recordar ajustes de la interfaz, tales como la aceptación de nuestro aviso inicial de cookies. Esto evita interrupciones visuales en sus visitas concurrentes.</p>
-                <h2 style="font-size: 1.3rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #111827; font-family: sans-serif;">Gestión de Privacidad</h2>
-                <p style="margin-bottom: 1.5rem;">Nuestra plataforma ha sido diseñada para priorizar su seguridad. Los scripts de optimización técnica cargan de forma asíncrona, garantizando que su identidad, contraseñas generadas y patrones de navegación se mantengan protegidos y anónimos.</p>
-            `
-        };
-
         function acceptCookies() {
             localStorage.setItem('bytelog_cookies_accepted', 'true');
-            cookieBanner.classList.add('translate-y-full');
-            setTimeout(() => { cookieBanner.classList.add('hidden'); }, 500);
-        }
-
-        function openLegalModal(type) {
-            legalTitle.textContent = type === 'privacidad' ? 'Aviso_de_Privacidad.pdf' : 'Politica_de_Cookies.pdf';
-            legalContent.innerHTML = TEXTOS_LEGALES[type];
-            legalModal.classList.remove('hidden');
-            legalModal.classList.add('flex');
-        }
-        
-        function closeLegalModal() {
-            legalModal.classList.add('hidden');
-            legalModal.classList.remove('flex');
-        }
-        
-        function downloadLegalPDF() {
-            const text = legalContent.innerText;
-            const blob = new Blob([text], { type: 'text/plain' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = legalTitle.textContent.replace('.pdf', '.txt'); 
-            a.click();
+            document.getElementById('cookieBanner').classList.add('translate-y-full');
+            setTimeout(() => { document.getElementById('cookieBanner').classList.add('hidden'); }, 500);
         }
 
         // ==========================================
@@ -446,8 +371,13 @@
             tabs.forEach(t => {
                 if (t.id === type) {
                     t.sec.classList.remove('hidden');
-                    // Block fluye mejor para la calculadora de pass, flex col para los otros.
-                    t.sec.classList.add(t.id === 'pass' ? 'block' : 'flex'); 
+                    t.sec.classList.add('flex', 'w-full');
+                    if (t.id === 'pass') t.sec.classList.replace('flex', 'block');
+                    
+                    t.sec.style.animation = 'none';
+                    void t.sec.offsetWidth; 
+                    t.sec.style.animation = 'fadeIn 0.4s ease forwards';
+                    
                     if (t.btn) t.btn.className = "tab-active pb-1 transition-colors whitespace-nowrap";
                     if (t.btnM) t.btnM.className = "tab-active py-3 px-4 text-sm whitespace-nowrap";
                 } else {
@@ -460,7 +390,7 @@
         }
 
         // ==========================================
-        // 1. GENERADOR DE CONTRASEÑAS Y LÓGICA DE PRIVACIDAD
+        // 1. GENERADOR DE CONTRASEÑAS (LOGICA PRIVACIDAD)
         // ==========================================
         let currentRawPassword = "";
         let isPasswordVisible = false;
@@ -592,7 +522,7 @@
 
         const MAP_FRAKTUR = {'a':'𝖆','b':'𝖇','c':'𝖈','d':'𝖉','e':'𝖊','f':'𝖋','g':'𝖌','h':'𝖍','i':'𝖎','j':'𝖏','k':'𝖐','l':'𝖑','m':'𝖒','n':'𝖓','o':'𝖔','p':'𝖕','q':'𝖖','r':'𝖗','s':'𝖘','t':'𝖙','u':'𝖚','v':'𝖛','w':'𝖜','x':'𝖝','y':'𝖞','z':'𝖟','A':'𝕬','B':'𝕭','C':'𝕮','D':'𝕯','E':'𝕰','F':'𝕱','G':'𝕲','H':'𝕳','I':'𝕴','J':'𝕵','K':'𝕶','L':'𝕷','M':'𝕸','N':'𝕹','O':'𝕺','P':'𝕻','Q':'𝕼','R':'𝕽','S':'𝕾','T':'𝕿','U':'𝖀','V':'𝖁','W':'𝖂','X':'𝖃','Y':'𝖄','Z':'𝖅'};
         const MAP_FULLWIDTH = {'a':'ａ','b':'ｂ','c':'ｃ','d':'ｄ','e':'ｅ','f':'ｆ','g':'ｇ','h':'ｈ','i':'ｉ','j':'ｊ','k':'ｋ','l':'ｌ','m':'ｍ','n':'ｎ','o':'ｏ','p':'ｐ','q':'ｑ','r':'ｒ','s':'ｓ','t':'ｔ','u':'ｕ','v':'ｖ','w':'ｗ','x':'ｘ','y':'ｙ','z':'ｚ','A':'Ａ','B':'Ｂ','C':'Ｃ','D':'Ｄ','E':'Ｅ','F':'Ｆ','G':'Ｇ','H':'Ｈ','I':'Ｉ','J':'Ｊ','K':'Ｋ','L':'Ｌ','M':'Ｍ','N':'Ｎ','O':'Ｏ','P':'Ｐ','Q':'Ｑ','R':'Ｒ','S':'Ｓ','T':'Ｔ','U':'Ｕ','V':'Ｖ','W':'Ｗ','X':'Ｘ','Y':'Ｙ','Z':'Ｚ'};
-        const MAP_SANS = {'a':'𝗮','b':'𝗯','c':'𝗰','d':'𝗱','e':'𝗲','f':'𝗳','g':'𝗴','h':'𝗵','i':'𝗶','j':'𝗷','k':'𝗸','l':'𝗹','m':'𝗺','n':'𝗻','o':'𝗼','p':'𝗽','q':'𝗾','r':'𝗿','s':'𝘀','t':'𝘁','u':'𝘂','v':'𝘃','w':'𝘄','x':'𝘅','y':'𝘆','z':'𝘇','A':'𝗔','B':'𝗕','C':'𝗖','D':'𝗗','E':'𝗘','F':'𝗙','G':'𝗚','H':'Ｈ','I':'𝗜','J':'Ｊ','K':'𝗞','L':'𝗟','M':'Ｍ','N':'𝗡','O':'𝗢','P':'𝗣','Q':'𝗤','R':'Ｒ','S':'𝗦','T':'Ｔ','U':'Ｕ','V':'𝗩','W':'𝗪','X':'𝗫','Y':'𝗬','Z':'𝗭'};
+        const MAP_SANS = {'a':'𝗮','b':'𝗯','c':'𝗰','d':'𝗱','e':'𝗲','f':'𝗳','g':'𝗴','h':'𝗵','i':'𝗶','j':'𝗷','k':'𝗸','l':'𝗹','m':'𝗺','n':'𝗻','o':'𝗼','p':'𝗽','q':'𝗾','r':'𝗿','s':'𝘀','t':'𝘁','u':'𝘂','v':'𝘃','w':'𝘄','x':'𝘅','y':'𝘆','z':'𝘇','A':'𝗔','B':'𝗕','C':'Ｃ','D':'𝗗','E':'𝗘','F':'𝗙','G':'𝗚','H':'𝗛','I':'𝗜','J':'𝗝','K':'𝗞','L':'𝗟','M':'Ｍ','N':'𝗡','O':'𝗢','P':'𝗣','Q':'𝗤','R':'Ｒ','S':'𝗦','T':'𝗧','U':'Ｕ','V':'𝗩','W':'𝗪','X':'𝗫','Y':'𝗬','Z':'𝗭'};
         const MAP_SCRIPT = {'a':'𝒶','b':'𝒷','c':'𝒸','d':'𝒹','e':'𝑒','f':'𝒻','g':'𝑔','h':'𝒽','i':'𝒾','j':'𝒿','k':'𝓀','l':'𝓁','m':'𝓂','n':'𝓃','o':'𝑜','p':'𝓅','q':'𝓆','r':'𝓇','s':'𝓈','t':'𝓉','u':'𝓊','v':'𝓋','w':'𝓌','x':'𝓍','y':'𝓎','z':'𝓏','A':'𝒜','B':'ℬ','C':'𝒞','D':'𝒟','E':'ℰ','F':'ℱ','G':'𝒢','H':'ℋ','I':'ℐ','J':'𝒥','K':'𝒦','L':'ℒ','M':'ℳ','N':'𝒩','O':'𝒪','P':'𝒫','Q':'𝒬','R':'ℛ','S':'𝒮','T':'𝒯','U':'𝒰','V':'𝒱','W':'𝒲','X':'𝒳','Y':'𝒴','Z':'𝒵'};
         const MAP_SMALLCAPS = {'a':'ᴀ','b':'ʙ','c':'ᴄ','d':'ᴅ','e':'ᴇ','f':'ғ','g':'ɢ','h':'ʜ','i':'ɪ','j':'ᴊ','k':'ᴋ','l':'ʟ','m':'ᴍ','n':'ɴ','o':'ᴏ','p':'ᴘ','q':'ǫ','r':'ʀ','s':'s','t':'ᴛ','u':'ᴜ','v':'ᴠ','w':'ᴡ','x':'x','y':'ʏ','z':'ᴢ','A':'A','B':'B','C':'C','D':'D','E':'E','F':'F','G':'G','H':'H','I':'I','J':'J','K':'K','L':'L','M':'M','N':'N','O':'O','P':'P','Q':'Q','R':'R','S':'S','T':'T','U':'U','V':'V','W':'W','X':'X','Y':'Y','Z':'Z'};
         const MAP_TECHNO = {'a':'卂','b':'乃','c':'匚','d':'刀','e':'乇','f':'千','g':'Ꮆ','h':'卄','i':'丨','j':'丁','k':'长','l':'ㄥ','m':'爪','n':'几','o':'ㄖ','p':'卩','q':'Ɋ','r':'尺','s':'丂','t':'ㄒ','u':'ㄩ','v':'ᐯ','w':'山','x':'乂','y':'丫','z':'乙','A':'卂','B':'乃','C':'匚','D':'刀','E':'乇','F':'千','G':'Ꮆ','H':'卄','I':'丨','J':'丁','K':'长','L':'ㄥ','M':'爪','N':'几','O':'ㄖ','P':'卩','Q':'Ɋ','R':'尺','S':'丂','T':'ㄒ','U':'ㄩ','V':'ᐯ','W':'山','X':'乂','Y':'丫','Z':'乙'};
@@ -753,6 +683,7 @@
             }
             generatePassword();
         });
+
     </script>
 </body>
 </html>
