@@ -75,28 +75,30 @@
 </head>
 <body class="flex flex-col min-h-screen">
 
-    <!-- HEADER LIMPIO (Sin botones extraños) -->
+    <!-- HEADER LIMPIO Y CORPORATIVO -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 shrink-0 pr-4">
                 <span class="text-[var(--lp-red)] text-2xl font-bold tracking-tight">ByteLog</span>
                 <span class="text-gray-500 text-sm font-medium border-l border-gray-300 pl-2 ml-2 hidden sm:inline-block">Tools</span>
             </div>
             
-            <nav class="hidden md:flex items-center gap-8">
-                <button id="tabPass" class="tab-active pb-1 transition-colors" onclick="switchTab('pass')">Contraseñas</button>
-                <button id="tabNick" class="tab-inactive pb-1 transition-colors" onclick="switchTab('nick')">Usernames</button>
-                <button id="tabFaq" class="tab-inactive pb-1 transition-colors" onclick="switchTab('faq')">Preguntas frecuentes</button>
+            <nav class="hidden lg:flex items-center justify-center gap-6 flex-1">
+                <button id="tabPass" class="tab-active pb-1 transition-colors whitespace-nowrap" onclick="switchTab('pass')">Generador de contraseñas</button>
+                <button id="tabNick" class="tab-inactive pb-1 transition-colors whitespace-nowrap" onclick="switchTab('nick')">Generador de usernames</button>
+                <button id="tabFaq" class="tab-inactive pb-1 transition-colors whitespace-nowrap" onclick="switchTab('faq')">Preguntas frecuentes</button>
+                <button id="tabAbout" class="tab-inactive pb-1 transition-colors whitespace-nowrap" onclick="switchTab('about')">Quiénes somos</button>
             </nav>
             
-            <div class="w-10 hidden md:block"></div>
+            <div class="w-24 hidden lg:block shrink-0"></div> <!-- Espaciador para centrar nav -->
         </div>
         
         <!-- Menú Móvil -->
-        <div class="md:hidden flex border-t border-gray-100 px-4 overflow-x-auto custom-x-scrollbar">
-            <button id="tabPassMobile" class="tab-active py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('pass')">Contraseñas</button>
-            <button id="tabNickMobile" class="tab-inactive py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('nick')">Usernames</button>
-            <button id="tabFaqMobile" class="tab-inactive py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('faq')">Ayuda</button>
+        <div class="lg:hidden flex border-t border-gray-100 px-4 overflow-x-auto custom-x-scrollbar">
+            <button id="tabPassMobile" class="tab-active py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('pass')">Generador de contraseñas</button>
+            <button id="tabNickMobile" class="tab-inactive py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('nick')">Generador de usernames</button>
+            <button id="tabFaqMobile" class="tab-inactive py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('faq')">Preguntas frecuentes</button>
+            <button id="tabAboutMobile" class="tab-inactive py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('about')">Quiénes somos</button>
         </div>
     </header>
 
@@ -218,33 +220,203 @@
         <!-- SECCIÓN 3: FAQ -->
         <section id="sectionFaq" class="section-container px-4 py-16 hidden animate-fade flex-col">
             <div class="text-center mb-12"><h2 class="text-3xl md:text-[38px] font-extrabold text-gray-900">Preguntas frecuentes</h2></div>
+            
             <div class="bg-white border border-gray-200 rounded-lg shadow-sm">
+                <!-- FAQ 1 -->
                 <details class="group border-b border-gray-200 p-6 transition-colors">
                     <summary class="font-bold cursor-pointer list-none text-lg flex justify-between items-center text-gray-900 hover:text-[var(--lp-red)]">
-                        <span>¿Es seguro este generador de contraseñas?</span>
+                        <span>¿Para qué sirve el generador de contraseñas?</span>
                         <i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></i>
                     </summary>
-                    <p class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">SÍ. ByteLog utiliza criptografía local pura. Ninguna contraseña sale de su navegador. Nuestro sistema de privacidad inteligente le permite revelar la contraseña oculta para copiarla. Al ocultarla por segunda vez, el sistema asume compromiso visual, la destruye y genera una nueva inmediatamente para protegerte.</p>
+                    <p class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">Nuestra herramienta sirve para crear una barrera impenetrable para tus cuentas críticas. Los humanos solemos crear patrones predecibles, pero nuestro generador forja cadenas aleatorias de alta entropía que protegen tu información bancaria, correos corporativos y redes sociales de cualquier intento de acceso no autorizado.</p>
                 </details>
+
+                <!-- FAQ 2 -->
                 <details class="group border-b border-gray-200 p-6 transition-colors">
                     <summary class="font-bold cursor-pointer list-none text-lg flex justify-between items-center text-gray-900 hover:text-[var(--lp-red)]">
-                        <span>¿Guardan mi información en servidores?</span>
+                        <span>¿Por qué no usar mi nombre o contraseñas fáciles?</span>
                         <i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></i>
                     </summary>
-                    <p class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">No. No contamos con bases de datos ni backends externos para estas herramientas. Todo el código se ejecuta en la memoria RAM de su dispositivo local.</p>
+                    <p class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">Usar contraseñas como <strong class="text-gray-800">"123456"</strong>, <strong class="text-gray-800">"admin123"</strong>, <strong class="text-gray-800">"maria1990"</strong> o el nombre de tu mascota es un riesgo crítico. Los piratas informáticos no adivinan manualmente; utilizan redes de bots y diccionarios automatizados que pueden descifrar estas combinaciones predecibles en menos de 0.5 segundos.</p>
                 </details>
+
+                <!-- FAQ 3: NUEVA PREGUNTA SOBRE GAMING -->
+                <details class="group border-b border-gray-200 p-6 transition-colors">
+                    <summary class="font-bold cursor-pointer list-none text-lg flex justify-between items-center text-gray-900 hover:text-[var(--lp-red)]">
+                        <span>¿Por qué ofrecen un generador de nombres de usuario para Gamers?</span>
+                        <i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></i>
+                    </summary>
+                    <p class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">En el mundo del gaming y los eSports, tu "Nick" o nombre de usuario es tu carta de presentación y tu identidad digital. Muchos jugadores se frustran al encontrar que su nombre ideal ya está en uso. Nuestro generador procedural (NickForge) soluciona esto aplicando estéticas tipográficas avanzadas (como Pixel, Gótico o Techno) a tu nombre base, permitiéndote destacar en cualquier juego multijugador, tabla de clasificación o plataforma de streaming con una identidad visualmente única e irrepetible.</p>
+                </details>
+
+                <!-- FAQ 4 -->
+                <details class="group border-b border-gray-200 p-6 transition-colors">
+                    <summary class="font-bold cursor-pointer list-none text-lg flex justify-between items-center text-gray-900 hover:text-[var(--lp-red)]">
+                        <span>¿Es seguro este generador y cómo funciona?</span>
+                        <i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></i>
+                    </summary>
+                    <p class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">Absolutamente. Utilizamos los algoritmos nativos más avanzados integrados directamente en tu navegador y dispositivo para generar entropía real. La contraseña jamás se transmite por internet. Además, nuestro <strong>sistema de privacidad inteligente</strong> te permite revelar la contraseña oculta para copiarla. Al ocultarla por segunda vez, el sistema asume que podría haber miradas indiscretas, la destruye y genera una nueva inmediatamente para protegerte.</p>
+                </details>
+
+                <!-- FAQ 5 -->
                 <details class="group p-6 transition-colors">
                     <summary class="font-bold cursor-pointer list-none text-lg flex justify-between items-center text-gray-900 hover:text-[var(--lp-red)]">
-                        <span>¿Por qué mis nicks se ven perfectos y no muestran errores ()?</span>
+                        <span>¿Guardan mis contraseñas o nombres de usuario?</span>
                         <i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></i>
                     </summary>
-                    <p class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">Utilizamos diccionarios de fuentes exactos y la función <code class="bg-gray-100 px-1 py-0.5 rounded text-[var(--lp-red)] font-mono text-sm">Array.from()</code>. Esto permite al motor mapear letra por letra respetando los espacios y el peso en bytes, impidiendo que los símbolos complejos Unicode se rompan al generar las variantes.</p>
+                    <p class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">No. <strong>No contamos con bases de datos ni servidores (backends) externos.</strong> Toda la información existe únicamente en la memoria RAM de tu computadora o celular. En el instante en que cierras o recargas la pestaña, todos los datos generados desaparecen para siempre.</p>
                 </details>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: QUIÉNES SOMOS -->
+        <section id="sectionAbout" class="section-container px-4 py-16 hidden animate-fade flex-col">
+            <div class="text-center mb-10 max-w-3xl mx-auto">
+                <h2 class="text-3xl md:text-[38px] leading-tight font-extrabold text-gray-900 mb-4">Quiénes Somos</h2>
+                <p class="text-gray-600 text-base md:text-lg">Construyendo herramientas digitales seguras, privadas y de alto rendimiento.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm border border-gray-200 p-8 md:p-12 mb-8 w-full leading-relaxed text-gray-700">
+                <p class="mb-6 text-lg">En <strong class="text-[var(--lp-red)]">ByteLog Tools</strong> somos una plataforma dedicada a la creación de herramientas digitales avanzadas. Nacimos con la misión de proveer soluciones utilitarias, rápidas y efectivas, poniendo siempre por delante la privacidad absoluta de nuestros usuarios.</p>
+                
+                <h3 class="text-xl font-bold text-gray-900 mb-4 mt-10 border-b border-gray-100 pb-2">Nuestras Herramientas Dedicadas</h3>
+                <ul class="list-none space-y-6 mb-6">
+                    <li class="flex gap-4">
+                        <div class="text-[var(--lp-green)] mt-1"><i class="fa-solid fa-shield-halved text-xl"></i></div>
+                        <div>
+                            <strong class="text-gray-900 block mb-1">Generador de Contraseñas Seguras</strong>
+                            Utilizamos el entorno local de tu dispositivo para asegurar una entropía real, protegiendo tus accesos con contraseñas impenetrables de un solo uso que te defienden de los ataques informáticos modernos.
+                        </div>
+                    </li>
+                    <li class="flex gap-4">
+                        <div class="text-[var(--lp-cyan)] mt-1"><i class="fa-solid fa-wand-magic-sparkles text-xl"></i></div>
+                        <div>
+                            <strong class="text-gray-900 block mb-1">Generador de Usernames (Para Gamers y Creadores)</strong>
+                            Sabemos que en el ecosistema Gaming y de Creación de Contenido, tu identidad digital lo es todo. Por eso creamos un motor generativo capaz de forjar nicknames y nombres de usuario únicos. Utilizamos estéticas avanzadas (desde Pixel 8-Bit hasta Glitch y Techno) para que tu nombre destaque en las tablas de clasificación, servidores de rol (RPG) o streams en vivo, garantizando que ninguna fuente se rompa y siempre tengas una variante disponible.
+                        </div>
+                    </li>
+                </ul>
+
+                <h3 class="text-xl font-bold text-gray-900 mb-3 mt-10 border-b border-gray-100 pb-2">Nuestra Promesa Técnica</h3>
+                <p>Creemos en el software limpio (Clean Code), interfaces minimalistas y el respeto a tus datos. No operamos bases de datos de almacenamiento, garantizando que todo lo que generes en nuestra web, se quede exclusivamente en tus manos.</p>
             </div>
         </section>
     </main>
 
+    <!-- FOOTER CORPORATIVO CON CONTACTO Y LEGALES -->
+    <footer class="bg-white border-t border-gray-200 mt-auto w-full">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 py-8 flex flex-col md:flex-row items-center md:items-start justify-between gap-6 text-sm text-gray-500">
+            <div class="flex flex-col items-center md:items-start gap-2">
+                <span class="font-semibold text-gray-700">&copy; 2026 ByteLog Tools. Todos los derechos reservados.</span>
+                <span>Contacto de soporte: <a href="mailto:contacto@harrysystems.website" class="text-[var(--lp-red)] hover:underline font-medium">contacto@harrysystems.website</a></span>
+            </div>
+            <div class="flex gap-6 font-medium">
+                <button onclick="openLegalModal('privacidad')" class="hover:text-[var(--lp-red)] transition-colors">Aviso de Privacidad</button>
+                <button onclick="openLegalModal('cookies')" class="hover:text-[var(--lp-red)] transition-colors">Política de Cookies</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL LEGAL (DOCUMENTOS PDF SIMULADOS) -->
+    <div id="legalModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-gray-900/60 backdrop-blur-sm p-4 animate-fade">
+        <div class="bg-white border border-gray-300 w-full max-w-3xl h-[80vh] rounded-lg shadow-2xl flex flex-col overflow-hidden">
+            <div class="bg-gray-50 px-6 py-4 flex justify-between items-center border-b border-gray-200">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-file-pdf text-[var(--lp-red)] text-2xl"></i>
+                    <div>
+                        <h3 id="legalTitle" class="text-gray-900 font-bold">Documento_Legal.pdf</h3>
+                        <p class="text-xs text-gray-500">Documento de cumplimiento corporativo</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 items-center">
+                    <button onclick="downloadLegalPDF()" class="text-gray-500 hover:text-gray-900 font-semibold text-sm transition-colors flex items-center gap-1">
+                        <i class="fa-solid fa-download"></i> Descargar
+                    </button>
+                    <button onclick="closeLegalModal()" class="text-gray-400 hover:text-[var(--lp-red)] transition-colors"><i class="fa-solid fa-xmark text-2xl"></i></button>
+                </div>
+            </div>
+            <div class="flex-1 bg-white p-8 md:p-12 overflow-y-auto text-gray-800 font-serif text-sm leading-relaxed" id="legalContent">
+                <!-- Inyectado dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- BANNER DE COOKIES -->
+    <div id="cookieBanner" class="fixed bottom-0 left-0 w-full z-[90] bg-[#373a3c] border-t border-gray-700 text-white shadow-2xl transform translate-y-full transition-transform duration-500 flex flex-col xl:flex-row items-center justify-between p-4 md:px-8 md:py-4 gap-6 hidden">
+        <div class="flex-1 text-xs md:text-sm text-gray-300 leading-relaxed">
+            Utilizamos cookies y tecnologías similares para el funcionamiento del sitio y mejora de la experiencia del usuario. Para obtener más información, consulte nuestro <button onclick="openLegalModal('privacidad')" class="text-[var(--lp-cyan)] hover:underline font-semibold">Aviso de privacidad</button> y <button onclick="openLegalModal('cookies')" class="text-[var(--lp-cyan)] hover:underline font-semibold">Política de cookies</button>. Puede optar por dar su consentimiento o rechazar el uso de cookies no esenciales.
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 shrink-0 w-full xl:w-auto items-center">
+            <button onclick="openLegalModal('cookies')" class="bg-transparent hover:bg-gray-700 border border-gray-300 text-white font-bold py-2.5 px-6 rounded-full text-sm transition-colors w-full sm:w-auto">
+                Configuración
+            </button>
+            <button onclick="acceptCookies()" class="bg-[var(--lp-red)] hover:bg-[#b0221e] text-white font-bold py-2.5 px-6 rounded-full text-sm transition-colors w-full sm:w-auto">
+                Rechazar Opcionales
+            </button>
+            <button onclick="acceptCookies()" class="bg-[var(--lp-red)] hover:bg-[#b0221e] text-white font-bold py-2.5 px-6 rounded-full text-sm transition-colors w-full sm:w-auto">
+                Aceptar Todo
+            </button>
+        </div>
+    </div>
+
     <script>
+        // ==========================================
+        // SISTEMA LEGAL Y COOKIES (Texto natural y seguro)
+        // ==========================================
+        const cookieBanner = document.getElementById('cookieBanner');
+        const legalModal = document.getElementById('legalModal');
+        const legalTitle = document.getElementById('legalTitle');
+        const legalContent = document.getElementById('legalContent');
+
+        const TEXTOS_LEGALES = {
+            privacidad: `
+                <h1 style="font-size: 1.8rem; font-weight: bold; margin-bottom: 1.5rem; color: #111827; font-family: sans-serif;">Aviso de Privacidad de ByteLog</h1>
+                <p style="margin-bottom: 1.5rem; color: #4b5563;"><strong>Última actualización:</strong> Abril 2026</p>
+                <p style="margin-bottom: 1.5rem;">En ByteLog, nos tomamos muy en serio su privacidad. Al ser una aplicación diseñada bajo la arquitectura "Lado del Cliente", garantizamos que <strong>no recopilamos, almacenamos ni transmitimos</strong> ninguna información personal, contraseñas generadas o nombres de usuario a ningún servidor externo.</p>
+                <h2 style="font-size: 1.3rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #111827; font-family: sans-serif;">1. Procesamiento Local Seguro</h2>
+                <p style="margin-bottom: 1.5rem;">Toda la generación de datos, incluyendo la entropía para crear contraseñas seguras, se realiza utilizando los algoritmos nativos de seguridad de su propio navegador web en la memoria de su dispositivo. Una vez que cierra la pestaña, la información se destruye permanentemente.</p>
+                <h2 style="font-size: 1.3rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #111827; font-family: sans-serif;">2. Transparencia y Sin Rastreadores</h2>
+                <p style="margin-bottom: 1.5rem;">ByteLog Tools opera bajo estrictos estándares de confidencialidad. No implementamos rastreadores invasivos de terceros ni compartimos perfiles de uso con redes de anunciantes.</p>
+                <br><hr style="border-top: 1px solid #e5e7eb; margin: 2rem 0;"><br>
+                <p style="font-size: 0.85rem; color: #9ca3af; text-align: center; font-family: sans-serif;">Documento Generado Localmente - Sin Validez Jurídica Externa.</p>
+            `,
+            cookies: `
+                <h1 style="font-size: 1.8rem; font-weight: bold; margin-bottom: 1.5rem; color: #111827; font-family: sans-serif;">Política de Cookies</h1>
+                <p style="margin-bottom: 1.5rem; color: #4b5563;">Este sitio web utiliza tecnologías estándar de almacenamiento local en su dispositivo con el único fin de mejorar la experiencia técnica.</p>
+                <h2 style="font-size: 1.3rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #111827; font-family: sans-serif;">Cookies Estrictamente Necesarias</h2>
+                <p style="margin-bottom: 1.5rem;">Utilizamos preferencias de sesión para recordar ajustes de la interfaz, tales como la aceptación de nuestro aviso inicial. Esto evita interrupciones visuales en sus visitas concurrentes.</p>
+                <h2 style="font-size: 1.3rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #111827; font-family: sans-serif;">Gestión de Privacidad</h2>
+                <p style="margin-bottom: 1.5rem;">Al no depender de redes masivas de publicidad, nuestra plataforma está libre de "Cookies de Terceros" invasivas. Sus patrones de navegación están seguros y permanecen en total anonimato con nosotros.</p>
+            `
+        };
+
+        function acceptCookies() {
+            localStorage.setItem('bytelog_cookies_accepted', 'true');
+            cookieBanner.classList.add('translate-y-full');
+            setTimeout(() => { cookieBanner.classList.add('hidden'); }, 500);
+        }
+
+        function openLegalModal(type) {
+            legalTitle.textContent = type === 'privacidad' ? 'Aviso_de_Privacidad.pdf' : 'Politica_de_Cookies.pdf';
+            legalContent.innerHTML = TEXTOS_LEGALES[type];
+            legalModal.classList.remove('hidden');
+            legalModal.classList.add('flex');
+        }
+        
+        function closeLegalModal() {
+            legalModal.classList.add('hidden');
+            legalModal.classList.remove('flex');
+        }
+        
+        function downloadLegalPDF() {
+            const text = legalContent.innerText;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = legalTitle.textContent.replace('.pdf', '.txt'); 
+            a.click();
+        }
+
         // ==========================================
         // SISTEMA DE PESTAÑAS (FIJACIÓN W-FULL)
         // ==========================================
@@ -252,27 +424,28 @@
             const tabs = [
                 { id: 'pass', sec: document.getElementById('sectionPass'), btn: document.getElementById('tabPass'), btnM: document.getElementById('tabPassMobile') },
                 { id: 'nick', sec: document.getElementById('sectionNick'), btn: document.getElementById('tabNick'), btnM: document.getElementById('tabNickMobile') },
-                { id: 'faq', sec: document.getElementById('sectionFaq'), btn: document.getElementById('tabFaq'), btnM: document.getElementById('tabFaqMobile') }
+                { id: 'faq', sec: document.getElementById('sectionFaq'), btn: document.getElementById('tabFaq'), btnM: document.getElementById('tabFaqMobile') },
+                { id: 'about', sec: document.getElementById('sectionAbout'), btn: document.getElementById('tabAbout'), btnM: document.getElementById('tabAboutMobile') }
             ];
 
             tabs.forEach(t => {
                 if (t.id === type) {
                     t.sec.classList.remove('hidden');
-                    // Block fluye mejor para la calculadora de pass, flex col para los otros.
-                    t.sec.classList.add(t.id === 'pass' ? 'block' : 'flex'); 
-                    if (t.btn) t.btn.className = "tab-active pb-1 transition-colors";
+                    t.sec.classList.add('flex', 'w-full');
+                    if (t.id === 'pass') t.sec.classList.replace('flex', 'block');
+                    if (t.btn) t.btn.className = "tab-active pb-1 transition-colors whitespace-nowrap";
                     if (t.btnM) t.btnM.className = "tab-active py-3 px-4 text-sm whitespace-nowrap";
                 } else {
                     t.sec.classList.add('hidden');
-                    t.sec.classList.remove('block', 'flex');
-                    if (t.btn) t.btn.className = "tab-inactive pb-1 transition-colors";
+                    t.sec.classList.remove('block', 'flex', 'w-full');
+                    if (t.btn) t.btn.className = "tab-inactive pb-1 transition-colors whitespace-nowrap";
                     if (t.btnM) t.btnM.className = "tab-inactive py-3 px-4 text-sm whitespace-nowrap";
                 }
             });
         }
 
         // ==========================================
-        // 1. GENERADOR DE CONTRASEÑAS Y LÓGICA DE PRIVACIDAD
+        // 1. GENERADOR DE CONTRASEÑAS (LOGICA DE PROTECCIÓN DE OJITO)
         // ==========================================
         let currentRawPassword = "";
         let isPasswordVisible = false;
@@ -324,7 +497,7 @@
 
             currentRawPassword = passwordArray.join('');
             
-            // Reiniciar estados de privacidad al crear nueva clave
+            // Reiniciar la cuenta de seguridad para esta nueva clave
             isPasswordVisible = false;
             privacyViewCount = 0;
             updatePasswordDisplay();
@@ -342,12 +515,12 @@
             }
         }
 
-        // LÓGICA DE PRIVACIDAD
+        // EL EVENTO DEL OJITO (DOBLE GRACIA APROBADO POR HARRY)
         document.getElementById('btnTogglePrivacy').addEventListener('click', () => {
             if (isPasswordVisible) {
                 isPasswordVisible = false;
                 updatePasswordDisplay();
-                // REGLA HARRY: Permite ocultar 1 vez sin borrar. A la 2da vez que se oculta, se QUEMA por seguridad.
+                // REGLA HARRY: Ocultarla por segunda vez, significa que se usó y ahora es peligrosa.
                 if (privacyViewCount >= 2) {
                     generatePassword();
                 }
@@ -358,7 +531,6 @@
             }
         });
 
-        // Eventos
         passLength.addEventListener('input', (e) => { lengthValue.textContent = e.target.value; generatePassword(); });
         ['chkUpper', 'chkLower', 'chkNumbers', 'chkSymbols', 'chkEmojis'].forEach(id => {
             document.getElementById(id).addEventListener('change', generatePassword);
@@ -397,16 +569,15 @@
 
 
         // ==========================================
-        // 2. MOTOR DE USERNAMES (DICCIONARIOS COMPLETOS Y ROBUSTOS)
+        // 2. MOTOR DE USERNAMES (DICCIONARIOS MÁSTER COMPLETOS)
         // ==========================================
         const nickInput = document.getElementById('nickInput');
         const nickEmpty = document.getElementById('nickEmpty');
         const nickList = document.getElementById('nickList');
 
-        // MAPEOS EXACTOS DE FUENTES UNICODE
         const MAP_FRAKTUR = {'a':'𝖆','b':'𝖇','c':'𝖈','d':'𝖉','e':'𝖊','f':'𝖋','g':'𝖌','h':'𝖍','i':'𝖎','j':'𝖏','k':'𝖐','l':'𝖑','m':'𝖒','n':'𝖓','o':'𝖔','p':'𝖕','q':'𝖖','r':'𝖗','s':'𝖘','t':'𝖙','u':'𝖚','v':'𝖛','w':'𝖜','x':'𝖝','y':'𝖞','z':'𝖟','A':'𝕬','B':'𝕭','C':'𝕮','D':'𝕯','E':'𝕰','F':'𝕱','G':'𝕲','H':'𝕳','I':'𝕴','J':'𝕵','K':'𝕶','L':'𝕷','M':'𝕸','N':'𝕹','O':'𝕺','P':'𝕻','Q':'𝕼','R':'𝕽','S':'𝕾','T':'𝕿','U':'𝖀','V':'𝖁','W':'𝖂','X':'𝖃','Y':'𝖄','Z':'𝖅'};
         const MAP_FULLWIDTH = {'a':'ａ','b':'ｂ','c':'ｃ','d':'ｄ','e':'ｅ','f':'ｆ','g':'ｇ','h':'ｈ','i':'ｉ','j':'ｊ','k':'ｋ','l':'ｌ','m':'ｍ','n':'ｎ','o':'ｏ','p':'ｐ','q':'ｑ','r':'ｒ','s':'ｓ','t':'ｔ','u':'ｕ','v':'ｖ','w':'ｗ','x':'ｘ','y':'ｙ','z':'ｚ','A':'Ａ','B':'Ｂ','C':'Ｃ','D':'Ｄ','E':'Ｅ','F':'Ｆ','G':'Ｇ','H':'Ｈ','I':'Ｉ','J':'Ｊ','K':'Ｋ','L':'Ｌ','M':'Ｍ','N':'Ｎ','O':'Ｏ','P':'Ｐ','Q':'Ｑ','R':'Ｒ','S':'Ｓ','T':'Ｔ','U':'Ｕ','V':'Ｖ','W':'Ｗ','X':'Ｘ','Y':'Ｙ','Z':'Ｚ'};
-        const MAP_SANS = {'a':'𝗮','b':'𝗯','c':'𝗰','d':'𝗱','e':'𝗲','f':'𝗳','g':'𝗴','h':'𝗵','i':'𝗶','j':'𝗷','k':'𝗸','l':'𝗹','m':'𝗺','n':'𝗻','o':'𝗼','p':'𝗽','q':'𝗾','r':'𝗿','s':'𝘀','t':'𝘁','u':'𝘂','v':'𝘃','w':'𝘄','x':'𝘅','y':'𝘆','z':'𝘇','A':'𝗔','B':'𝗕','C':'𝗖','D':'𝗗','E':'𝗘','F':'𝗙','G':'𝗚','H':'𝗛','I':'𝗜','J':'Ｊ','K':'𝗞','L':'𝗟','M':'𝗠','N':'𝗡','O':'𝗢','P':'𝗣','Q':'𝗤','R':'Ｒ','S':'𝗦','T':'𝗧','U':'Ｕ','V':'𝗩','W':'𝗪','X':'𝗫','Y':'𝗬','Z':'𝗭'};
+        const MAP_SANS = {'a':'𝗮','b':'𝗯','c':'𝗰','d':'𝗱','e':'𝗲','f':'𝗳','g':'𝗴','h':'𝗵','i':'𝗶','j':'𝗷','k':'𝗸','l':'𝗹','m':'𝗺','n':'𝗻','o':'𝗼','p':'𝗽','q':'𝗾','r':'𝗿','s':'𝘀','t':'𝘁','u':'𝘂','v':'𝘃','w':'𝘄','x':'𝘅','y':'𝘆','z':'𝘇','A':'𝗔','B':'𝗕','C':'𝗖','D':'𝗗','E':'𝗘','F':'𝗙','G':'𝗚','H':'𝗛','I':'𝗜','J':'Ｊ','K':'𝗞','L':'𝗟','M':'Ｍ','N':'𝗡','O':'𝗢','P':'𝗣','Q':'𝗤','R':'Ｒ','S':'𝗦','T':'Ｔ','U':'Ｕ','V':'𝗩','W':'𝗪','X':'𝗫','Y':'𝗬','Z':'𝗭'};
         const MAP_SCRIPT = {'a':'𝒶','b':'𝒷','c':'𝒸','d':'𝒹','e':'𝑒','f':'𝒻','g':'𝑔','h':'𝒽','i':'𝒾','j':'𝒿','k':'𝓀','l':'𝓁','m':'𝓂','n':'𝓃','o':'𝑜','p':'𝓅','q':'𝓆','r':'𝓇','s':'𝓈','t':'𝓉','u':'𝓊','v':'𝓋','w':'𝓌','x':'𝓍','y':'𝓎','z':'𝓏','A':'𝒜','B':'ℬ','C':'𝒞','D':'𝒟','E':'ℰ','F':'ℱ','G':'𝒢','H':'ℋ','I':'ℐ','J':'𝒥','K':'𝒦','L':'ℒ','M':'ℳ','N':'𝒩','O':'𝒪','P':'𝒫','Q':'𝒬','R':'ℛ','S':'𝒮','T':'𝒯','U':'𝒰','V':'𝒱','W':'𝒲','X':'𝒳','Y':'𝒴','Z':'𝒵'};
         const MAP_SMALLCAPS = {'a':'ᴀ','b':'ʙ','c':'ᴄ','d':'ᴅ','e':'ᴇ','f':'ғ','g':'ɢ','h':'ʜ','i':'ɪ','j':'ᴊ','k':'ᴋ','l':'ʟ','m':'ᴍ','n':'ɴ','o':'ᴏ','p':'ᴘ','q':'ǫ','r':'ʀ','s':'s','t':'ᴛ','u':'ᴜ','v':'ᴠ','w':'ᴡ','x':'x','y':'ʏ','z':'ᴢ','A':'A','B':'B','C':'C','D':'D','E':'E','F':'F','G':'G','H':'H','I':'I','J':'J','K':'K','L':'L','M':'M','N':'N','O':'O','P':'P','Q':'Q','R':'R','S':'S','T':'T','U':'U','V':'V','W':'W','X':'X','Y':'Y','Z':'Z'};
         const MAP_TECHNO = {'a':'卂','b':'乃','c':'匚','d':'刀','e':'乇','f':'千','g':'Ꮆ','h':'卄','i':'丨','j':'丁','k':'长','l':'ㄥ','m':'爪','n':'几','o':'ㄖ','p':'卩','q':'Ɋ','r':'尺','s':'丂','t':'ㄒ','u':'ㄩ','v':'ᐯ','w':'山','x':'乂','y':'丫','z':'乙','A':'卂','B':'乃','C':'匚','D':'刀','E':'乇','F':'千','G':'Ꮆ','H':'卄','I':'丨','J':'丁','K':'长','L':'ㄥ','M':'爪','N':'几','O':'ㄖ','P':'卩','Q':'Ɋ','R':'尺','S':'丂','T':'ㄒ','U':'ㄩ','V':'ᐯ','W':'山','X':'乂','Y':'丫','Z':'乙'};
@@ -416,7 +587,6 @@
         const flip = (prob = 0.5) => Math.random() < prob;
 
         function applyMapFont(text, mapDict) { 
-            // Array.from asegura que no se rompan los caracteres y respeta los espacios
             return Array.from(text).map(c => mapDict[c] || c).join(''); 
         }
 
@@ -427,14 +597,13 @@
         function toZalgo(text) {
             const marks = ['\u030d', '\u030e', '\u0304', '\u0305', '\u033f', '\u0311', '\u0306', '\u0310', '\u0352', '\u0351', '\u0300', '\u0320', '\u0322', '\u0327', '\u0328', '\u032a', '\u032b', '\u032c', '\u032d', '\u032e', '\u032f', '\u0330', '\u0331', '\u0332', '\u0333', '\u0339', '\u033a', '\u033b', '\u033c'];
             return Array.from(text).map(c => { 
-                if(c === ' ') return c; // Proteger el espacio
+                if(c === ' ') return c;
                 let z = c; 
                 for(let i=0; i<Math.floor(Math.random()*2)+1; i++) z += rnd(marks); 
                 return z; 
             }).join('');
         }
 
-        // FUNCIONES GENERADORAS ESPECÍFICAS
         function genTryhard(base) { 
             const decors = [ ["꧁༒•", "•༒꧂"], ["『", "』"], ["乂", "ツ"], ["【", "】★"], ["๖ۣۜ", " ☠︎"], ["", " 亗"], ["", " 〆"], ["L-G ", ""], ["", " ︻╦デ╤━"], ["★", "★"], ["☠︎ ", " ☠︎"], ["GOD ", ""], ["TOP ", ""] ];
             const tags = ["TTV", "YT", "PRO", "GOD", "KING", "KILLER", "VIP", "1SHOT"];
@@ -576,7 +745,6 @@
             return rnd(formats)();
         }
 
-        // --- ORQUESTADOR PRINCIPAL ---
         function generateNicks() {
             let base = nickInput.value.trim();
             if (!base) base = "Usuario"; 
@@ -587,7 +755,6 @@
             const ALL_STYLES = ['freefire', 'tiktok', 'pixel', 'urban', 'techno', 'script', 'glitch', 'fantasy', 'minimal'];
             let attempts = 0;
 
-            // Motor de Generación Segura Infinita (No se congele)
             while (nicks.size < 20 && attempts < 500) {
                 let currentStyle = style === 'mixed' ? rnd(ALL_STYLES) : style;
                 let nick = "";
@@ -604,7 +771,6 @@
                     case 'minimal': nick = genMinimal(base); break;
                 }
 
-                // Seguridad contra repeticiones
                 if (!nicks.has(nick)) {
                     nicks.add(nick);
                 } else if (attempts > 50) {
@@ -649,7 +815,14 @@
         document.getElementById('btnGenerateNicks').addEventListener('click', generateNicks);
         document.getElementById('nickInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') generateNicks(); });
 
-        window.addEventListener('DOMContentLoaded', () => { generatePassword(); });
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!localStorage.getItem('bytelog_cookies_accepted')) {
+                const cb = document.getElementById('cookieBanner');
+                cb.classList.remove('hidden');
+                setTimeout(() => { cb.classList.remove('translate-y-full'); }, 100);
+            }
+            generatePassword();
+        });
 
     </script>
 </body>
