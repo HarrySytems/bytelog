@@ -3,202 +3,227 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="ByteLog Converter - Convierte videos para TikTok, Reels y Shorts directamente en tu navegador"/>
 <title>ByteLog Converter | Video para Redes Sociales</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"/>
 <style>
-:root{--bg:#030712;--bg2:#0d1117;--bg3:#161b22;--bg4:#21262d;--border:#30363d;--em:#10b981;--em2:#06d6a0;--cyan:#22d3ee;--red:#f87171;--yellow:#fbbf24;--text:#e6edf3;--text2:#8b949e;--glow-em:rgba(16,185,129,0.25);--glow-cy:rgba(34,211,238,0.2)}
+:root{--bg:#030712;--bg2:#0d1117;--bg3:#161b22;--border:#30363d;--em:#10b981;--em2:#06d6a0;--cyan:#22d3ee;--red:#f87171;--yellow:#fbbf24;--text:#e6edf3;--text2:#8b949e}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
 body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(16,185,129,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(16,185,129,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
-.container{max-width:1280px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
-header{padding:18px 0;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:rgba(3,7,18,0.9);backdrop-filter:blur(20px)}
-.header-inner{display:flex;align-items:center;gap:16px}
-.logo{display:flex;align-items:center;gap:12px}
-.logo-mark{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--em),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.logo-name{font-size:20px;font-weight:800;letter-spacing:-0.5px}
-.logo-name span{color:var(--em)}
-.logo-tag{font-size:10px;font-weight:600;letter-spacing:2px;color:var(--text2);text-transform:uppercase}
-.header-badges{margin-left:auto;display:flex;gap:8px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.badge-em{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:var(--em)}
-.badge-cy{background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--cyan)}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--em);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero{padding:48px 0 32px;text-align:center}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);color:var(--em);padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
-.hero h1{font-size:clamp(30px,5vw,58px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:14px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+
+/* HEADER */
+header{background:rgba(3,7,18,0.9);border-bottom:1px solid var(--border);padding:14px 0;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
+.hinner{display:flex;align-items:center;gap:12px}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--em),var(--cyan));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.logo-text{font-size:18px;font-weight:800;letter-spacing:-.5px}
+.logo-text span{color:var(--em)}
+.logo-sub{font-size:9px;color:var(--text2);letter-spacing:2px;text-transform:uppercase}
+.hbadges{margin-left:auto;display:flex;gap:6px}
+.badge{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.b-em{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:var(--em)}
+.b-cy{background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--cyan)}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--em);animation:p 2s infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* HERO */
+.hero{text-align:center;padding:40px 0 28px}
+.hero h1{font-size:clamp(28px,5vw,54px);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:10px}
 .hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--em),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:16px;color:var(--text2);max-width:520px;margin:0 auto;line-height:1.6}
-.app-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:0 0 60px;align-items:start}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:16px}
-.card-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
-.card-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.ci-em{background:rgba(16,185,129,0.15)}
-.ci-cy{background:rgba(34,211,238,0.15)}
-.ci-ye{background:rgba(251,191,36,0.15)}
-.ci-re{background:rgba(248,113,113,0.15)}
-.card-title{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text2)}
-.card-step{margin-left:auto;font-size:10px;font-weight:700;color:var(--text2);background:var(--bg3);padding:2px 8px;border-radius:10px}
-.card-body{padding:18px}
-.drop-zone{border:2px dashed var(--border);border-radius:12px;padding:32px 20px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
-.drop-zone:hover,.drop-zone.drag-over{border-color:var(--em);background:rgba(16,185,129,0.04)}
-.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.drop-icon{font-size:36px;margin-bottom:10px;display:block}
-.drop-title{font-size:15px;font-weight:600;margin-bottom:4px}
-.drop-sub{font-size:12px;color:var(--text2)}
-.drop-formats{display:flex;gap:6px;justify-content:center;margin-top:10px;flex-wrap:wrap}
-.ftag{background:var(--bg3);border:1px solid var(--border);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;color:var(--text2)}
-.video-preview{border-radius:10px;overflow:hidden;background:#000;display:none;margin-bottom:10px}
-.video-preview video{width:100%;display:block;max-height:220px;object-fit:contain}
-.vinfo{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.vtag{background:var(--bg3);border:1px solid var(--border);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;color:var(--text2)}
-.vtag span{color:var(--text)}
-.form-group{margin-bottom:14px}
-.form-label{display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:8px}
-.form-select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:10px 14px;font-size:14px;font-family:inherit;color:var(--text);outline:none;cursor:pointer;transition:border .2s}
-.form-select:focus{border-color:var(--em)}
-.form-select option{background:var(--bg2)}
-.ratio-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px}
-.ratio-btn{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 4px;cursor:pointer;text-align:center;transition:all .2s;font-family:inherit}
-.ratio-btn:hover,.ratio-btn.active{border-color:var(--em);background:rgba(16,185,129,0.1)}
-.ratio-btn.active .rlabel{color:var(--em)}
-.rpreview{width:24px;margin:0 auto 4px;display:flex;align-items:center;justify-content:center}
-.rpreview div{background:rgba(16,185,129,0.4);border:1px solid var(--em);border-radius:2px}
-.rlabel{font-size:10px;font-weight:700;color:var(--text2)}
-.rsub{font-size:9px;color:var(--text2);opacity:.7}
-.quality-pills{display:flex;gap:6px;margin-bottom:14px}
-.qpill{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center;cursor:pointer;font-family:inherit;transition:all .2s}
-.qpill:hover,.qpill.active{border-color:var(--em);background:rgba(16,185,129,0.1)}
-.qpill.active .qval{color:var(--em)}
-.qval{font-size:14px;font-weight:700}
-.qdesc{font-size:10px;color:var(--text2)}
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
-.toggle-row:last-child{border-bottom:none}
-.tinfo{flex:1}
-.tname{font-size:13px;font-weight:600}
-.tdesc{font-size:11px;color:var(--text2);margin-top:2px}
-.toggle{position:relative;width:40px;height:22px;flex-shrink:0}
-.toggle input{opacity:0;width:0;height:0}
-.tslider{position:absolute;inset:0;background:var(--bg4);border:1px solid var(--border);border-radius:22px;cursor:pointer;transition:.3s}
-.tslider:before{content:'';position:absolute;width:16px;height:16px;left:2px;top:2px;background:var(--text2);border-radius:50%;transition:.3s}
-.toggle input:checked+.tslider{background:rgba(16,185,129,0.2);border-color:var(--em)}
-.toggle input:checked+.tslider:before{transform:translateX(18px);background:var(--em)}
-.convert-btn{width:100%;padding:16px;border-radius:12px;border:none;cursor:pointer;font-family:inherit;font-size:16px;font-weight:700;letter-spacing:.5px;transition:all .3s;margin-top:4px}
-.convert-btn:not(:disabled){background:linear-gradient(135deg,var(--em),var(--em2));color:#0d1117;box-shadow:0 8px 24px var(--glow-em)}
-.convert-btn:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 16px 36px var(--glow-em)}
-.convert-btn:disabled{background:var(--bg3);color:var(--text2);cursor:not-allowed}
-.output-video{border-radius:10px;overflow:hidden;background:#000;margin-bottom:14px;display:none}
-.output-video video{width:100%;display:block;max-height:300px;object-fit:contain}
-.progress-wrap{margin-bottom:14px;display:none}
-.plabel{display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-bottom:6px}
-.pbar-bg{background:var(--bg3);border-radius:10px;height:8px;overflow:hidden;border:1px solid var(--border)}
-.pbar-fill{height:100%;background:linear-gradient(90deg,var(--em),var(--cyan));border-radius:10px;transition:width .3s;width:0%}
-.pstatus{font-size:11px;color:var(--text2);margin-top:4px}
-.console-wrap{background:var(--bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px}
-.console-hdr{padding:8px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;background:var(--bg2)}
-.cdots{display:flex;gap:4px}
-.cdot{width:8px;height:8px;border-radius:50%}
-.ctitle{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:1px;margin-left:4px}
-.console-body{padding:10px 12px;max-height:140px;overflow-y:auto;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.6}
-.console-body::-webkit-scrollbar{width:3px}
-.console-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.hero p{color:var(--text2);font-size:15px;max-width:480px;margin:0 auto}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding-bottom:60px;align-items:start}
+
+/* CARD */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.card:last-child{margin-bottom:0}
+.ch{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.ci{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.ci-g{background:rgba(16,185,129,0.15)}
+.ci-b{background:rgba(34,211,238,0.15)}
+.ci-y{background:rgba(251,191,36,0.15)}
+.ci-r{background:rgba(248,113,113,0.15)}
+.ct{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text2)}
+.cs{margin-left:auto;font-size:9px;font-weight:700;color:var(--text2);background:var(--bg3);padding:2px 7px;border-radius:8px}
+.cb{padding:16px}
+
+/* DROP */
+.drop{border:2px dashed var(--border);border-radius:10px;padding:28px 16px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.drop:hover,.drop.over{border-color:var(--em);background:rgba(16,185,129,0.04)}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.dico{font-size:32px;display:block;margin-bottom:8px}
+.dt{font-size:14px;font-weight:600;margin-bottom:3px}
+.ds{font-size:11px;color:var(--text2)}
+.dformats{display:flex;gap:5px;justify-content:center;margin-top:8px;flex-wrap:wrap}
+.df{background:var(--bg3);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;color:var(--text2)}
+
+/* VIDEO PREVIEW */
+.vprev{display:none;margin-bottom:10px}
+.vprev video{width:100%;border-radius:8px;background:#000;max-height:200px;object-fit:contain;display:block}
+.vinfo{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.vtag{background:var(--bg3);border:1px solid var(--border);padding:3px 9px;border-radius:5px;font-size:10px;font-weight:600;color:var(--text2)}
+.vtag b{color:var(--text);font-weight:700}
+
+/* FORM */
+.fl{display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:7px}
+.fg{margin-bottom:12px}
+.fg:last-child{margin-bottom:0}
+select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;color:var(--text);outline:none;cursor:pointer;transition:border .2s;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238b949e' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+select:focus{border-color:var(--em)}
+select option{background:var(--bg2)}
+
+/* RATIO */
+.rgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.rb{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 4px;cursor:pointer;text-align:center;transition:all .2s;font-family:inherit;user-select:none}
+.rb:hover,.rb.on{border-color:var(--em);background:rgba(16,185,129,0.1)}
+.rb.on .rl{color:var(--em)}
+.rp{width:20px;margin:0 auto 3px;display:flex;align-items:center;justify-content:center}
+.rp div{background:rgba(16,185,129,0.35);border:1px solid rgba(16,185,129,0.6);border-radius:2px}
+.rl{font-size:9px;font-weight:700;color:var(--text2)}
+.rs{font-size:8px;color:var(--text2);opacity:.7}
+
+/* QUALITY */
+.qrow{display:flex;gap:6px;margin-bottom:12px}
+.qp{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 4px;text-align:center;cursor:pointer;font-family:inherit;transition:all .2s;user-select:none}
+.qp:hover,.qp.on{border-color:var(--em);background:rgba(16,185,129,0.1)}
+.qp.on .qv{color:var(--em)}
+.qv{font-size:13px;font-weight:700}
+.qd{font-size:9px;color:var(--text2)}
+
+/* TOGGLE */
+.trow{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border)}
+.trow:last-child{border-bottom:none}
+.tin{flex:1}
+.tn{font-size:12px;font-weight:600}
+.td{font-size:10px;color:var(--text2);margin-top:1px}
+.tog{position:relative;width:38px;height:20px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0}
+.tsl{position:absolute;inset:0;background:var(--bg3);border:1px solid var(--border);border-radius:20px;cursor:pointer;transition:.25s}
+.tsl:before{content:'';position:absolute;width:14px;height:14px;left:2px;top:2px;background:var(--text2);border-radius:50%;transition:.25s}
+.tog input:checked+.tsl{background:rgba(16,185,129,0.2);border-color:var(--em)}
+.tog input:checked+.tsl:before{transform:translateX(18px);background:var(--em)}
+
+/* BUTTONS */
+.btn-convert{width:100%;padding:15px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-size:15px;font-weight:700;transition:all .3s;margin-top:4px}
+.btn-convert:not(:disabled){background:linear-gradient(135deg,var(--em),var(--em2));color:#0d1117;box-shadow:0 6px 20px rgba(16,185,129,0.3)}
+.btn-convert:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(16,185,129,0.4)}
+.btn-convert:disabled{background:var(--bg3);color:var(--text2);cursor:not-allowed}
+.btn-dl{width:100%;padding:13px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;background:linear-gradient(135deg,var(--cyan),#0ea5e9);color:#0d1117;display:none;transition:all .2s;box-shadow:0 6px 20px rgba(34,211,238,0.25);margin-top:10px}
+.btn-dl:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(34,211,238,0.35)}
+
+/* OUTPUT */
+.out-ph{text-align:center;padding:36px 16px;color:var(--text2)}
+.out-ph .ico{font-size:38px;opacity:.25;margin-bottom:8px}
+.out-video{display:none;margin-bottom:12px}
+.out-video video{width:100%;border-radius:8px;background:#000;max-height:280px;object-fit:contain;display:block}
+
+/* PROGRESS */
+.prog{display:none;margin-bottom:12px}
+.prow{display:flex;justify-content:space-between;font-size:11px;font-weight:600;margin-bottom:5px}
+.pbg{background:var(--bg3);border-radius:8px;height:7px;overflow:hidden;border:1px solid var(--border)}
+.pfill{height:100%;background:linear-gradient(90deg,var(--em),var(--cyan));border-radius:8px;transition:width .4s;width:0%}
+.pst{font-size:10px;color:var(--text2);margin-top:3px}
+
+/* CONSOLE */
+.con{background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.con-h{padding:7px 11px;border-bottom:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;gap:5px}
+.dots{display:flex;gap:3px}
+.dot2{width:7px;height:7px;border-radius:50%}
+.con-t{font-size:9px;font-weight:700;letter-spacing:1px;color:var(--text2);margin-left:3px}
+.con-b{padding:8px 11px;max-height:130px;overflow-y:auto;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.6}
+.con-b::-webkit-scrollbar{width:3px}
+.con-b::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .ll{color:var(--text2);word-break:break-all}
-.ll.info{color:var(--cyan)}
-.ll.success{color:var(--em)}
-.ll.error{color:var(--red)}
-.ll.warn{color:var(--yellow)}
-.dl-btn{width:100%;padding:14px;border-radius:12px;border:none;cursor:pointer;font-family:inherit;font-size:15px;font-weight:700;background:linear-gradient(135deg,var(--cyan),#0ea5e9);color:#0d1117;display:none;transition:all .2s;box-shadow:0 8px 24px var(--glow-cy)}
-.dl-btn:hover{transform:translateY(-2px);box-shadow:0 16px 36px var(--glow-cy)}
-.out-placeholder{text-align:center;padding:40px 20px;color:var(--text2)}
-.out-placeholder .icon{font-size:40px;margin-bottom:10px;opacity:.3}
-@media(max-width:900px){.app-grid{grid-template-columns:1fr}}
-@media(max-width:640px){.ratio-grid{grid-template-columns:repeat(2,1fr)}.quality-pills{flex-direction:column}}
+.ll.i{color:var(--cyan)}
+.ll.s{color:var(--em)}
+.ll.e{color:var(--red)}
+.ll.w{color:var(--yellow)}
+
+/* RESPONSIVE */
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+@media(max-width:560px){.rgrid{grid-template-columns:repeat(2,1fr)}.hbadges{display:none}}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="container header-inner">
-    <div class="logo">
-      <div class="logo-mark">🎬</div>
-      <div>
-        <div class="logo-name">Byte<span>Log</span></div>
-        <div class="logo-tag">Video Converter</div>
-      </div>
+  <div class="wrap hinner">
+    <div class="logo-mark">🎬</div>
+    <div>
+      <div class="logo-text">Byte<span>Log</span></div>
+      <div class="logo-sub">Video Converter</div>
     </div>
-    <div class="header-badges">
-      <span class="badge badge-em"><span class="dot"></span> Sin backend</span>
-      <span class="badge badge-cy">100% Local</span>
+    <div class="hbadges">
+      <span class="badge b-em"><span class="dot"></span>Sin backend</span>
+      <span class="badge b-cy">100% Local</span>
     </div>
   </div>
 </header>
 
-<div class="container">
+<div class="wrap">
   <div class="hero">
-    <div class="hero-eyebrow">⚡ Powered by FFmpeg.wasm</div>
-    <h1>Convierte videos para<br/><em>TikTok, Reels & Shorts</em></h1>
-    <p>Procesamiento 100% en tu navegador. Sin subir nada a servidores. Sin límites de tamaño.</p>
+    <h1>Convierte videos para<br/><em>TikTok · Reels · Shorts</em></h1>
+    <p>Todo en tu navegador, sin subir nada a servidores. Gratis y sin límites.</p>
   </div>
 
-  <div class="app-grid">
+  <div class="grid">
+    <!-- IZQUIERDA -->
     <div>
       <!-- PASO 1 -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-icon ci-em">📁</div>
-          <span class="card-title">Subir Video</span>
-          <span class="card-step">PASO 1</span>
+        <div class="ch">
+          <div class="ci ci-g">📁</div>
+          <span class="ct">Subir Video</span>
+          <span class="cs">PASO 1</span>
         </div>
-        <div class="card-body">
-          <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept="video/*"/>
-            <span class="drop-icon">🎥</span>
-            <div class="drop-title">Arrastra tu video aquí</div>
-            <div class="drop-sub">o haz clic para seleccionar</div>
-            <div class="drop-formats">
-              <span class="ftag">MP4</span><span class="ftag">MOV</span><span class="ftag">WEBM</span><span class="ftag">AVI</span>
+        <div class="cb">
+          <div class="drop" id="dz">
+            <input type="file" id="fi" accept="video/*"/>
+            <span class="dico">🎥</span>
+            <div class="dt">Arrastra tu video aquí</div>
+            <div class="ds">o haz clic para seleccionar</div>
+            <div class="dformats">
+              <span class="df">MP4</span><span class="df">MOV</span><span class="df">WEBM</span><span class="df">AVI</span><span class="df">MKV</span>
             </div>
           </div>
-          <div class="video-preview" id="videoPreview">
-            <video id="inputVideo" controls></video>
+          <div class="vprev" id="vp">
+            <video id="vin" controls></video>
+            <div class="vinfo" id="vi"></div>
           </div>
-          <div class="vinfo" id="videoInfo"></div>
         </div>
       </div>
 
       <!-- PASO 2 -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-icon ci-cy">📐</div>
-          <span class="card-title">Formato de Lienzo</span>
-          <span class="card-step">PASO 2</span>
+        <div class="ch">
+          <div class="ci ci-b">📐</div>
+          <span class="ct">Formato</span>
+          <span class="cs">PASO 2</span>
         </div>
-        <div class="card-body">
-          <div class="form-label">Relación de Aspecto</div>
-          <div class="ratio-grid">
-            <div class="ratio-btn active" data-w="1080" data-h="1920" data-r="9:16" onclick="selectRatio(this)">
-              <div class="rpreview"><div style="width:14px;height:24px"></div></div>
-              <div class="rlabel">9:16</div><div class="rsub">TikTok</div>
+        <div class="cb">
+          <label class="fl">Relación de Aspecto</label>
+          <div class="rgrid">
+            <div class="rb on" data-w="1080" data-h="1920" data-r="9:16" onclick="selR(this)">
+              <div class="rp"><div style="width:12px;height:21px"></div></div>
+              <div class="rl">9:16</div><div class="rs">TikTok</div>
             </div>
-            <div class="ratio-btn" data-w="1080" data-h="1080" data-r="1:1" onclick="selectRatio(this)">
-              <div class="rpreview"><div style="width:20px;height:20px"></div></div>
-              <div class="rlabel">1:1</div><div class="rsub">Instagram</div>
+            <div class="rb" data-w="1080" data-h="1080" data-r="1:1" onclick="selR(this)">
+              <div class="rp"><div style="width:18px;height:18px"></div></div>
+              <div class="rl">1:1</div><div class="rs">Instagram</div>
             </div>
-            <div class="ratio-btn" data-w="1080" data-h="1350" data-r="4:5" onclick="selectRatio(this)">
-              <div class="rpreview"><div style="width:16px;height:20px"></div></div>
-              <div class="rlabel">4:5</div><div class="rsub">Post</div>
+            <div class="rb" data-w="1080" data-h="1350" data-r="4:5" onclick="selR(this)">
+              <div class="rp"><div style="width:14px;height:18px"></div></div>
+              <div class="rl">4:5</div><div class="rs">Post</div>
             </div>
-            <div class="ratio-btn" data-w="1920" data-h="1080" data-r="16:9" onclick="selectRatio(this)">
-              <div class="rpreview"><div style="width:24px;height:14px"></div></div>
-              <div class="rlabel">16:9</div><div class="rsub">YouTube</div>
+            <div class="rb" data-w="1920" data-h="1080" data-r="16:9" onclick="selR(this)">
+              <div class="rp"><div style="width:21px;height:12px"></div></div>
+              <div class="rl">16:9</div><div class="rs">YouTube</div>
             </div>
           </div>
-          <div class="form-group" style="margin-bottom:0">
-            <label class="form-label">Modo de Ajuste</label>
-            <select class="form-select" id="fitMode">
+          <div class="fg">
+            <label class="fl">Modo de ajuste</label>
+            <select id="fit">
               <option value="blur">🎨 Fondo Desenfocado (Cinemático)</option>
               <option value="crop">✂️ Recorte Central</option>
               <option value="pad">⬛ Barras Negras</option>
@@ -209,88 +234,90 @@ header{padding:18px 0;border-bottom:1px solid var(--border);position:sticky;top:
 
       <!-- PASO 3 -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-icon ci-ye">⚙️</div>
-          <span class="card-title">Calidad y Efectos</span>
-          <span class="card-step">PASO 3</span>
+        <div class="ch">
+          <div class="ci ci-y">⚙️</div>
+          <span class="ct">Calidad</span>
+          <span class="cs">PASO 3</span>
         </div>
-        <div class="card-body">
-          <div class="form-label">Resolución de Salida</div>
-          <div class="quality-pills">
-            <div class="qpill" data-h="480" onclick="selectQuality(this)">
-              <div class="qval">480p</div><div class="qdesc">Ligero</div>
+        <div class="cb">
+          <label class="fl">Resolución de salida</label>
+          <div class="qrow">
+            <div class="qp" data-h="480" onclick="selQ(this)">
+              <div class="qv">480p</div><div class="qd">Ligero</div>
             </div>
-            <div class="qpill active" data-h="720" onclick="selectQuality(this)">
-              <div class="qval">720p</div><div class="qdesc">Balanceado</div>
+            <div class="qp on" data-h="720" onclick="selQ(this)">
+              <div class="qv">720p</div><div class="qd">Balanceado</div>
             </div>
-            <div class="qpill" data-h="1080" onclick="selectQuality(this)">
-              <div class="qval">1080p</div><div class="qdesc">Alta calidad</div>
+            <div class="qp" data-h="1080" onclick="selQ(this)">
+              <div class="qv">1080p</div><div class="qd">Alta calidad</div>
             </div>
           </div>
-          <div class="toggle-row">
-            <div class="tinfo">
-              <div class="tname">🔁 Bucle Infinito (Crossfade)</div>
-              <div class="tdesc">Loop perfecto dividiendo y fusionando el video</div>
+          <div class="trow">
+            <div class="tin">
+              <div class="tn">🔊 Normalizar Audio</div>
+              <div class="td">Volumen consistente para redes sociales</div>
             </div>
-            <label class="toggle"><input type="checkbox" id="loopToggle"/><span class="tslider"></span></label>
+            <label class="tog"><input type="checkbox" id="anorm" checked/><span class="tsl"></span></label>
           </div>
-          <div class="toggle-row">
-            <div class="tinfo">
-              <div class="tname">🔊 Normalizar Audio</div>
-              <div class="tdesc">Loudnorm para volumen consistente en redes</div>
+          <div class="trow">
+            <div class="tin">
+              <div class="tn">🎬 Alta Calidad (Lanczos)</div>
+              <div class="td">Mejor escalado, más lento</div>
             </div>
-            <label class="toggle"><input type="checkbox" id="audioNorm" checked/><span class="tslider"></span></label>
+            <label class="tog"><input type="checkbox" id="lanczos" checked/><span class="tsl"></span></label>
           </div>
         </div>
       </div>
 
-      <button class="convert-btn" id="convertBtn" disabled onclick="startConversion()">
-        ⚡ Convertir Video
-      </button>
+      <button class="btn-convert" id="cvBtn" disabled onclick="convert()">⚡ Convertir Video</button>
     </div>
 
-    <!-- OUTPUT -->
+    <!-- DERECHA -->
     <div>
-      <div class="card" style="position:sticky;top:80px;margin-bottom:0">
-        <div class="card-header">
-          <div class="card-icon ci-re">🎬</div>
-          <span class="card-title">Video de Salida</span>
-          <span class="card-step">RESULTADO</span>
+      <div class="card" style="position:sticky;top:70px;margin-bottom:0">
+        <div class="ch">
+          <div class="ci ci-r">✨</div>
+          <span class="ct">Resultado</span>
+          <span class="cs">SALIDA</span>
         </div>
-        <div class="card-body">
-          <div class="out-placeholder" id="outPlaceholder">
-            <div class="icon">🎬</div>
-            <div style="font-size:14px;font-weight:600;margin-bottom:4px">Tu video aparecerá aquí</div>
-            <div style="font-size:12px">Selecciona un video y presiona Convertir</div>
+        <div class="cb">
+          <div class="out-ph" id="oph">
+            <div class="ico">🎬</div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:3px">Tu video aparecerá aquí</div>
+            <div style="font-size:11px">Selecciona un video y presiona Convertir</div>
           </div>
-          <div class="output-video" id="outputVideo">
-            <video id="resultVideo" controls loop></video>
+
+          <div class="out-video" id="ov">
+            <video id="vout" controls loop></video>
           </div>
-          <div class="progress-wrap" id="progressWrap">
-            <div class="plabel">
-              <span id="pLabel">Procesando...</span>
-              <span id="pPct">0%</span>
+
+          <div class="prog" id="prog">
+            <div class="prow">
+              <span id="plbl">Procesando...</span>
+              <span id="ppct">0%</span>
             </div>
-            <div class="pbar-bg"><div class="pbar-fill" id="pFill"></div></div>
-            <div class="pstatus" id="pStatus">Iniciando FFmpeg...</div>
+            <div class="pbg"><div class="pfill" id="pf"></div></div>
+            <div class="pst" id="pst">Iniciando...</div>
           </div>
-          <div class="console-wrap">
-            <div class="console-hdr">
-              <div class="cdots">
-                <div class="cdot" style="background:#f87171"></div>
-                <div class="cdot" style="background:#fbbf24"></div>
-                <div class="cdot" style="background:#10b981"></div>
+
+          <div class="con">
+            <div class="con-h">
+              <div class="dots">
+                <div class="dot2" style="background:#f87171"></div>
+                <div class="dot2" style="background:#fbbf24"></div>
+                <div class="dot2" style="background:#10b981"></div>
               </div>
-              <span class="ctitle">FFmpeg Log</span>
-              <button onclick="clearLog()" style="margin-left:auto;background:none;border:none;color:var(--text2);cursor:pointer;font-size:10px;font-family:inherit">limpiar</button>
+              <span class="con-t">FFmpeg Log</span>
+              <button onclick="clrLog()" style="margin-left:auto;background:none;border:none;color:var(--text2);cursor:pointer;font-size:9px;font-family:inherit">limpiar</button>
             </div>
-            <div class="console-body" id="logBody">
-              <div class="ll info">// ByteLog Converter v1.0</div>
-              <div class="ll info">// Selecciona un video para comenzar...</div>
+            <div class="con-b" id="lb">
+              <div class="ll i">// ByteLog Converter — listo</div>
+              <div class="ll i">// Sube un video para comenzar</div>
             </div>
           </div>
-          <button class="dl-btn" id="dlBtn" onclick="downloadResult()">⬇️ Descargar Video</button>
-          <div class="vinfo" id="outInfo" style="margin-top:10px"></div>
+
+          <button class="btn-dl" id="dlb" onclick="dlResult()">⬇️ Descargar Video</button>
+          <div class="vinfo" id="oinfo" style="margin-top:8px"></div>
         </div>
       </div>
     </div>
@@ -298,224 +325,301 @@ header{padding:18px 0;border-bottom:1px solid var(--border);position:sticky;top:
 </div>
 
 <script type="module">
+// ================================================================
+// ByteLog Video Converter — FFmpeg.wasm single-thread (sin SharedArrayBuffer)
+// Versión sin bucle, estable, todos los botones funcionales
+// ================================================================
+
+// Importar FFmpeg.wasm versión single-thread (evita problemas con SharedArrayBuffer)
 import { FFmpeg } from 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/esm/index.js';
 import { fetchFile, toBlobURL } from 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js';
 
-let ffmpeg = null, isLoaded = false, inputFile = null, outputBlob = null;
-let selRatio = { w:1080, h:1920, r:'9:16' }, selQH = 720;
+// ── Estado global ──────────────────────────────────────────────
+let ff = null, loaded = false, inFile = null, outBlob = null;
+let ratio = { w:1080, h:1920, r:'9:16' }, qH = 720;
 
+// ── Helpers DOM ────────────────────────────────────────────────
 const $ = id => document.getElementById(id);
-const convertBtn = $('convertBtn'), pWrap = $('progressWrap'), pFill = $('pFill');
-const pPct = $('pPct'), pLabel = $('pLabel'), pStatus = $('pStatus');
-const logBody = $('logBody'), outVideo = $('outputVideo'), resultVideo = $('resultVideo');
-const outPlaceholder = $('outPlaceholder'), dlBtn = $('dlBtn'), outInfo = $('outInfo');
+const cvBtn=$('cvBtn'), prog=$('prog'), pf=$('pf'), ppct=$('ppct'), plbl=$('plbl'), pst=$('pst');
+const lb=$('lb'), ov=$('ov'), vout=$('vout'), oph=$('oph'), dlb=$('dlb'), oinfo=$('oinfo');
 
-function log(msg, type=''){
-  const d = document.createElement('div');
-  d.className = 'll ' + type;
-  d.textContent = msg;
-  logBody.appendChild(d);
-  logBody.scrollTop = logBody.scrollHeight;
+// ── Logger ─────────────────────────────────────────────────────
+function log(msg, t=''){
+  const d=document.createElement('div');
+  d.className='ll '+t; d.textContent=msg;
+  lb.appendChild(d); lb.scrollTop=lb.scrollHeight;
 }
-window.clearLog = () => { logBody.innerHTML = ''; };
+window.clrLog = ()=>{ lb.innerHTML=''; };
 
-function setProgress(pct, label='', status=''){
-  pFill.style.width = Math.min(100,pct) + '%';
-  pPct.textContent = Math.round(Math.min(100,pct)) + '%';
-  if(label) pLabel.textContent = label;
-  if(status) pStatus.textContent = status;
+// ── Progreso ───────────────────────────────────────────────────
+function setProg(pct, lbl='', st=''){
+  pf.style.width=Math.min(100,pct)+'%';
+  ppct.textContent=Math.round(Math.min(100,pct))+'%';
+  if(lbl) plbl.textContent=lbl;
+  if(st) pst.textContent=st;
 }
 
-// libx264 requires even dimensions
-const toEven = n => Math.round(n % 2 !== 0 ? n - 1 : n);
+// libx264 REQUIERE dimensiones pares — regla estricta
+const even = n => { const r=Math.round(n); return r%2===0?r:r-1; };
 
-async function loadFFmpeg(){
-  if(isLoaded) return;
-  log('⏳ Cargando FFmpeg.wasm (~30MB primera vez)...', 'info');
-  pWrap.style.display = 'block';
-  setProgress(5, 'Cargando FFmpeg...', 'Primera carga puede tardar ~30 segundos');
-  ffmpeg = new FFmpeg();
-  ffmpeg.on('log', ({ message }) => {
+// ── Cargar FFmpeg ──────────────────────────────────────────────
+async function loadFF(){
+  if(loaded) return;
+  log('⏳ Descargando FFmpeg.wasm (~30MB, solo primera vez)...','i');
+  prog.style.display='block';
+  setProg(3,'Cargando FFmpeg...','Primera carga puede tardar 20-40 segundos');
+
+  ff = new FFmpeg();
+
+  // Capturar logs de FFmpeg
+  ff.on('log',({message})=>{
     log(message);
-    const m = message.match(/time=(\d+):(\d+):([\d.]+)/);
-    if(m && window._dur){
-      const s = +m[1]*3600 + +m[2]*60 + +m[3];
-      setProgress(10 + (s/window._dur)*80, 'Convirtiendo...', message.slice(0,60));
+    // Parsear tiempo para barra de progreso
+    const m=message.match(/time=(\d+):(\d+):([\d.]+)/);
+    if(m && window._dur>0){
+      const s=+m[1]*3600 + +m[2]*60 + +m[3];
+      setProg(15+(s/window._dur)*78,'Convirtiendo...', message.substring(0,55));
     }
   });
-  ffmpeg.on('progress', ({ progress }) => {
-    if(progress > 0) setProgress(10 + progress*80, 'Convirtiendo...', Math.round(progress*100)+'% completado');
+
+  ff.on('progress',({progress})=>{
+    if(progress>0) setProg(15+progress*78,'Convirtiendo...', Math.round(progress*100)+'% completado');
   });
+
   try {
-    const base = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
-    await ffmpeg.load({
-      coreURL: await toBlobURL(`${base}/ffmpeg-core.js`, 'text/javascript'),
-      wasmURL: await toBlobURL(`${base}/ffmpeg-core.wasm`, 'application/wasm'),
+    // Single-thread core: funciona sin COOP/COEP en la mayoría de navegadores
+    const base='https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm';
+    await ff.load({
+      coreURL: await toBlobURL(`${base}/ffmpeg-core.js`,'text/javascript'),
+      wasmURL: await toBlobURL(`${base}/ffmpeg-core.wasm`,'application/wasm'),
+      workerURL: await toBlobURL(`${base}/ffmpeg-core.worker.js`,'text/javascript'),
     });
-    isLoaded = true;
-    log('✅ FFmpeg listo', 'success');
-    pWrap.style.display = 'none';
+    loaded=true;
+    log('✅ FFmpeg listo','s');
+    prog.style.display='none';
   } catch(e){
-    log('❌ Error: ' + e.message, 'error');
-    log('⚠️  Asegúrate de tener el vercel.json con los headers COOP/COEP', 'warn');
-    throw e;
+    // Fallback a single-thread si falla multi-thread
+    log('⚠️  Multi-thread falló, probando single-thread...','w');
+    try {
+      const base2='https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
+      await ff.load({
+        coreURL: await toBlobURL(`${base2}/ffmpeg-core.js`,'text/javascript'),
+        wasmURL: await toBlobURL(`${base2}/ffmpeg-core.wasm`,'application/wasm'),
+      });
+      loaded=true;
+      log('✅ FFmpeg single-thread listo','s');
+      prog.style.display='none';
+    } catch(e2){
+      log('❌ Error al cargar FFmpeg: '+e2.message,'e');
+      log('💡 Asegúrate de tener el vercel.json con los headers COOP/COEP','w');
+      prog.style.display='none';
+      throw e2;
+    }
   }
 }
 
-$('fileInput').addEventListener('change', handleFile);
-const dz = $('dropZone');
-dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
-dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
-dz.addEventListener('drop', e => {
-  e.preventDefault(); dz.classList.remove('drag-over');
-  const f = e.dataTransfer.files[0];
-  if(f && f.type.startsWith('video/')) processFile(f);
+// ── Drag & Drop ────────────────────────────────────────────────
+const dz=$('dz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+dz.addEventListener('drop',e=>{
+  e.preventDefault(); dz.classList.remove('over');
+  const f=e.dataTransfer.files[0];
+  if(f && f.type.startsWith('video/')) setFile(f);
+  else log('⚠️  Solo se aceptan archivos de video','w');
 });
+$('fi').addEventListener('change',e=>{ if(e.target.files[0]) setFile(e.target.files[0]); });
 
-function handleFile(e){ if(e.target.files[0]) processFile(e.target.files[0]); }
-
-function processFile(file){
-  inputFile = file;
-  const url = URL.createObjectURL(file);
-  const v = $('inputVideo');
-  v.src = url;
-  v.onloadedmetadata = () => {
-    window._dur = v.duration;
-    $('videoInfo').innerHTML =
-      `<span class="vtag">📁 <span>${(file.size/1024/1024).toFixed(1)} MB</span></span>
-       <span class="vtag">⏱ <span>${Math.round(v.duration)}s</span></span>
-       <span class="vtag">📐 <span>${v.videoWidth}×${v.videoHeight}</span></span>
-       <span class="vtag">🎬 <span>${file.type.split('/')[1]?.toUpperCase()||'VIDEO'}</span></span>`;
-    $('videoPreview').style.display = 'block';
-    dz.style.display = 'none';
-    convertBtn.disabled = false;
-    log(`📁 ${file.name} | ${(file.size/1024/1024).toFixed(1)}MB | ${v.videoWidth}×${v.videoHeight} | ${Math.round(v.duration)}s`, 'info');
+function setFile(file){
+  inFile=file;
+  const url=URL.createObjectURL(file);
+  const v=$('vin'); v.src=url;
+  v.onloadedmetadata=()=>{
+    window._dur=v.duration||0;
+    $('vi').innerHTML=
+      `<span class="vtag">📁 <b>${(file.size/1024/1024).toFixed(1)} MB</b></span>
+       <span class="vtag">⏱ <b>${Math.round(v.duration)}s</b></span>
+       <span class="vtag">📐 <b>${v.videoWidth}×${v.videoHeight}</b></span>
+       <span class="vtag">🎞 <b>${(file.type.split('/')[1]||'video').toUpperCase()}</b></span>`;
+    $('vp').style.display='block';
+    dz.style.display='none';
+    cvBtn.disabled=false;
+    log(`📁 ${file.name} | ${(file.size/1024/1024).toFixed(1)}MB | ${v.videoWidth}×${v.videoHeight} | ${Math.round(v.duration)}s`,'i');
+    log('✅ Video listo — configura las opciones y presiona Convertir','s');
   };
+  v.onerror=()=>log('❌ No se pudo leer el video','e');
 }
 
-window.selectRatio = el => {
-  document.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  selRatio = { w: +el.dataset.w, h: +el.dataset.h, r: el.dataset.r };
+// ── Selección de ratio y calidad ───────────────────────────────
+window.selR=el=>{
+  document.querySelectorAll('.rb').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  ratio={w:+el.dataset.w, h:+el.dataset.h, r:el.dataset.r};
+};
+window.selQ=el=>{
+  document.querySelectorAll('.qp').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  qH=+el.dataset.h;
 };
 
-window.selectQuality = el => {
-  document.querySelectorAll('.qpill').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  selQH = +el.dataset.h;
-};
-
+// ── Construir comando FFmpeg ───────────────────────────────────
 function buildArgs(inName, outName, hasAudio){
-  const fit = $('fitMode').value;
-  const doLoop = $('loopToggle').checked;
-  const doNorm = $('audioNorm').checked && hasAudio;
-  const aspect = selRatio.w / selRatio.h;
-  let outH = toEven(selQH), outW = toEven(Math.round(outH * aspect));
+  const fit=$('fit').value;
+  const doNorm=$('anorm').checked && hasAudio;
+  const flags=$('lanczos').checked ? 'lanczos' : 'bilinear';
 
-  log(`🎯 Canvas: ${outW}×${outH} | Modo: ${fit} | Audio: ${hasAudio}`, 'info');
+  // Calcular dimensiones de salida (SIEMPRE pares)
+  const aspect=ratio.w/ratio.h;
+  const outH=even(qH);
+  const outW=even(Math.round(outH*aspect));
 
-  let vFilter = '';
-  if(fit === 'blur'){
-    vFilter = `[0:v]scale=${outW}:${outH}:flags=lanczos:force_original_aspect_ratio=decrease,pad=${outW}:${outH}:(ow-iw)/2:(oh-ih)/2[fg];[0:v]scale=${outW}:${outH}:flags=lanczos:force_original_aspect_ratio=increase,crop=${outW}:${outH},boxblur=luma_radius=20:luma_power=1[bg];[bg][fg]overlay=(W-w)/2:(H-h)/2[vbase]`;
-  } else if(fit === 'crop'){
-    vFilter = `[0:v]scale=${outW}:${outH}:flags=lanczos:force_original_aspect_ratio=increase,crop=${outW}:${outH}[vbase]`;
+  log(`🎯 Resolución: ${outW}×${outH} | Modo: ${fit} | Audio: ${hasAudio?'sí':'no'}`,'i');
+
+  // ── Filter complex para video ──────────────────────────────
+  let vf='';
+  if(fit==='blur'){
+    // Fondo desenfocado: video centrado + fondo del mismo video con blur
+    vf=`[0:v]scale=${outW}:${outH}:flags=${flags}:force_original_aspect_ratio=decrease,`+
+       `pad=${outW}:${outH}:(ow-iw)/2:(oh-ih)/2[fg];`+
+       `[0:v]scale=${outW}:${outH}:flags=${flags}:force_original_aspect_ratio=increase,`+
+       `crop=${outW}:${outH},boxblur=luma_radius=20:luma_power=1[bg];`+
+       `[bg][fg]overlay=(W-w)/2:(H-h)/2[vout]`;
+  } else if(fit==='crop'){
+    // Recorte central: llena el canvas y recorta el excedente
+    vf=`[0:v]scale=${outW}:${outH}:flags=${flags}:force_original_aspect_ratio=increase,`+
+       `crop=${outW}:${outH}[vout]`;
   } else {
-    vFilter = `[0:v]scale=${outW}:${outH}:flags=lanczos:force_original_aspect_ratio=decrease,pad=${outW}:${outH}:(ow-iw)/2:(oh-ih)/2:color=black[vbase]`;
+    // Barras negras: encaja todo con padding negro
+    vf=`[0:v]scale=${outW}:${outH}:flags=${flags}:force_original_aspect_ratio=decrease,`+
+       `pad=${outW}:${outH}:(ow-iw)/2:(oh-ih)/2:color=black[vout]`;
   }
 
-  let aFilter = hasAudio ? (doNorm ? `[0:a]loudnorm=I=-16:TP=-1.5:LRA=11[abase]` : `[0:a]anull[abase]`) : '';
-
-  if(doLoop && window._dur > 4){
-    const half = window._dur / 2;
-    const xd = Math.min(1.5, half * 0.3).toFixed(2);
-    const off = Math.max(0, half - +xd).toFixed(2);
-    vFilter += `;[vbase]split[v1][v2];[v1]trim=0:${half},setpts=PTS-STARTPTS[va];[v2]trim=${half},setpts=PTS-STARTPTS[vb];[vb][va]xfade=transition=fade:duration=${xd}:offset=${off}[vout]`;
-    if(hasAudio) aFilter += `;[abase]asplit[a1][a2];[a1]atrim=0:${half},asetpts=PTS-STARTPTS[aa];[a2]atrim=${half},asetpts=PTS-STARTPTS[ab];[ab][aa]acrossfade=d=${xd}[aout]`;
-  } else {
-    vFilter += `;[vbase]copy[vout]`;
-    if(hasAudio) aFilter += `;[abase]anull[aout]`;
+  // ── Filter para audio ──────────────────────────────────────
+  let af='';
+  if(hasAudio){
+    af = doNorm
+      ? `[0:a]loudnorm=I=-16:TP=-1.5:LRA=11[aout]`
+      : `[0:a]acopy[aout]`;
   }
 
-  const fc = hasAudio && aFilter ? vFilter + ';' + aFilter : vFilter;
-  const args = ['-i', inName, '-filter_complex', fc, '-map', '[vout]'];
-  if(hasAudio) args.push('-map', '[aout]');
-  args.push('-c:v','libx264','-preset','ultrafast','-crf','23','-pix_fmt','yuv420p');
-  if(hasAudio) args.push('-c:a','aac','-b:a','192k');
-  args.push('-movflags','+faststart','-y', outName);
+  // ── Ensamblar filter_complex ───────────────────────────────
+  const fc = hasAudio ? vf+';'+af : vf;
+
+  // ── Argumentos finales ─────────────────────────────────────
+  const args=[
+    '-i', inName,
+    '-filter_complex', fc,
+    '-map', '[vout]',
+    ...(hasAudio ? ['-map','[aout]'] : []),
+    '-c:v', 'libx264',
+    '-preset', 'ultrafast',   // rápido, no bloquea el navegador
+    '-crf', '23',
+    '-pix_fmt', 'yuv420p',    // compatibilidad máxima
+    ...(hasAudio ? ['-c:a','aac','-b:a','192k'] : []),
+    '-movflags', '+faststart', // streaming desde el inicio
+    '-y', outName
+  ];
+
   return args;
 }
 
-window.startConversion = async () => {
-  if(!inputFile) return;
-  convertBtn.disabled = true;
-  outPlaceholder.style.display = 'none';
-  outVideo.style.display = 'none';
-  dlBtn.style.display = 'none';
-  outInfo.innerHTML = '';
-  pWrap.style.display = 'block';
-  setProgress(0, 'Iniciando...', 'Preparando motor');
+// ── CONVERSIÓN PRINCIPAL ───────────────────────────────────────
+window.convert = async ()=>{
+  if(!inFile){ log('⚠️  Selecciona un video primero','w'); return; }
+
+  cvBtn.disabled=true;
+  oph.style.display='none';
+  ov.style.display='none';
+  dlb.style.display='none';
+  oinfo.innerHTML='';
+  prog.style.display='block';
+  setProg(0,'Iniciando...','Preparando motor de conversión');
 
   try {
-    if(!isLoaded) await loadFFmpeg();
+    // Cargar FFmpeg si no está cargado
+    if(!loaded) await loadFF();
 
-    const ext = inputFile.name.split('.').pop() || 'mp4';
-    const inName = 'input.' + ext, outName = 'output.mp4';
+    const ext=inFile.name.split('.').pop().toLowerCase()||'mp4';
+    const inName='input.'+ext, outName='output.mp4';
 
-    log('📥 Cargando video en memoria...', 'info');
-    setProgress(8, 'Cargando archivo...', 'Leyendo video');
-    await ffmpeg.writeFile(inName, await fetchFile(inputFile));
-    log('✅ Archivo listo en memoria', 'success');
+    // Escribir archivo de entrada en el sistema de archivos virtual de FFmpeg
+    log('📥 Cargando video en memoria...','i');
+    setProg(10,'Cargando archivo...','Leyendo video en memoria');
+    await ff.writeFile(inName, await fetchFile(inFile));
+    log('✅ Archivo en memoria','s');
 
-    // Try with audio, fallback to video-only
-    let args = buildArgs(inName, outName, true);
+    // ── Intento 1: Con audio ─────────────────────────────────
+    let args=buildArgs(inName, outName, true);
+    log('🎬 Iniciando conversión (con audio)...','i');
+    setProg(13,'Convirtiendo...','Procesando video + audio');
+
     try {
-      log('🎬 Convirtiendo con audio...', 'info');
-      await ffmpeg.exec(args);
+      await ff.exec(args);
+      log('✅ Conversión con audio completada','s');
     } catch(e){
-      log('⚠️  Sin pista de audio, reintentando...', 'warn');
-      args = buildArgs(inName, outName, false);
-      await ffmpeg.exec(args);
+      // ── Fallback: Sin audio (video sin pista de audio) ───
+      log('⚠️  Sin pista de audio detectada, reintentando...','w');
+      args=buildArgs(inName, outName, false);
+      log('🎬 Reintentando solo video...','i');
+      await ff.exec(args);
+      log('✅ Conversión (solo video) completada','s');
     }
 
-    setProgress(97, 'Finalizando...', 'Leyendo resultado');
-    const data = await ffmpeg.readFile(outName);
-    outputBlob = new Blob([data.buffer], { type:'video/mp4' });
-    resultVideo.src = URL.createObjectURL(outputBlob);
-    outVideo.style.display = 'block';
-    dlBtn.style.display = 'block';
+    // ── Leer resultado ───────────────────────────────────────
+    setProg(97,'Finalizando...','Leyendo archivo de salida');
+    const data=await ff.readFile(outName);
+    outBlob=new Blob([data.buffer],{type:'video/mp4'});
 
-    const mb = (outputBlob.size/1024/1024).toFixed(2);
-    outInfo.innerHTML = `<span class="vtag">📦 <span>${mb} MB</span></span><span class="vtag">🎯 <span>${selRatio.r}</span></span><span class="vtag">📺 <span>${selQH}p</span></span><span class="vtag">✅ <span>MP4 H.264</span></span>`;
+    // Mostrar video resultante
+    vout.src=URL.createObjectURL(outBlob);
+    ov.style.display='block';
+    dlb.style.display='block';
 
-    setProgress(100, '¡Listo!', 'Video convertido exitosamente ✅');
-    log(`✅ Listo: ${mb} MB | ${selRatio.r} | ${selQH}p`, 'success');
+    const mb=(outBlob.size/1024/1024).toFixed(2);
+    oinfo.innerHTML=
+      `<span class="vtag">📦 <b>${mb} MB</b></span>
+       <span class="vtag">🎯 <b>${ratio.r}</b></span>
+       <span class="vtag">📺 <b>${qH}p</b></span>
+       <span class="vtag">✅ <b>MP4 H.264</b></span>`;
 
-    // Cleanup memory
-    await ffmpeg.deleteFile(inName).catch(()=>{});
-    await ffmpeg.deleteFile(outName).catch(()=>{});
-    log('🧹 Memoria liberada', 'info');
-    setTimeout(() => { pWrap.style.display = 'none'; }, 2500);
+    setProg(100,'¡Listo! 🎉','Video convertido exitosamente');
+    log(`✅ Resultado: ${mb} MB | ${ratio.r} | ${qH}p`,'s');
+
+    // Liberar memoria del sistema de archivos virtual
+    await ff.deleteFile(inName).catch(()=>{});
+    await ff.deleteFile(outName).catch(()=>{});
+    log('🧹 Memoria liberada','i');
+
+    setTimeout(()=>{ prog.style.display='none'; }, 3000);
 
   } catch(err){
-    log('❌ ' + err.message, 'error');
-    setProgress(0, 'Error', err.message);
+    log('❌ Error: '+err.message,'e');
+    log('💡 Revisa la consola del navegador para más detalles','w');
+    setProg(0,'Error','Algo salió mal — revisa el log');
+    console.error('[ByteLog Converter]', err);
   } finally {
-    convertBtn.disabled = false;
+    cvBtn.disabled=false;
   }
 };
 
-window.downloadResult = () => {
-  if(!outputBlob) return;
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(outputBlob);
-  a.download = `bytelog-${selRatio.r.replace(':','-')}-${selQH}p.mp4`;
+// ── DESCARGA ───────────────────────────────────────────────────
+window.dlResult=()=>{
+  if(!outBlob){ log('⚠️  No hay video para descargar','w'); return; }
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(outBlob);
+  a.download=`bytelog-${ratio.r.replace(':','-')}-${qH}p.mp4`;
+  document.body.appendChild(a);
   a.click();
-  log('⬇️ Descarga iniciada', 'success');
+  document.body.removeChild(a);
+  log('⬇️ Descarga iniciada','s');
 };
 
-log('🚀 ByteLog Converter listo', 'success');
-log('📌 Selecciona un video para empezar', 'info');
-setTimeout(() => loadFFmpeg().catch(()=>{}), 3000);
+// ── INICIO ─────────────────────────────────────────────────────
+log('🚀 ByteLog Converter v1.0 iniciado','s');
+log('📌 Sube un video y selecciona el formato','i');
+
+// Pre-cargar FFmpeg en background después de 2s
+setTimeout(()=>{ loadFF().catch(()=>{}); }, 2000);
 </script>
 </body>
 </html>
