@@ -231,19 +231,13 @@ const UI = {
     formats: document.querySelectorAll('input[name="format"]'),
     modes: document.querySelectorAll('input[name="fitMode"]'),
     manualHint: document.getElementById('manualHint'),
-    
-    // UI Estados
     ph: document.getElementById('placeholderUI'),
     load: document.getElementById('loadingUI'),
     res: document.getElementById('resultUI'),
-    
-    // UI Progreso
     title: document.getElementById('statusTitle'),
     pct: document.getElementById('statusPct'),
     bar: document.getElementById('progressBar'),
     log: document.getElementById('consoleLog'),
-    
-    // Salida
     outVid: document.getElementById('outputVideo'),
     dlBtn: document.getElementById('downloadBtn')
 };
@@ -264,7 +258,7 @@ function updateProgress(percent, text) {
     if(text) UI.title.textContent = text;
 }
 
-// ── Carga Asíncrona de FFmpeg (Versión 100% Segura, Sin Workers Problemáticos) ──
+// ── Carga Asíncrona de FFmpeg ──
 async function initFFmpeg() {
     if (isLoaded) return;
     
@@ -275,7 +269,6 @@ async function initFFmpeg() {
 
     ff = new FFmpeg();
 
-    // Parseo de progreso desde los logs internos de FFmpeg
     ff.on('log', ({ message }) => {
         addLog(message, 'text-gray-500');
         const match = message.match(/time=(\d+):(\d+):([\d.]+)/);
@@ -286,19 +279,26 @@ async function initFFmpeg() {
     });
 
     try {
-        // Usamos la URL base estricta. Al no pasar "classWorkerURL", 
-        // FFmpeg no intentará crear el Web Worker que crashea en Vercel.
         const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
-        await ff.load({
-            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm')
-        });
+        
+        // Bloque Try-Catch especializado para detectar problemas de red / Vercel
+        let coreBlob, wasmBlob;
+        try {
+            coreBlob = await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript');
+            wasmBlob = await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm');
+        } catch (fetchErr) {
+            throw new Error("El navegador bloqueó la descarga de FFmpeg. Asegúrate de que vercel.json solo tenga cleanUrls:true");
+        }
+
+        await ff.load({ coreURL: coreBlob, wasmURL: wasmBlob });
         
         isLoaded = true;
         addLog('Motor WebAssembly Inicializado correctamente.', 'text-emerald-400');
     } catch (error) {
         addLog('ERROR FATAL: ' + error.message, 'text-red-500');
-        alert("Tu navegador bloqueó la descarga del motor. Intenta limpiar el caché (Ctrl + F5).");
+        alert("Fallo de red: " + error.message);
+        UI.load.classList.add('hidden');
+        UI.ph.classList.remove('hidden');
         throw error;
     }
 }
@@ -326,7 +326,7 @@ function handleFile(file) {
         UI.btn.disabled = false;
         
         addLog(`Video cargado: ${file.name} (${UI.preview.videoWidth}x${UI.preview.videoHeight})`, 'text-cyan-400');
-        syncUI(); // Actualizar caja de recorte
+        syncUI(); 
     };
 }
 
@@ -343,7 +343,6 @@ function syncUI() {
         UI.formats.forEach(r => r.disabled = true);
         UI.manualHint.classList.remove('hidden');
         
-        // Setup inicial caja libre (80% del video)
         if(!UI.cropBox.style.width) {
             UI.cropBox.style.width = `${UI.preview.clientWidth * 0.8}px`;
             UI.cropBox.style.height = `${UI.preview.clientHeight * 0.8}px`;
@@ -383,7 +382,6 @@ const moveMouse = (e) => {
         let newW = Math.max(50, startW + dx);
         let newH = Math.max(50, startH + dy);
         
-        // Límites de la caja
         const maxW = UI.preview.clientWidth - startLeft;
         const maxH = UI.preview.clientHeight - startTop;
         if(newW > maxW) newW = maxW;
@@ -395,7 +393,6 @@ const moveMouse = (e) => {
         let newL = startLeft + dx;
         let newT = startTop + dy;
         
-        // Límites de movimiento
         const maxL = UI.preview.clientWidth - UI.cropBox.offsetWidth;
         const maxT = UI.preview.clientHeight - UI.cropBox.offsetHeight;
         newL = Math.max(0, Math.min(newL, maxL));
@@ -408,7 +405,6 @@ const moveMouse = (e) => {
 
 const stopMouse = () => { isDragging = false; isResizing = false; };
 
-// Event Listeners (Mouse & Touch)
 UI.resizeHandle.addEventListener('mousedown', e => { e.stopPropagation(); startMouse(e, 'resize'); });
 UI.cropBox.addEventListener('mousedown', e => startMouse(e, 'drag'));
 document.addEventListener('mousemove', moveMouse);
@@ -418,7 +414,6 @@ UI.resizeHandle.addEventListener('touchstart', e => { e.stopPropagation(); start
 UI.cropBox.addEventListener('touchstart', e => startMouse(e, 'drag'), {passive:false});
 document.addEventListener('touchmove', moveMouse, {passive:false});
 document.addEventListener('touchend', stopMouse);
-
 
 // ── El Motor de Renderizado Matemático (FFmpeg Engine) ──
 UI.btn.addEventListener('click', async () => {
@@ -430,7 +425,6 @@ UI.btn.addEventListener('click', async () => {
     const mode = document.querySelector('input[name="fitMode"]:checked').value;
     const format = document.querySelector('input[name="format"]:checked').value;
     
-    // Diccionario de Resoluciones Base (High Definition 1080p target)
     const RES = {
         '9:16': { w: 1080, h: 1920 },
         '1:1':  { w: 1080, h: 1080 },
@@ -439,7 +433,7 @@ UI.btn.addEventListener('click', async () => {
     };
 
     try {
-        await initFFmpeg(); // Asegura carga antes de escribir
+        await initFFmpeg();
 
         const inName = 'input.mp4';
         const outName = 'output.mp4';
@@ -451,18 +445,13 @@ UI.btn.addEventListener('click', async () => {
         let targetW = RES[format].w;
         let targetH = RES[format].h;
 
-        // Construcción Inteligente del Grafo de Filtros
         if (mode === 'blur') {
-            // Desenfoque cinemático: Fuerza el ratio, corta los bordes y desenfoca con boxblur. 
-            // Luego sobrepone el video original ajustado para que encaje perfecto en el centro.
             vf = `[0:v]scale=${targetW}:${targetH}:force_original_aspect_ratio=increase,crop=${targetW}:${targetH},boxblur=luma_radius=20:luma_power=1[bg];[0:v]scale=${targetW}:${targetH}:force_original_aspect_ratio=decrease[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2[vout]`;
         } 
         else if (mode === 'pad') {
-            // Padding clásico: Mantiene aspecto y rellena con negro.
             vf = `[0:v]scale=${targetW}:${targetH}:force_original_aspect_ratio=decrease,pad=${targetW}:${targetH}:(ow-iw)/2:(oh-ih)/2:color=black[vout]`;
         } 
         else if (mode === 'manual') {
-            // Mapeo matemático del DOM (Caja verde) a los píxeles reales del video
             const scaleX = UI.preview.videoWidth / UI.preview.clientWidth;
             const scaleY = UI.preview.videoHeight / UI.preview.clientHeight;
             
@@ -471,16 +460,12 @@ UI.btn.addEventListener('click', async () => {
             let rX = Math.round(parseFloat(UI.cropBox.style.left || 0) * scaleX);
             let rY = Math.round(parseFloat(UI.cropBox.style.top || 0) * scaleY);
 
-            // Regla de Oro FFmpeg: Dimensiones deben ser PARES.
             rW = rW % 2 !== 0 ? rW - 1 : rW;
             rH = rH % 2 !== 0 ? rH - 1 : rH;
 
-            // Extraemos solo lo de la caja
             vf = `[0:v]crop=${rW}:${rH}:${rX}:${rY}[vout]`;
         }
 
-        // Configuración Universal de Códecs (Estabilidad > Velocidad)
-        // preset=ultrafast (necesario en WebAssembly), crf=23 (buen balance peso/calidad)
         const baseArgs = [
             '-i', inName,
             '-filter_complex', vf,
@@ -493,13 +478,10 @@ UI.btn.addEventListener('click', async () => {
 
         addLog(`Iniciando codificación H.264. Modo: ${mode}...`, 'text-yellow-400');
         
-        // PATRÓN DE FALLBACK PARA AUDIO
-        // Intento 1: Copiar el audio original tal cual
         try {
             addLog('Intentando procesar con pista de audio original...', 'text-gray-400');
             await ff.exec([...baseArgs, '-map', '0:a', '-c:a', 'aac', '-b:a', '128k', '-y', outName]);
         } catch (audioError) {
-            // Intento 2: Si crashea (porque el video es mudo), procesamos solo el video
             addLog('Aviso: Falló el mapeo de audio. Procesando SOLO VIDEO de forma segura.', 'text-red-400');
             await ff.exec([...baseArgs, '-y', outName]);
         }
@@ -510,11 +492,9 @@ UI.btn.addEventListener('click', async () => {
         const data = await ff.readFile(outName);
         finalBlob = new Blob([data.buffer], { type: 'video/mp4' });
 
-        // Liberar Memoria Inmediatamente
         await ff.deleteFile(inName);
         await ff.deleteFile(outName);
 
-        // Mostrar Resultados
         const url = URL.createObjectURL(finalBlob);
         UI.outVid.src = url;
         UI.dlBtn.href = url;
@@ -528,7 +508,6 @@ UI.btn.addEventListener('click', async () => {
     } catch (error) {
         console.error(error);
         addLog('ERROR FATAL: ' + error.message, 'text-red-500');
-        alert("Ocurrió un error inesperado al procesar el video. Verifica la consola.");
         UI.load.classList.add('hidden');
         UI.ph.classList.remove('hidden');
     } finally {
