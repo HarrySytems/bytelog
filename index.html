@@ -120,7 +120,8 @@
                 <p class="text-gray-600 text-base md:text-lg">Privacidad Inteligente: Tiene una visualización de gracia. Tras verla y ocultarla por segunda vez, el sistema forjará una nueva por seguridad.</p>
             </div>
 
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 md:p-10 mb-8">
+            <!-- CONTENEDOR PRINCIPAL GENERADOR -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 md:p-10 mb-6">
                 
                 <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-2">
                     <div class="w-full font-mono text-2xl md:text-3xl text-gray-800 tracking-wide break-all text-center md:text-left min-h-[40px] flex items-center justify-center md:justify-start" id="passOutputContainer">
@@ -188,6 +189,23 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- ANIMACIÓN MECANOGRAFÍA (ESPACIO INFERIOR) -->
+            <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm border border-gray-200 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex-1 text-center md:text-left">
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">¿Por qué usar nuestro generador?</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Las contraseñas creadas por humanos siguen patrones predecibles. Un pirata informático puede descifrar una clave común en milisegundos. Nuestro sistema genera cadenas de alta entropía imposibles de adivinar.</p>
+                </div>
+                <!-- Pantalla Falsa (Input) -->
+                <div class="w-full md:w-80 bg-[#f9fafb] border border-gray-300 rounded-md p-4 flex items-center justify-between font-mono text-sm shadow-inner relative h-14">
+                    <div class="flex items-center gap-1 overflow-hidden whitespace-nowrap">
+                        <span class="text-gray-400 select-none">❯</span>
+                        <span id="typingEffect" class="text-gray-800 font-bold tracking-wide"></span><span class="animate-pulse text-gray-400 font-bold">|</span>
+                    </div>
+                    <span id="typingBadge" class="text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider transition-opacity duration-300 opacity-0 shrink-0"></span>
+                </div>
+            </div>
+            
         </section>
 
         <!-- SECCIÓN 2: USERNAMES -->
@@ -390,7 +408,7 @@
         }
 
         // ==========================================
-        // 1. GENERADOR DE CONTRASEÑAS (LOGICA PRIVACIDAD)
+        // 1. GENERADOR DE CONTRASEÑAS Y LÓGICA DE PRIVACIDAD
         // ==========================================
         let currentRawPassword = "";
         let isPasswordVisible = false;
@@ -522,7 +540,7 @@
 
         const MAP_FRAKTUR = {'a':'𝖆','b':'𝖇','c':'𝖈','d':'𝖉','e':'𝖊','f':'𝖋','g':'𝖌','h':'𝖍','i':'𝖎','j':'𝖏','k':'𝖐','l':'𝖑','m':'𝖒','n':'𝖓','o':'𝖔','p':'𝖕','q':'𝖖','r':'𝖗','s':'𝖘','t':'𝖙','u':'𝖚','v':'𝖛','w':'𝖜','x':'𝖝','y':'𝖞','z':'𝖟','A':'𝕬','B':'𝕭','C':'𝕮','D':'𝕯','E':'𝕰','F':'𝕱','G':'𝕲','H':'𝕳','I':'𝕴','J':'𝕵','K':'𝕶','L':'𝕷','M':'𝕸','N':'𝕹','O':'𝕺','P':'𝕻','Q':'𝕼','R':'𝕽','S':'𝕾','T':'𝕿','U':'𝖀','V':'𝖁','W':'𝖂','X':'𝖃','Y':'𝖄','Z':'𝖅'};
         const MAP_FULLWIDTH = {'a':'ａ','b':'ｂ','c':'ｃ','d':'ｄ','e':'ｅ','f':'ｆ','g':'ｇ','h':'ｈ','i':'ｉ','j':'ｊ','k':'ｋ','l':'ｌ','m':'ｍ','n':'ｎ','o':'ｏ','p':'ｐ','q':'ｑ','r':'ｒ','s':'ｓ','t':'ｔ','u':'ｕ','v':'ｖ','w':'ｗ','x':'ｘ','y':'ｙ','z':'ｚ','A':'Ａ','B':'Ｂ','C':'Ｃ','D':'Ｄ','E':'Ｅ','F':'Ｆ','G':'Ｇ','H':'Ｈ','I':'Ｉ','J':'Ｊ','K':'Ｋ','L':'Ｌ','M':'Ｍ','N':'Ｎ','O':'Ｏ','P':'Ｐ','Q':'Ｑ','R':'Ｒ','S':'Ｓ','T':'Ｔ','U':'Ｕ','V':'Ｖ','W':'Ｗ','X':'Ｘ','Y':'Ｙ','Z':'Ｚ'};
-        const MAP_SANS = {'a':'𝗮','b':'𝗯','c':'𝗰','d':'𝗱','e':'𝗲','f':'𝗳','g':'𝗴','h':'𝗵','i':'𝗶','j':'𝗷','k':'𝗸','l':'𝗹','m':'𝗺','n':'𝗻','o':'𝗼','p':'𝗽','q':'𝗾','r':'𝗿','s':'𝘀','t':'𝘁','u':'𝘂','v':'𝘃','w':'𝘄','x':'𝘅','y':'𝘆','z':'𝘇','A':'𝗔','B':'𝗕','C':'Ｃ','D':'𝗗','E':'𝗘','F':'𝗙','G':'𝗚','H':'𝗛','I':'𝗜','J':'𝗝','K':'𝗞','L':'𝗟','M':'Ｍ','N':'𝗡','O':'𝗢','P':'𝗣','Q':'𝗤','R':'Ｒ','S':'𝗦','T':'𝗧','U':'Ｕ','V':'𝗩','W':'𝗪','X':'𝗫','Y':'𝗬','Z':'𝗭'};
+        const MAP_SANS = {'a':'𝗮','b':'𝗯','c':'𝗰','d':'𝗱','e':'𝗲','f':'𝗳','g':'𝗴','h':'𝗵','i':'𝗶','j':'𝗷','k':'𝗸','l':'𝗹','m':'𝗺','n':'𝗻','o':'𝗼','p':'𝗽','q':'𝗾','r':'𝗿','s':'𝘀','t':'𝘁','u':'𝘂','v':'𝘃','w':'𝘄','x':'𝘅','y':'𝘆','z':'𝘇','A':'𝗔','B':'𝗕','C':'𝗖','D':'𝗗','E':'𝗘','F':'𝗙','G':'𝗚','H':'𝗛','I':'𝗜','J':'Ｊ','K':'𝗞','L':'𝗟','M':'Ｍ','N':'𝗡','O':'𝗢','P':'𝗣','Q':'𝗤','R':'Ｒ','S':'𝗦','T':'𝗧','U':'Ｕ','V':'𝗩','W':'𝗪','X':'𝗫','Y':'𝗬','Z':'𝗭'};
         const MAP_SCRIPT = {'a':'𝒶','b':'𝒷','c':'𝒸','d':'𝒹','e':'𝑒','f':'𝒻','g':'𝑔','h':'𝒽','i':'𝒾','j':'𝒿','k':'𝓀','l':'𝓁','m':'𝓂','n':'𝓃','o':'𝑜','p':'𝓅','q':'𝓆','r':'𝓇','s':'𝓈','t':'𝓉','u':'𝓊','v':'𝓋','w':'𝓌','x':'𝓍','y':'𝓎','z':'𝓏','A':'𝒜','B':'ℬ','C':'𝒞','D':'𝒟','E':'ℰ','F':'ℱ','G':'𝒢','H':'ℋ','I':'ℐ','J':'𝒥','K':'𝒦','L':'ℒ','M':'ℳ','N':'𝒩','O':'𝒪','P':'𝒫','Q':'𝒬','R':'ℛ','S':'𝒮','T':'𝒯','U':'𝒰','V':'𝒱','W':'𝒲','X':'𝒳','Y':'𝒴','Z':'𝒵'};
         const MAP_SMALLCAPS = {'a':'ᴀ','b':'ʙ','c':'ᴄ','d':'ᴅ','e':'ᴇ','f':'ғ','g':'ɢ','h':'ʜ','i':'ɪ','j':'ᴊ','k':'ᴋ','l':'ʟ','m':'ᴍ','n':'ɴ','o':'ᴏ','p':'ᴘ','q':'ǫ','r':'ʀ','s':'s','t':'ᴛ','u':'ᴜ','v':'ᴠ','w':'ᴡ','x':'x','y':'ʏ','z':'ᴢ','A':'A','B':'B','C':'C','D':'D','E':'E','F':'F','G':'G','H':'H','I':'I','J':'J','K':'K','L':'L','M':'M','N':'N','O':'O','P':'P','Q':'Q','R':'R','S':'S','T':'T','U':'U','V':'V','W':'W','X':'X','Y':'Y','Z':'Z'};
         const MAP_TECHNO = {'a':'卂','b':'乃','c':'匚','d':'刀','e':'乇','f':'千','g':'Ꮆ','h':'卄','i':'丨','j':'丁','k':'长','l':'ㄥ','m':'爪','n':'几','o':'ㄖ','p':'卩','q':'Ɋ','r':'尺','s':'丂','t':'ㄒ','u':'ㄩ','v':'ᐯ','w':'山','x':'乂','y':'丫','z':'乙','A':'卂','B':'乃','C':'匚','D':'刀','E':'乇','F':'千','G':'Ꮆ','H':'卄','I':'丨','J':'丁','K':'长','L':'ㄥ','M':'爪','N':'几','O':'ㄖ','P':'卩','Q':'Ɋ','R':'尺','S':'丂','T':'ㄒ','U':'ㄩ','V':'ᐯ','W':'山','X':'乂','Y':'丫','Z':'乙'};
@@ -675,6 +693,58 @@
         document.getElementById('btnGenerateNicks').addEventListener('click', generateNicks);
         document.getElementById('nickInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') generateNicks(); });
 
+        // ==========================================
+        // 3. ANIMACIÓN DE MECANOGRAFÍA (SEGURA VS INSEGURA)
+        // ==========================================
+        const typingScenarios = [
+            { text: "maria1990", secure: false },
+            { text: "r4B!x$9@wQz", secure: true },
+            { text: "12345678", secure: false },
+            { text: "pL9#mK2*vC5", secure: true },
+            { text: "admin123", secure: false },
+            { text: "T$8v!p@L9q#", secure: true }
+        ];
+        
+        let scenarioIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typingElement = document.getElementById('typingEffect');
+        let badgeElement = document.getElementById('typingBadge');
+
+        function typeEffect() {
+            if (!typingElement || !badgeElement) return;
+            const currentScenario = typingScenarios[scenarioIndex];
+            
+            if (isDeleting) {
+                badgeElement.style.opacity = '0';
+                typingElement.textContent = currentScenario.text.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingElement.textContent = currentScenario.text.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            let typeSpeed = isDeleting ? 50 : 100;
+            
+            if (!isDeleting && charIndex === currentScenario.text.length) {
+                typeSpeed = 2000; 
+                if (currentScenario.secure) {
+                    badgeElement.textContent = "Segura";
+                    badgeElement.className = "text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider transition-opacity duration-300 shrink-0 opacity-100 bg-green-100 text-green-700";
+                } else {
+                    badgeElement.textContent = "Insegura";
+                    badgeElement.className = "text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider transition-opacity duration-300 shrink-0 opacity-100 bg-red-100 text-red-700";
+                }
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                scenarioIndex = (scenarioIndex + 1) % typingScenarios.length;
+                typeSpeed = 500; 
+            }
+            
+            setTimeout(typeEffect, typeSpeed);
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             if (!localStorage.getItem('bytelog_cookies_accepted')) {
                 const cb = document.getElementById('cookieBanner');
@@ -682,6 +752,7 @@
                 setTimeout(() => { cb.classList.remove('translate-y-full'); }, 100);
             }
             generatePassword();
+            setTimeout(typeEffect, 1000); // Iniciar animación después de 1s
         });
 
     </script>
