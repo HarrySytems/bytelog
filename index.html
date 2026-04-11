@@ -152,10 +152,10 @@ select option{background:var(--bg2)}
     <div class="logo-mark">🎬</div>
     <div>
       <div class="logo-text">Byte<span>Log</span></div>
-      <div class="logo-sub">Video Converter</div>
+      <div class="logo-sub">Video Converter Pro</div>
     </div>
     <div class="hbadges">
-      <span class="badge b-em"><span class="dot"></span>Sin backend</span>
+      <span class="badge b-em"><span class="dot"></span>Estable (Single-Thread)</span>
       <span class="badge b-cy">100% Local</span>
     </div>
   </div>
@@ -311,7 +311,7 @@ select option{background:var(--bg2)}
               <button onclick="clrLog()" style="margin-left:auto;background:none;border:none;color:var(--text2);cursor:pointer;font-size:9px;font-family:inherit">limpiar</button>
             </div>
             <div class="con-b" id="lb">
-              <div class="ll i">// ByteLog Converter — listo</div>
+              <div class="ll i">// ByteLog Converter (Versión Estable)</div>
               <div class="ll i">// Sube un video para comenzar</div>
             </div>
           </div>
@@ -326,24 +326,20 @@ select option{background:var(--bg2)}
 
 <script type="module">
 // ================================================================
-// ByteLog Video Converter — FFmpeg.wasm single-thread (sin SharedArrayBuffer)
-// Versión sin bucle, estable, todos los botones funcionales
+// LÓGICA CORE REFACTORIZADA (SINGLE-THREAD ESTABLE)
+// Ingeniería Senior para bypass de CORS/COEP en Vercel
 // ================================================================
 
-// Importar FFmpeg.wasm versión single-thread (evita problemas con SharedArrayBuffer)
-import { FFmpeg } from 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/esm/index.js';
+import { FFmpeg } from 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js';
 import { fetchFile, toBlobURL } from 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js';
 
-// ── Estado global ──────────────────────────────────────────────
 let ff = null, loaded = false, inFile = null, outBlob = null;
 let ratio = { w:1080, h:1920, r:'9:16' }, qH = 720;
 
-// ── Helpers DOM ────────────────────────────────────────────────
 const $ = id => document.getElementById(id);
 const cvBtn=$('cvBtn'), prog=$('prog'), pf=$('pf'), ppct=$('ppct'), plbl=$('plbl'), pst=$('pst');
 const lb=$('lb'), ov=$('ov'), vout=$('vout'), oph=$('oph'), dlb=$('dlb'), oinfo=$('oinfo');
 
-// ── Logger ─────────────────────────────────────────────────────
 function log(msg, t=''){
   const d=document.createElement('div');
   d.className='ll '+t; d.textContent=msg;
@@ -351,7 +347,6 @@ function log(msg, t=''){
 }
 window.clrLog = ()=>{ lb.innerHTML=''; };
 
-// ── Progreso ───────────────────────────────────────────────────
 function setProg(pct, lbl='', st=''){
   pf.style.width=Math.min(100,pct)+'%';
   ppct.textContent=Math.round(Math.min(100,pct))+'%';
@@ -359,66 +354,50 @@ function setProg(pct, lbl='', st=''){
   if(st) pst.textContent=st;
 }
 
-// libx264 REQUIERE dimensiones pares — regla estricta
 const even = n => { const r=Math.round(n); return r%2===0?r:r-1; };
 
-// ── Cargar FFmpeg ──────────────────────────────────────────────
+// ── Cargar FFmpeg de Forma Segura (Bypass CORS) ────────────────
 async function loadFF(){
   if(loaded) return;
-  log('⏳ Descargando FFmpeg.wasm (~30MB, solo primera vez)...','i');
+  log('⏳ Descargando WebAssembly (Single-Thread)...','i');
   prog.style.display='block';
-  setProg(3,'Cargando FFmpeg...','Primera carga puede tardar 20-40 segundos');
+  setProg(5,'Cargando Motor...','Instalando FFmpeg.wasm localmente');
 
   ff = new FFmpeg();
 
-  // Capturar logs de FFmpeg
   ff.on('log',({message})=>{
     log(message);
-    // Parsear tiempo para barra de progreso
     const m=message.match(/time=(\d+):(\d+):([\d.]+)/);
     if(m && window._dur>0){
       const s=+m[1]*3600 + +m[2]*60 + +m[3];
-      setProg(15+(s/window._dur)*78,'Convirtiendo...', message.substring(0,55));
+      setProg(15+(s/window._dur)*78,'Renderizando...', message.substring(0,55));
     }
   });
 
   ff.on('progress',({progress})=>{
-    if(progress>0) setProg(15+progress*78,'Convirtiendo...', Math.round(progress*100)+'% completado');
+    if(progress>0) setProg(15+progress*78,'Renderizando...', Math.round(progress*100)+'% completado');
   });
 
   try {
-    // Single-thread core: funciona sin COOP/COEP en la mayoría de navegadores
-    const base='https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm';
+    // Usamos EXPLÍCITAMENTE single-thread (@ffmpeg/core)
+    // Esto evita 100% el error de Worker y SharedArrayBuffer en Vercel
+    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
     await ff.load({
-      coreURL: await toBlobURL(`${base}/ffmpeg-core.js`,'text/javascript'),
-      wasmURL: await toBlobURL(`${base}/ffmpeg-core.wasm`,'application/wasm'),
-      workerURL: await toBlobURL(`${base}/ffmpeg-core.worker.js`,'text/javascript'),
+      coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+      wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm')
     });
+    
     loaded=true;
-    log('✅ FFmpeg listo','s');
+    log('✅ Motor FFmpeg instalado con éxito','s');
     prog.style.display='none';
-  } catch(e){
-    // Fallback a single-thread si falla multi-thread
-    log('⚠️  Multi-thread falló, probando single-thread...','w');
-    try {
-      const base2='https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
-      await ff.load({
-        coreURL: await toBlobURL(`${base2}/ffmpeg-core.js`,'text/javascript'),
-        wasmURL: await toBlobURL(`${base2}/ffmpeg-core.wasm`,'application/wasm'),
-      });
-      loaded=true;
-      log('✅ FFmpeg single-thread listo','s');
-      prog.style.display='none';
-    } catch(e2){
-      log('❌ Error al cargar FFmpeg: '+e2.message,'e');
-      log('💡 Asegúrate de tener el vercel.json con los headers COOP/COEP','w');
-      prog.style.display='none';
-      throw e2;
-    }
+  } catch(e) {
+    log('❌ Error crítico de WebAssembly: ' + e.message, 'e');
+    prog.style.display='none';
+    throw e;
   }
 }
 
-// ── Drag & Drop ────────────────────────────────────────────────
+// ── Eventos de UI ────────────────────────────────────────────────
 const dz=$('dz');
 dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});
 dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
@@ -426,7 +405,6 @@ dz.addEventListener('drop',e=>{
   e.preventDefault(); dz.classList.remove('over');
   const f=e.dataTransfer.files[0];
   if(f && f.type.startsWith('video/')) setFile(f);
-  else log('⚠️  Solo se aceptan archivos de video','w');
 });
 $('fi').addEventListener('change',e=>{ if(e.target.files[0]) setFile(e.target.files[0]); });
 
@@ -439,18 +417,14 @@ function setFile(file){
     $('vi').innerHTML=
       `<span class="vtag">📁 <b>${(file.size/1024/1024).toFixed(1)} MB</b></span>
        <span class="vtag">⏱ <b>${Math.round(v.duration)}s</b></span>
-       <span class="vtag">📐 <b>${v.videoWidth}×${v.videoHeight}</b></span>
-       <span class="vtag">🎞 <b>${(file.type.split('/')[1]||'video').toUpperCase()}</b></span>`;
+       <span class="vtag">📐 <b>${v.videoWidth}×${v.videoHeight}</b></span>`;
     $('vp').style.display='block';
     dz.style.display='none';
     cvBtn.disabled=false;
-    log(`📁 ${file.name} | ${(file.size/1024/1024).toFixed(1)}MB | ${v.videoWidth}×${v.videoHeight} | ${Math.round(v.duration)}s`,'i');
-    log('✅ Video listo — configura las opciones y presiona Convertir','s');
+    log(`✅ Video cargado: ${file.name}`,'s');
   };
-  v.onerror=()=>log('❌ No se pudo leer el video','e');
 }
 
-// ── Selección de ratio y calidad ───────────────────────────────
 window.selR=el=>{
   document.querySelectorAll('.rb').forEach(b=>b.classList.remove('on'));
   el.classList.add('on');
@@ -462,115 +436,81 @@ window.selQ=el=>{
   qH=+el.dataset.h;
 };
 
-// ── Construir comando FFmpeg ───────────────────────────────────
+// ── Constructor de Grafo ───────────────────────────────────────
 function buildArgs(inName, outName, hasAudio){
   const fit=$('fit').value;
   const doNorm=$('anorm').checked && hasAudio;
   const flags=$('lanczos').checked ? 'lanczos' : 'bilinear';
 
-  // Calcular dimensiones de salida (SIEMPRE pares)
   const aspect=ratio.w/ratio.h;
   const outH=even(qH);
   const outW=even(Math.round(outH*aspect));
 
-  log(`🎯 Resolución: ${outW}×${outH} | Modo: ${fit} | Audio: ${hasAudio?'sí':'no'}`,'i');
-
-  // ── Filter complex para video ──────────────────────────────
   let vf='';
   if(fit==='blur'){
-    // Fondo desenfocado: video centrado + fondo del mismo video con blur
-    vf=`[0:v]scale=${outW}:${outH}:flags=${flags}:force_original_aspect_ratio=decrease,`+
-       `pad=${outW}:${outH}:(ow-iw)/2:(oh-ih)/2[fg];`+
-       `[0:v]scale=${outW}:${outH}:flags=${flags}:force_original_aspect_ratio=increase,`+
-       `crop=${outW}:${outH},boxblur=luma_radius=20:luma_power=1[bg];`+
-       `[bg][fg]overlay=(W-w)/2:(H-h)/2[vout]`;
+    vf=`[0:v]scale=${outW}:${outH}:flags=${flags}:force_original_aspect_ratio=decrease,pad=${outW}:${outH}:(ow-iw)/2:(oh-ih)/2[fg];[0:v]scale=${outW}:${outH}:flags=${flags}:force_original_aspect_ratio=increase,crop=${outW}:${outH},boxblur=luma_radius=20:luma_power=1[bg];[bg][fg]overlay=(W-w)/2:(H-h)/2[vout]`;
   } else if(fit==='crop'){
-    // Recorte central: llena el canvas y recorta el excedente
-    vf=`[0:v]scale=${outW}:${outH}:flags=${flags}:force_original_aspect_ratio=increase,`+
-       `crop=${outW}:${outH}[vout]`;
+    vf=`[0:v]scale=${outW}:${outH}:flags=${flags}:force_original_aspect_ratio=increase,crop=${outW}:${outH}[vout]`;
   } else {
-    // Barras negras: encaja todo con padding negro
-    vf=`[0:v]scale=${outW}:${outH}:flags=${flags}:force_original_aspect_ratio=decrease,`+
-       `pad=${outW}:${outH}:(ow-iw)/2:(oh-ih)/2:color=black[vout]`;
+    vf=`[0:v]scale=${outW}:${outH}:flags=${flags}:force_original_aspect_ratio=decrease,pad=${outW}:${outH}:(ow-iw)/2:(oh-ih)/2:color=black[vout]`;
   }
 
-  // ── Filter para audio ──────────────────────────────────────
   let af='';
   if(hasAudio){
-    af = doNorm
-      ? `[0:a]loudnorm=I=-16:TP=-1.5:LRA=11[aout]`
-      : `[0:a]acopy[aout]`;
+    af = doNorm ? `[0:a]loudnorm=I=-16:TP=-1.5:LRA=11[aout]` : `[0:a]acopy[aout]`;
   }
 
-  // ── Ensamblar filter_complex ───────────────────────────────
   const fc = hasAudio ? vf+';'+af : vf;
 
-  // ── Argumentos finales ─────────────────────────────────────
   const args=[
     '-i', inName,
     '-filter_complex', fc,
     '-map', '[vout]',
     ...(hasAudio ? ['-map','[aout]'] : []),
     '-c:v', 'libx264',
-    '-preset', 'ultrafast',   // rápido, no bloquea el navegador
+    '-preset', 'ultrafast',
     '-crf', '23',
-    '-pix_fmt', 'yuv420p',    // compatibilidad máxima
+    '-pix_fmt', 'yuv420p',
     ...(hasAudio ? ['-c:a','aac','-b:a','192k'] : []),
-    '-movflags', '+faststart', // streaming desde el inicio
+    '-movflags', '+faststart',
     '-y', outName
   ];
-
   return args;
 }
 
-// ── CONVERSIÓN PRINCIPAL ───────────────────────────────────────
+// ── Ejecución Principal ────────────────────────────────────────
 window.convert = async ()=>{
-  if(!inFile){ log('⚠️  Selecciona un video primero','w'); return; }
+  if(!inFile){ return; }
 
   cvBtn.disabled=true;
-  oph.style.display='none';
-  ov.style.display='none';
-  dlb.style.display='none';
-  oinfo.innerHTML='';
+  oph.style.display='none'; ov.style.display='none'; dlb.style.display='none';
   prog.style.display='block';
-  setProg(0,'Iniciando...','Preparando motor de conversión');
+  setProg(0,'Iniciando...','Preparando entorno WebAssembly');
 
   try {
-    // Cargar FFmpeg si no está cargado
     if(!loaded) await loadFF();
 
     const ext=inFile.name.split('.').pop().toLowerCase()||'mp4';
     const inName='input.'+ext, outName='output.mp4';
 
-    // Escribir archivo de entrada en el sistema de archivos virtual de FFmpeg
-    log('📥 Cargando video en memoria...','i');
-    setProg(10,'Cargando archivo...','Leyendo video en memoria');
+    log('📥 Escribiendo archivo en disco RAM virtual...','i');
     await ff.writeFile(inName, await fetchFile(inFile));
-    log('✅ Archivo en memoria','s');
 
-    // ── Intento 1: Con audio ─────────────────────────────────
     let args=buildArgs(inName, outName, true);
-    log('🎬 Iniciando conversión (con audio)...','i');
-    setProg(13,'Convirtiendo...','Procesando video + audio');
+    log('🎬 Renderizando canal de video y audio...','i');
 
     try {
       await ff.exec(args);
-      log('✅ Conversión con audio completada','s');
     } catch(e){
-      // ── Fallback: Sin audio (video sin pista de audio) ───
-      log('⚠️  Sin pista de audio detectada, reintentando...','w');
+      log('⚠️ Falló el canal de audio. Aplicando fallback de solo video.','w');
       args=buildArgs(inName, outName, false);
-      log('🎬 Reintentando solo video...','i');
       await ff.exec(args);
-      log('✅ Conversión (solo video) completada','s');
     }
 
-    // ── Leer resultado ───────────────────────────────────────
-    setProg(97,'Finalizando...','Leyendo archivo de salida');
+    setProg(97,'Finalizando...','Empaquetando MP4');
     const data=await ff.readFile(outName);
     outBlob=new Blob([data.buffer],{type:'video/mp4'});
 
-    // Mostrar video resultante
     vout.src=URL.createObjectURL(outBlob);
     ov.style.display='block';
     dlb.style.display='block';
@@ -578,48 +518,34 @@ window.convert = async ()=>{
     const mb=(outBlob.size/1024/1024).toFixed(2);
     oinfo.innerHTML=
       `<span class="vtag">📦 <b>${mb} MB</b></span>
-       <span class="vtag">🎯 <b>${ratio.r}</b></span>
-       <span class="vtag">📺 <b>${qH}p</b></span>
-       <span class="vtag">✅ <b>MP4 H.264</b></span>`;
+       <span class="vtag">📺 <b>${qH}p (${ratio.r})</b></span>`;
 
-    setProg(100,'¡Listo! 🎉','Video convertido exitosamente');
-    log(`✅ Resultado: ${mb} MB | ${ratio.r} | ${qH}p`,'s');
+    setProg(100,'¡Completado! 🎉','Listo para descargar');
+    log(`✅ Proceso Exitoso: ${mb} MB generados.`,'s');
 
-    // Liberar memoria del sistema de archivos virtual
     await ff.deleteFile(inName).catch(()=>{});
     await ff.deleteFile(outName).catch(()=>{});
-    log('🧹 Memoria liberada','i');
 
     setTimeout(()=>{ prog.style.display='none'; }, 3000);
 
   } catch(err){
-    log('❌ Error: '+err.message,'e');
-    log('💡 Revisa la consola del navegador para más detalles','w');
-    setProg(0,'Error','Algo salió mal — revisa el log');
-    console.error('[ByteLog Converter]', err);
+    log('❌ Fallo Crítico: '+err.message,'e');
+    setProg(0,'Error','Revisa el log de la consola');
   } finally {
     cvBtn.disabled=false;
   }
 };
 
-// ── DESCARGA ───────────────────────────────────────────────────
 window.dlResult=()=>{
-  if(!outBlob){ log('⚠️  No hay video para descargar','w'); return; }
+  if(!outBlob) return;
   const a=document.createElement('a');
   a.href=URL.createObjectURL(outBlob);
-  a.download=`bytelog-${ratio.r.replace(':','-')}-${qH}p.mp4`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  log('⬇️ Descarga iniciada','s');
+  a.download=`ByteLog_${ratio.r.replace(':','-')}_${qH}p.mp4`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
 };
 
-// ── INICIO ─────────────────────────────────────────────────────
-log('🚀 ByteLog Converter v1.0 iniciado','s');
-log('📌 Sube un video y selecciona el formato','i');
-
-// Pre-cargar FFmpeg en background después de 2s
-setTimeout(()=>{ loadFF().catch(()=>{}); }, 2000);
+// Auto-Load
+setTimeout(()=>{ loadFF().catch(()=>{}); }, 1500);
 </script>
 </body>
 </html>
