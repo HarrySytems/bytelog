@@ -6,6 +6,11 @@
 <title>ByteLog Converter | Pro</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+
+<!-- LA SOLUCIÓN MAESTRA: Usar los paquetes UMD. El Worker viene incrustado, evitando el error de CORS al 100% -->
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+<script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+
 <style>
     :root { --em: #10b981; --bg: #030712; --bg-card: #0d1117; }
     body { background-color: var(--bg); color: #e6edf3; font-family: system-ui, -apple-system, sans-serif; }
@@ -46,7 +51,7 @@
         </div>
         <div class="hidden sm:flex gap-2">
             <span class="bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 text-xs font-bold px-3 py-1 rounded-full">
-                <i class="fa-solid fa-microchip mr-1"></i> Estable (Core)
+                <i class="fa-solid fa-microchip mr-1"></i> Estable (UMD)
             </span>
             <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-bold px-3 py-1 rounded-full">
                 100% Local
@@ -211,10 +216,11 @@
     </div>
 </div>
 
-<!-- Lógica Core (FFmpeg Single-Thread Estable) -->
-<script type="module">
-import { FFmpeg } from 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js';
-import { fetchFile, toBlobURL } from 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js';
+<!-- Lógica Core UMD -->
+<script>
+// Desestructuramos directamente desde el 'window' que proveen los scripts UMD
+const { FFmpeg } = window.FFmpegWASM;
+const { fetchFile, toBlobURL } = window.FFmpegUtil;
 
 // Estado Global
 let ff = null, isLoaded = false, videoFile = null, finalBlob = null;
@@ -258,14 +264,14 @@ function updateProgress(percent, text) {
     if(text) UI.title.textContent = text;
 }
 
-// ── Carga Asíncrona de FFmpeg ──
+// ── Carga Asíncrona de FFmpeg (ESTRICTAMENTE UMD) ──
 async function initFFmpeg() {
     if (isLoaded) return;
     
     UI.ph.classList.add('hidden');
     UI.load.classList.remove('hidden');
-    updateProgress(5, 'Instalando dependencias locales...');
-    addLog('Descargando WebAssembly Core (Single-Thread)...', 'text-cyan-400');
+    updateProgress(5, 'Instalando dependencias locales UMD...');
+    addLog('Descargando WebAssembly Core (UMD Seguro)...', 'text-cyan-400');
 
     ff = new FFmpeg();
 
@@ -279,17 +285,18 @@ async function initFFmpeg() {
     });
 
     try {
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
+        // Enrutamos hacia los paquetes UMD. 
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
         
-        // Bloque Try-Catch especializado para detectar problemas de red / Vercel
         let coreBlob, wasmBlob;
         try {
             coreBlob = await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript');
             wasmBlob = await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm');
         } catch (fetchErr) {
-            throw new Error("El navegador bloqueó la descarga de FFmpeg. Asegúrate de que vercel.json solo tenga cleanUrls:true");
+            throw new Error("Fallo de red al descargar WASM. Verifica tu conexión.");
         }
 
+        // Carga 100% segura sin desencadenar worker.js externo
         await ff.load({ coreURL: coreBlob, wasmURL: wasmBlob });
         
         isLoaded = true;
