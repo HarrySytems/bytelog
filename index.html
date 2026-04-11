@@ -47,11 +47,20 @@
         .tab-inactive { border-bottom: 3px solid transparent; color: #6b7280; font-weight: 600; }
         .tab-inactive:hover { color: #374151; border-bottom: 3px solid #d1d5db; }
 
-        /* Animaciones */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        /* Animaciones Globales */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .animate-fade { animation: fadeIn 0.4s ease forwards; }
 
-        /* Soporte Unicode Universal */
+        /* Animación Elegante para Títulos (Efecto SaaS Premium) */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-title {
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Soporte Unicode Universal para fuentes raras */
         .unicode-text { font-family: "Segoe UI Symbol", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Arial Unicode MS", sans-serif; }
         
         /* Línea Horizontal Scroll */
@@ -64,7 +73,7 @@
         /* Mascara de Contraseña Segura */
         .pass-hidden { letter-spacing: 0.2em; font-family: 'Verdana', sans-serif; font-size: 1.8rem; }
         
-        /* Blindaje de Secciones */
+        /* Blindaje de Secciones para que no colapsen (Fix Layout) */
         .section-container { width: 100% !important; max-width: 1024px; margin: 0 auto; }
         
         /* Acordeón FAQ */
@@ -120,8 +129,8 @@
         
         <!-- SECCIÓN 1: CONTRASEÑAS -->
         <section id="sectionPass" class="section-container px-4 py-12 animate-fade block">
-            <div class="text-center mb-10">
-                <h1 class="text-3xl md:text-[38px] leading-tight font-extrabold text-gray-900 mb-4">Genere una contraseña aleatoria y segura al instante</h1>
+            <div class="text-center mb-10 animate-title">
+                <h1 class="text-3xl md:text-[42px] leading-tight font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 mb-4 pb-1">Genere una contraseña aleatoria y segura al instante</h1>
                 <p class="text-gray-600 text-base md:text-lg">Privacidad Inteligente: Tiene una visualización de gracia. Tras verla y ocultarla por segunda vez, el sistema forjará una nueva por seguridad.</p>
             </div>
 
@@ -132,14 +141,17 @@
                         <span id="passText" class="pass-hidden">••••••••••••••••</span>
                     </div>
 
-                    <div class="flex items-center gap-2 shrink-0 w-full md:w-auto justify-end">
-                        <button id="btnTogglePrivacy" class="text-gray-500 hover:text-[var(--lp-red)] p-3 transition-colors border border-gray-200 rounded-md bg-gray-50" title="Ver / Ocultar">
-                            <i id="eyeIcon" class="fa-solid fa-eye-slash text-xl"></i>
+                    <!-- Botones Mejorados con Texto -->
+                    <div class="flex flex-wrap items-center justify-center md:justify-end gap-2 shrink-0 w-full md:w-auto mt-4 md:mt-0">
+                        <button id="btnTogglePrivacy" class="flex-1 md:flex-none text-gray-600 hover:text-[var(--lp-red)] px-4 py-3 transition-colors border border-gray-200 rounded-md bg-gray-50 flex items-center justify-center shadow-sm" title="Ver / Ocultar">
+                            <i id="eyeIcon" class="fa-solid fa-eye-slash text-lg"></i>
+                            <span id="eyeText" class="ml-2 text-sm font-bold">Mostrar</span>
                         </button>
-                        <button id="btnRefreshPass" class="text-gray-500 hover:text-gray-900 p-3 transition-colors border border-gray-200 rounded-md bg-gray-50" title="Generar nueva manualmente">
-                            <i class="fa-solid fa-arrows-rotate text-xl"></i>
+                        <button id="btnRefreshPass" class="flex-1 md:flex-none text-gray-600 hover:text-gray-900 px-4 py-3 transition-colors border border-gray-200 rounded-md bg-gray-50 flex items-center justify-center shadow-sm" title="Generar nueva manualmente">
+                            <i class="fa-solid fa-arrows-rotate text-lg"></i>
+                            <span class="ml-2 text-sm font-bold">Generar</span>
                         </button>
-                        <button id="btnCopyPass" class="bg-[var(--lp-red)] hover:bg-[var(--lp-red-hover)] text-white text-sm font-bold py-3.5 px-6 rounded transition-colors flex items-center justify-center gap-2 shadow-sm w-full md:w-auto">
+                        <button id="btnCopyPass" class="w-full sm:w-auto bg-[var(--lp-red)] hover:bg-[var(--lp-red-hover)] text-white text-sm font-bold py-3.5 px-6 rounded-md transition-colors flex items-center justify-center gap-2 shadow-sm">
                             Copiar contraseña
                         </button>
                     </div>
@@ -184,7 +196,7 @@
                             <label class="flex items-center cursor-pointer corporate-checkbox w-full mt-2 border-t border-gray-200 pt-4">
                                 <input type="checkbox" id="chkEmojis" class="hidden">
                                 <div class="w-4.5 h-4.5 border-2 border-gray-400 rounded-sm bg-white flex items-center justify-center transition-colors"><i class="fa-solid fa-check text-white text-[9px] opacity-0 transition-opacity"></i></div>
-                                <span class="ml-3 text-sm text-gray-700 font-bold">Incluir Emojis (🔒🚀💎)</span>
+                                <span class="ml-3 text-sm text-gray-700 font-bold">Incluir Emojis</span>
                             </label>
                         </div>
                     </div>
@@ -194,8 +206,8 @@
 
         <!-- SECCIÓN 2: USERNAMES -->
         <section id="sectionNick" class="section-container px-4 py-12 hidden animate-fade flex-col">
-            <div class="text-center mb-10 max-w-3xl mx-auto">
-                <h2 class="text-3xl md:text-[38px] leading-tight font-extrabold text-gray-900 mb-4">Forjador de Identidades Únicas</h2>
+            <div class="text-center mb-10 animate-title max-w-3xl mx-auto">
+                <h2 class="text-3xl md:text-[42px] leading-tight font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 mb-4 pb-1">Forjador de Identidades Únicas</h2>
                 <p class="text-gray-600 text-base md:text-lg">Generación procedural infinita con todas las fuentes. Respetamos sus espacios (Ej: "Gato y Raton").</p>
             </div>
 
@@ -233,7 +245,9 @@
 
         <!-- SECCIÓN 3: FAQ -->
         <section id="sectionFaq" class="section-container px-4 py-16 hidden animate-fade flex-col">
-            <div class="text-center mb-12"><h2 class="text-3xl md:text-[38px] font-extrabold text-gray-900">Preguntas frecuentes</h2></div>
+            <div class="text-center mb-12 animate-title">
+                <h2 class="text-3xl md:text-[42px] leading-tight font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 mb-4 pb-1">Preguntas frecuentes</h2>
+            </div>
             
             <div class="bg-white border border-gray-200 rounded-lg shadow-sm">
                 <!-- FAQ 1 -->
@@ -254,7 +268,7 @@
                     <p class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">Usar contraseñas como <strong class="text-gray-800">"123456"</strong>, <strong class="text-gray-800">"admin123"</strong>, <strong class="text-gray-800">"maria1990"</strong> o el nombre de tu mascota es un riesgo crítico. Los piratas informáticos no adivinan manualmente; utilizan redes de bots y diccionarios automatizados que pueden descifrar estas combinaciones predecibles en menos de 0.5 segundos.</p>
                 </details>
 
-                <!-- FAQ 3: NUEVA PREGUNTA SOBRE GAMING -->
+                <!-- FAQ 3: SOBRE GAMING -->
                 <details class="group border-b border-gray-200 p-6 transition-colors">
                     <summary class="font-bold cursor-pointer list-none text-lg flex justify-between items-center text-gray-900 hover:text-[var(--lp-red)]">
                         <span>¿Por qué ofrecen un generador de nombres de usuario para Gamers?</span>
@@ -285,8 +299,8 @@
 
         <!-- SECCIÓN 4: QUIÉNES SOMOS -->
         <section id="sectionAbout" class="section-container px-4 py-16 hidden animate-fade flex-col">
-            <div class="text-center mb-10 max-w-3xl mx-auto">
-                <h2 class="text-3xl md:text-[38px] leading-tight font-extrabold text-gray-900 mb-4">Quiénes Somos</h2>
+            <div class="text-center mb-10 animate-title max-w-3xl mx-auto">
+                <h2 class="text-3xl md:text-[42px] leading-tight font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 mb-4 pb-1">Quiénes Somos</h2>
                 <p class="text-gray-600 text-base md:text-lg">Construyendo herramientas digitales seguras, privadas y de alto rendimiento.</p>
             </div>
 
@@ -316,17 +330,14 @@
             </div>
         </section>
         
-        <!-- ADSTERRA: BANNERS INFERIORES (Justo antes del footer, responsive) -->
+        <!-- ADSTERRA: BANNERS INFERIORES -->
         <div class="w-full flex justify-center mt-4 mb-8">
-            <!-- Mobile Ad: 300x250 -->
             <div class="block md:hidden text-center w-[300px] h-[250px] bg-gray-50 flex items-center justify-center rounded overflow-hidden shadow-sm border border-gray-100">
                 <script type="text/javascript">
                     atOptions = { 'key' : 'd9e4e84c1d4a3082a7d37c5f9605bc63', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                 </script>
                 <script type="text/javascript" src="https://glamourpicklessteward.com/d9e4e84c1d4a3082a7d37c5f9605bc63/invoke.js"></script>
             </div>
-            
-            <!-- Desktop Ad: 728x90 -->
             <div class="hidden md:flex text-center w-[728px] h-[90px] bg-gray-50 items-center justify-center rounded overflow-hidden shadow-sm border border-gray-100">
                 <script type="text/javascript">
                     atOptions = { 'key' : '322396c7c5b6f02fcce8ce726fd0392e', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
@@ -351,7 +362,7 @@
         </div>
     </footer>
 
-    <!-- MODAL LEGAL (DOCUMENTOS PDF SIMULADOS) -->
+    <!-- MODAL LEGAL -->
     <div id="legalModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-gray-900/60 backdrop-blur-sm p-4 animate-fade">
         <div class="bg-white border border-gray-300 w-full max-w-3xl h-[80vh] rounded-lg shadow-2xl flex flex-col overflow-hidden">
             <div class="bg-gray-50 px-6 py-4 flex justify-between items-center border-b border-gray-200">
@@ -370,7 +381,6 @@
                 </div>
             </div>
             <div class="flex-1 bg-white p-8 md:p-12 overflow-y-auto text-gray-800 font-serif text-sm leading-relaxed" id="legalContent">
-                <!-- Inyectado dinámicamente -->
             </div>
         </div>
     </div>
@@ -395,7 +405,7 @@
 
     <script>
         // ==========================================
-        // SISTEMA LEGAL Y COOKIES (Texto natural y seguro)
+        // SISTEMA LEGAL Y COOKIES 
         // ==========================================
         const cookieBanner = document.getElementById('cookieBanner');
         const legalModal = document.getElementById('legalModal');
@@ -452,7 +462,7 @@
         }
 
         // ==========================================
-        // SISTEMA DE PESTAÑAS (FIJACIÓN W-FULL)
+        // SISTEMA DE PESTAÑAS
         // ==========================================
         function switchTab(type) {
             const tabs = [
@@ -467,6 +477,12 @@
                     t.sec.classList.remove('hidden');
                     t.sec.classList.add('flex', 'w-full');
                     if (t.id === 'pass') t.sec.classList.replace('flex', 'block');
+                    
+                    // Reiniciar animación
+                    t.sec.style.animation = 'none';
+                    void t.sec.offsetWidth; 
+                    t.sec.style.animation = 'fadeIn 0.4s ease forwards';
+                    
                     if (t.btn) t.btn.className = "tab-active pb-1 transition-colors whitespace-nowrap";
                     if (t.btnM) t.btnM.className = "tab-active py-3 px-4 text-sm whitespace-nowrap";
                 } else {
@@ -479,7 +495,7 @@
         }
 
         // ==========================================
-        // 1. GENERADOR DE CONTRASEÑAS (LOGICA DE PROTECCIÓN DE OJITO)
+        // 1. GENERADOR DE CONTRASEÑAS (LOGICA PRIVACIDAD)
         // ==========================================
         let currentRawPassword = "";
         let isPasswordVisible = false;
@@ -489,6 +505,7 @@
         const passLength = document.getElementById('passLength');
         const lengthValue = document.getElementById('lengthValue');
         const eyeIcon = document.getElementById('eyeIcon');
+        const eyeText = document.getElementById('eyeText');
         const EMOJIS = ["😀","🚀","🌟","🔥","👾","💡","💎","🛡️","🔑","🔒","⚡","👑","🐉","🧿","🌌","🕹️","🤖","🧩"];
 
         function getSecureRandomInt(max) {
@@ -531,7 +548,6 @@
 
             currentRawPassword = passwordArray.join('');
             
-            // Reiniciar la cuenta de seguridad para esta nueva clave
             isPasswordVisible = false;
             privacyViewCount = 0;
             updatePasswordDisplay();
@@ -542,22 +558,20 @@
                 passText.textContent = currentRawPassword;
                 passText.classList.remove('pass-hidden');
                 eyeIcon.className = 'fa-solid fa-eye';
+                eyeText.textContent = 'Ocultar';
             } else {
                 passText.textContent = "•".repeat(currentRawPassword.length || 16);
                 passText.classList.add('pass-hidden');
                 eyeIcon.className = 'fa-solid fa-eye-slash';
+                eyeText.textContent = 'Mostrar';
             }
         }
 
-        // EL EVENTO DEL OJITO (DOBLE GRACIA APROBADO POR HARRY)
         document.getElementById('btnTogglePrivacy').addEventListener('click', () => {
             if (isPasswordVisible) {
                 isPasswordVisible = false;
                 updatePasswordDisplay();
-                // REGLA HARRY: Ocultarla por segunda vez, significa que se usó y ahora es peligrosa.
-                if (privacyViewCount >= 2) {
-                    generatePassword();
-                }
+                if (privacyViewCount >= 2) { generatePassword(); }
             } else {
                 isPasswordVisible = true;
                 privacyViewCount++;
@@ -601,9 +615,8 @@
             }, 1500);
         }
 
-
         // ==========================================
-        // 2. MOTOR DE USERNAMES (DICCIONARIOS MÁSTER COMPLETOS)
+        // 2. MOTOR DE USERNAMES (DICCIONARIOS MÁSTER)
         // ==========================================
         const nickInput = document.getElementById('nickInput');
         const nickEmpty = document.getElementById('nickEmpty');
@@ -611,7 +624,7 @@
 
         const MAP_FRAKTUR = {'a':'𝖆','b':'𝖇','c':'𝖈','d':'𝖉','e':'𝖊','f':'𝖋','g':'𝖌','h':'𝖍','i':'𝖎','j':'𝖏','k':'𝖐','l':'𝖑','m':'𝖒','n':'𝖓','o':'𝖔','p':'𝖕','q':'𝖖','r':'𝖗','s':'𝖘','t':'𝖙','u':'𝖚','v':'𝖛','w':'𝖜','x':'𝖝','y':'𝖞','z':'𝖟','A':'𝕬','B':'𝕭','C':'𝕮','D':'𝕯','E':'𝕰','F':'𝕱','G':'𝕲','H':'𝕳','I':'𝕴','J':'𝕵','K':'𝕶','L':'𝕷','M':'𝕸','N':'𝕹','O':'𝕺','P':'𝕻','Q':'𝕼','R':'𝕽','S':'𝕾','T':'𝕿','U':'𝖀','V':'𝖁','W':'𝖂','X':'𝖃','Y':'𝖄','Z':'𝖅'};
         const MAP_FULLWIDTH = {'a':'ａ','b':'ｂ','c':'ｃ','d':'ｄ','e':'ｅ','f':'ｆ','g':'ｇ','h':'ｈ','i':'ｉ','j':'ｊ','k':'ｋ','l':'ｌ','m':'ｍ','n':'ｎ','o':'ｏ','p':'ｐ','q':'ｑ','r':'ｒ','s':'ｓ','t':'ｔ','u':'ｕ','v':'ｖ','w':'ｗ','x':'ｘ','y':'ｙ','z':'ｚ','A':'Ａ','B':'Ｂ','C':'Ｃ','D':'Ｄ','E':'Ｅ','F':'Ｆ','G':'Ｇ','H':'Ｈ','I':'Ｉ','J':'Ｊ','K':'Ｋ','L':'Ｌ','M':'Ｍ','N':'Ｎ','O':'Ｏ','P':'Ｐ','Q':'Ｑ','R':'Ｒ','S':'Ｓ','T':'Ｔ','U':'Ｕ','V':'Ｖ','W':'Ｗ','X':'Ｘ','Y':'Ｙ','Z':'Ｚ'};
-        const MAP_SANS = {'a':'𝗮','b':'𝗯','c':'𝗰','d':'𝗱','e':'𝗲','f':'𝗳','g':'𝗴','h':'𝗵','i':'𝗶','j':'𝗷','k':'𝗸','l':'𝗹','m':'𝗺','n':'𝗻','o':'𝗼','p':'𝗽','q':'𝗾','r':'𝗿','s':'𝘀','t':'𝘁','u':'𝘂','v':'𝘃','w':'𝘄','x':'𝘅','y':'𝘆','z':'𝘇','A':'𝗔','B':'𝗕','C':'𝗖','D':'𝗗','E':'𝗘','F':'𝗙','G':'𝗚','H':'𝗛','I':'𝗜','J':'Ｊ','K':'𝗞','L':'𝗟','M':'Ｍ','N':'𝗡','O':'𝗢','P':'𝗣','Q':'𝗤','R':'Ｒ','S':'𝗦','T':'𝗧','U':'Ｕ','V':'𝗩','W':'𝗪','X':'𝗫','Y':'𝗬','Z':'𝗭'};
+        const MAP_SANS = {'a':'𝗮','b':'𝗯','c':'𝗰','d':'𝗱','e':'𝗲','f':'𝗳','g':'𝗴','h':'𝗵','i':'𝗶','j':'𝗷','k':'𝗸','l':'𝗹','m':'𝗺','n':'𝗻','o':'𝗼','p':'𝗽','q':'𝗾','r':'𝗿','s':'𝘀','t':'𝘁','u':'𝘂','v':'𝘃','w':'𝘄','x':'𝘅','y':'𝘆','z':'𝘇','A':'𝗔','B':'𝗕','C':'𝗖','D':'𝗗','E':'𝗘','F':'𝗙','G':'𝗚','H':'Ｈ','I':'𝗜','J':'Ｊ','K':'𝗞','L':'𝗟','M':'Ｍ','N':'𝗡','O':'Ｏ','P':'𝗣','Q':'𝗤','R':'Ｒ','S':'𝗦','T':'𝗧','U':'Ｕ','V':'𝗩','W':'𝗪','X':'𝗫','Y':'𝗬','Z':'𝗭'};
         const MAP_SCRIPT = {'a':'𝒶','b':'𝒷','c':'𝒸','d':'𝒹','e':'𝑒','f':'𝒻','g':'𝑔','h':'𝒽','i':'𝒾','j':'𝒿','k':'𝓀','l':'𝓁','m':'𝓂','n':'𝓃','o':'𝑜','p':'𝓅','q':'𝓆','r':'𝓇','s':'𝓈','t':'𝓉','u':'𝓊','v':'𝓋','w':'𝓌','x':'𝓍','y':'𝓎','z':'𝓏','A':'𝒜','B':'ℬ','C':'𝒞','D':'𝒟','E':'ℰ','F':'ℱ','G':'𝒢','H':'ℋ','I':'ℐ','J':'𝒥','K':'𝒦','L':'ℒ','M':'ℳ','N':'𝒩','O':'𝒪','P':'𝒫','Q':'𝒬','R':'ℛ','S':'𝒮','T':'𝒯','U':'𝒰','V':'𝒱','W':'𝒲','X':'𝒳','Y':'𝒴','Z':'𝒵'};
         const MAP_SMALLCAPS = {'a':'ᴀ','b':'ʙ','c':'ᴄ','d':'ᴅ','e':'ᴇ','f':'ғ','g':'ɢ','h':'ʜ','i':'ɪ','j':'ᴊ','k':'ᴋ','l':'ʟ','m':'ᴍ','n':'ɴ','o':'ᴏ','p':'ᴘ','q':'ǫ','r':'ʀ','s':'s','t':'ᴛ','u':'ᴜ','v':'ᴠ','w':'ᴡ','x':'x','y':'ʏ','z':'ᴢ','A':'A','B':'B','C':'C','D':'D','E':'E','F':'F','G':'G','H':'H','I':'I','J':'J','K':'K','L':'L','M':'M','N':'N','O':'O','P':'P','Q':'Q','R':'R','S':'S','T':'T','U':'U','V':'V','W':'W','X':'X','Y':'Y','Z':'Z'};
         const MAP_TECHNO = {'a':'卂','b':'乃','c':'匚','d':'刀','e':'乇','f':'千','g':'Ꮆ','h':'卄','i':'丨','j':'丁','k':'长','l':'ㄥ','m':'爪','n':'几','o':'ㄖ','p':'卩','q':'Ɋ','r':'尺','s':'丂','t':'ㄒ','u':'ㄩ','v':'ᐯ','w':'山','x':'乂','y':'丫','z':'乙','A':'卂','B':'乃','C':'匚','D':'刀','E':'乇','F':'千','G':'Ꮆ','H':'卄','I':'丨','J':'丁','K':'长','L':'ㄥ','M':'爪','N':'几','O':'ㄖ','P':'卩','Q':'Ɋ','R':'尺','S':'丂','T':'ㄒ','U':'ㄩ','V':'ᐯ','W':'山','X':'乂','Y':'丫','Z':'乙'};
@@ -620,22 +633,11 @@
         const rnd = (arr) => arr[Math.floor(Math.random() * arr.length)];
         const flip = (prob = 0.5) => Math.random() < prob;
 
-        function applyMapFont(text, mapDict) { 
-            return Array.from(text).map(c => mapDict[c] || c).join(''); 
-        }
-
-        function toLeetSpeak(text) { 
-            return text.replace(/a/gi, '4').replace(/e/gi, '3').replace(/i/gi, '1').replace(/o/gi, '0').replace(/s/gi, '5').replace(/t/gi, '7'); 
-        }
-        
+        function applyMapFont(text, mapDict) { return Array.from(text).map(c => mapDict[c] || c).join(''); }
+        function toLeetSpeak(text) { return text.replace(/a/gi, '4').replace(/e/gi, '3').replace(/i/gi, '1').replace(/o/gi, '0').replace(/s/gi, '5').replace(/t/gi, '7'); }
         function toZalgo(text) {
             const marks = ['\u030d', '\u030e', '\u0304', '\u0305', '\u033f', '\u0311', '\u0306', '\u0310', '\u0352', '\u0351', '\u0300', '\u0320', '\u0322', '\u0327', '\u0328', '\u032a', '\u032b', '\u032c', '\u032d', '\u032e', '\u032f', '\u0330', '\u0331', '\u0332', '\u0333', '\u0339', '\u033a', '\u033b', '\u033c'];
-            return Array.from(text).map(c => { 
-                if(c === ' ') return c;
-                let z = c; 
-                for(let i=0; i<Math.floor(Math.random()*2)+1; i++) z += rnd(marks); 
-                return z; 
-            }).join('');
+            return Array.from(text).map(c => { if(c === ' ') return c; let z = c; for(let i=0; i<Math.floor(Math.random()*2)+1; i++) z += rnd(marks); return z; }).join('');
         }
 
         function genTryhard(base) { 
@@ -653,18 +655,7 @@
             const KAO = ["(✿◠‿◠)", "ʕ•ᴥ•ʔ", "♥‿♥", "૮ ˶ᵔ ᵕ 1 ˶ ა", "(◡‿◡✿)", "(ɔ◔‿◔)ɔ ♥", "✧･ﾟ: *"];
             let name = flip(0.4) ? applyMapFont(base.toLowerCase(), MAP_FULLWIDTH) : base.toLowerCase();
             let e1 = rnd(EMO), e2 = rnd(EMO), k = rnd(KAO);
-            const formats = [
-                () => `${e1} ${name} ${e2}`,
-                () => `${name} ${k}`,
-                () => `-${name}${e1}🤍`,
-                () => `dear.${name}`,
-                () => `${name} v.v`,
-                () => `soft ${name}`,
-                () => `♡ ${name} ♡`,
-                () => `${name} . ${e1}`,
-                () => `x ${name} x`,
-                () => `angel ${name}`
-            ];
+            const formats = [ () => `${e1} ${name} ${e2}`, () => `${name} ${k}`, () => `-${name}${e1}🤍`, () => `dear.${name}`, () => `${name} v.v`, () => `soft ${name}`, () => `♡ ${name} ♡`, () => `${name} . ${e1}`, () => `x ${name} x`, () => `angel ${name}` ];
             return rnd(formats)();
         }
 
@@ -673,15 +664,7 @@
             const PRE = ["LVL99", "P1", "NOOB", "PRO", "1UP", "COIN", "NPC", "BIT"];
             let name = applyMapFont(base.toLowerCase(), MAP_SMALLCAPS);
             let e = rnd(EMO), p = rnd(PRE);
-            const formats = [
-                () => `[${name}]`,
-                () => `${p}_${name}`,
-                () => `${name}_${p}`,
-                () => `${e} ${name} ${e}`,
-                () => `retro_${name}`,
-                () => `x_${name}_x`,
-                () => `<${name}>`
-            ];
+            const formats = [ () => `[${name}]`, () => `${p}_${name}`, () => `${name}_${p}`, () => `${e} ${name} ${e}`, () => `retro_${name}`, () => `x_${name}_x`, () => `<${name}>` ];
             return rnd(formats)();
         }
 
@@ -690,13 +673,7 @@
             const PRE = ["Lil", "Yung", "Drip", "Sick", "Real", "OG", "Trap", "TRVP"];
             let name = flip() ? applyMapFont(base.toUpperCase(), MAP_FRAKTUR) : base.toUpperCase();
             let e = rnd(EMO), p = rnd(PRE);
-            const formats = [
-                () => `${p}_${name}`,
-                () => `${e} ${name} ${e}`,
-                () => `${name}_DRIP`,
-                () => `$ ${name} $`,
-                () => `XX_${name}_XX`
-            ];
+            const formats = [ () => `${p}_${name}`, () => `${e} ${name} ${e}`, () => `${name}_DRIP`, () => `$ ${name} $`, () => `XX_${name}_XX` ];
             return rnd(formats)();
         }
 
@@ -705,14 +682,7 @@
             const PRE = ["UNIT", "CYBER", "SYS", "NEO", "BOT", "TECH", "VR", "AI", "SYNTH"];
             let name = flip() ? applyMapFont(base.toLowerCase(), MAP_TECHNO) : applyMapFont(base.toUpperCase(), MAP_SANS);
             let s = rnd(SYM), p = rnd(PRE);
-            const formats = [
-                () => `${p}-${name}`,
-                () => `${p}_${name}`,
-                () => `${name}.EXE`,
-                () => `${name}_V2.0`,
-                () => `${name}_OS`,
-                () => `${s}${name}${s}`
-            ];
+            const formats = [ () => `${p}-${name}`, () => `${p}_${name}`, () => `${name}.EXE`, () => `${name}_V2.0`, () => `${name}_OS`, () => `${s}${name}${s}` ];
             return rnd(formats)();
         }
 
@@ -728,14 +698,7 @@
             const SUF = ["TheGreat", "Slayer", "Wolf", "Dragon", "Blood", "Heart"];
             let name = flip() ? applyMapFont(base.toLowerCase(), MAP_RUNES) : applyMapFont(base, MAP_FRAKTUR);
             let p = rnd(PRE), s = rnd(SUF);
-            const formats = [
-                () => `${p} ${name}`,
-                () => `${name} ${s}`,
-                () => `⚔️ ${name} 🛡️`,
-                () => `🐉 ${name}`,
-                () => `🏰 ${name}`,
-                () => `${name} 🐺`
-            ];
+            const formats = [ () => `${p} ${name}`, () => `${name} ${s}`, () => `⚔️ ${name} 🛡️`, () => `🐉 ${name}`, () => `🏰 ${name}`, () => `${name} 🐺` ];
             return rnd(formats)();
         }
 
@@ -743,39 +706,13 @@
             let name = toZalgo(base.toUpperCase());
             if (flip()) name = toZalgo(toLeetSpeak(base));
             const PRE = ["SYS.", "root@", "0x", "NULL_", "ERR_", "FATAL_", "ERROR_", "404_", "VOID_", "CRASH_"];
-            const formats = [
-                () => `${rnd(PRE)}${name}`,
-                () => `[${name}]`,
-                () => `//${name}//`,
-                () => `x_${name}_x`,
-                () => `${name}.bat`,
-                () => `x0x_${name}`
-            ];
+            const formats = [ () => `${rnd(PRE)}${name}`, () => `[${name}]`, () => `//${name}//`, () => `x_${name}_x`, () => `${name}.bat`, () => `x0x_${name}` ];
             return rnd(formats)();
         }
 
         function genMinimal(base) { 
             let name = flip(0.5) ? base.toLowerCase() : applyMapFont(base.toLowerCase(), MAP_SANS);
-            const formats = [
-                () => `${name}.xyz`,
-                () => `_${name}_`,
-                () => `.${name}.`,
-                () => `${name}.io`,
-                () => `just ${name}`,
-                () => `${name}__`,
-                () => `--${name}--`,
-                () => `|${name}|`,
-                () => `${name}0`,
-                () => `1${name}`,
-                () => `${name}.js`,
-                () => `${name}_x`,
-                () => `i.am.${name}`,
-                () => Array.from(name).join(' '),
-                () => Array.from(name).join('.'),
-                () => `${name}™`,
-                () => `${name}©`,
-                () => `${name}®`
-            ];
+            const formats = [ () => `${name}.xyz`, () => `_${name}_`, () => `.${name}.`, () => `${name}.io`, () => `just ${name}`, () => `${name}__`, () => `--${name}--`, () => `|${name}|`, () => `${name}0`, () => `1${name}`, () => `${name}.js`, () => `${name}_x`, () => `i.am.${name}`, () => Array.from(name).join(' '), () => Array.from(name).join('.'), () => `${name}™`, () => `${name}©`, () => `${name}®` ];
             return rnd(formats)();
         }
 
@@ -785,7 +722,6 @@
             
             const style = document.querySelector('input[name="nickStyle"]:checked').value;
             let nicks = new Set();
-            
             const ALL_STYLES = ['freefire', 'tiktok', 'pixel', 'urban', 'techno', 'script', 'glitch', 'fantasy', 'minimal'];
             let attempts = 0;
 
@@ -805,12 +741,8 @@
                     case 'minimal': nick = genMinimal(base); break;
                 }
 
-                if (!nicks.has(nick)) {
-                    nicks.add(nick);
-                } else if (attempts > 50) {
-                    nick += (Math.random() > 0.5 ? "_" : "") + Math.floor(Math.random() * 9999);
-                    nicks.add(nick);
-                }
+                if (!nicks.has(nick)) { nicks.add(nick); } 
+                else if (attempts > 50) { nick += (Math.random() > 0.5 ? "_" : "") + Math.floor(Math.random() * 9999); nicks.add(nick); }
                 attempts++;
             }
 
@@ -825,7 +757,6 @@
                 const div = document.createElement('div');
                 div.className = "flex justify-between items-center p-4 bg-white border border-gray-200 rounded shadow-sm hover:border-gray-400 transition-all animate-fade";
                 div.style.animationDelay = `${Math.min(index * 0.02, 0.4)}s`; 
-                
                 div.innerHTML = `
                     <span class="text-lg text-gray-800 unicode-text truncate pr-4" style="line-height: 1.5;">${nick}</span>
                     <button class="shrink-0 text-gray-500 bg-gray-50 hover:bg-gray-100 hover:text-gray-900 p-2.5 rounded transition-all border border-gray-200" onclick="copyN('${nick.replace(/'/g, "\\'")}', this)" title="Copiar Nick">
@@ -840,10 +771,7 @@
             navigator.clipboard.writeText(t);
             const i = b.querySelector('i'); i.className = 'fa-solid fa-check text-[var(--lp-green)]';
             b.classList.add('border-[var(--lp-green)]', 'bg-green-50');
-            setTimeout(() => { 
-                i.className = 'fa-regular fa-copy'; 
-                b.classList.remove('border-[var(--lp-green)]', 'bg-green-50');
-            }, 1500);
+            setTimeout(() => { i.className = 'fa-regular fa-copy'; b.classList.remove('border-[var(--lp-green)]', 'bg-green-50'); }, 1500);
         }
 
         document.getElementById('btnGenerateNicks').addEventListener('click', generateNicks);
@@ -857,7 +785,6 @@
             }
             generatePassword();
         });
-
     </script>
 </body>
 </html>
