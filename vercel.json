@@ -1,8 +1,1 @@
-﻿{
-  "rewrites": [
-    { "source": "/generador-de-contrasenas", "destination": "/index.html" },
-    { "source": "/generador-de-usernames", "destination": "/index.html" },
-    { "source": "/preguntas-frecuentes", "destination": "/index.html" },
-    { "source": "/quienes-somos", "destination": "/index.html" }
-  ]
-}
+{"rewrites":[{"source":"/generador-de-contrasenas","destination":"/index.html"},{"source":"/generador-de-usernames","destination":"/index.html"},{"source":"/preguntas-frecuentes","destination":"/index.html"},{"source":"/quienes-somos","destination":"/index.html"}]}
