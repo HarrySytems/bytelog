@@ -1,20 +1,8 @@
 ﻿{
-  "cleanUrls": true,
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
-      ]
-    }
-  ],
   "rewrites": [
-    {
-      "source": "/((?!cookies\\.html|privacidad\\.html|google.*\\.html|favicon\\.svg|.*\\..*).*)",
-      "destination": "/index.html"
-    }
+    { "source": "/generador-de-contrasenas", "destination": "/index.html" },
+    { "source": "/generador-de-usernames", "destination": "/index.html" },
+    { "source": "/preguntas-frecuentes", "destination": "/index.html" },
+    { "source": "/quienes-somos", "destination": "/index.html" }
   ]
 }
