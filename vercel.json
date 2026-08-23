@@ -1,0 +1,9 @@
+﻿{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/((?!cookies\\.html|privacidad\\.html|google.*\\.html|favicon\\.svg|.*\\..*).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

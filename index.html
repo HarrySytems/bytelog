@@ -102,7 +102,7 @@
     <!-- HEADER LIMPIO Y CORPORATIVO -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-2 shrink-0 pr-4">
+            <div class="flex items-center gap-2 shrink-0 pr-4 cursor-pointer select-none" onclick="switchTab('pass')">
                 <span class="text-[var(--lp-red)] text-2xl font-bold tracking-tight">ByteLog</span>
                 <span class="text-gray-500 text-sm font-medium border-l border-gray-300 pl-2 ml-2 hidden sm:inline-block">Tools</span>
             </div>
@@ -391,9 +391,58 @@
         }
 
         // ==========================================
-        // SISTEMA DE PESTAÑAS
+        // SISTEMA DE PESTAÑAS & ENRUTAMIENTO INTELIGENTE (SPA)
         // ==========================================
-        function switchTab(type) {
+        const ROUTES = {
+            'pass': {
+                id: 'pass',
+                slug: '/generador-de-contrasenas',
+                title: 'Generador de Contraseñas Seguras | ByteLog Tools',
+                aliases: ['/generador-de-contrasenas', '/generador-contrasenas', '/contrasenas', '/pass', '/password', '#generador-de-contrasenas', '#contrasenas', '#pass']
+            },
+            'nick': {
+                id: 'nick',
+                slug: '/generador-de-usernames',
+                title: 'Generador de Usernames y Nicks | ByteLog Tools',
+                aliases: ['/generador-de-usernames', '/generador-usernames', '/usernames', '/nicks', '/nick', '#generador-de-usernames', '#usernames', '#nicks', '#nick']
+            },
+            'faq': {
+                id: 'faq',
+                slug: '/preguntas-frecuentes',
+                title: 'Preguntas Frecuentes | ByteLog Tools',
+                aliases: ['/preguntas-frecuentes', '/faq', '/preguntas', '#preguntas-frecuentes', '#faq']
+            },
+            'about': {
+                id: 'about',
+                slug: '/quienes-somos',
+                title: 'Quiénes Somos | ByteLog Tools',
+                aliases: ['/quienes-somos', '/about', '/nosotros', '#quienes-somos', '#about']
+            }
+        };
+
+        function getTabFromUrl() {
+            const rawPath = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/';
+            const rawHash = window.location.hash.toLowerCase();
+
+            for (const key in ROUTES) {
+                const route = ROUTES[key];
+                if (route.aliases.some(a => rawPath === a || rawHash === a || rawPath.endsWith(a.replace('/', '')) || rawHash.endsWith(a.replace('#', '')))) {
+                    return key;
+                }
+            }
+
+            // Detección inteligente por términos clave
+            if (rawPath.includes('username') || rawPath.includes('nick') || rawHash.includes('username') || rawHash.includes('nick')) return 'nick';
+            if (rawPath.includes('contra') || rawHash.includes('contra') || rawPath.includes('pass') || rawHash.includes('pass')) return 'pass';
+            if (rawPath.includes('faq') || rawPath.includes('pregunta') || rawHash.includes('faq') || rawHash.includes('pregunta')) return 'faq';
+            if (rawPath.includes('quienes') || rawPath.includes('about') || rawPath.includes('nosotros') || rawHash.includes('quienes')) return 'about';
+
+            return 'pass';
+        }
+
+        function switchTab(type, updateHistory = true) {
+            if (!ROUTES[type]) type = 'pass';
+
             const tabs = [
                 { id: 'pass', sec: document.getElementById('sectionPass'), btn: document.getElementById('tabPass'), btnM: document.getElementById('tabPassMobile') },
                 { id: 'nick', sec: document.getElementById('sectionNick'), btn: document.getElementById('tabNick'), btnM: document.getElementById('tabNickMobile') },
@@ -420,7 +469,30 @@
                     if (t.btnM) t.btnM.className = "tab-inactive py-3 px-4 text-sm whitespace-nowrap";
                 }
             });
+
+            const route = ROUTES[type];
+            if (route) {
+                document.title = route.title;
+                if (updateHistory) {
+                    const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+                    if (currentPath !== route.slug) {
+                        history.pushState({ tab: type }, route.title, route.slug);
+                    }
+                }
+            }
         }
+
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.tab) {
+                switchTab(event.state.tab, false);
+            } else {
+                switchTab(getTabFromUrl(), false);
+            }
+        });
+
+        window.addEventListener('hashchange', () => {
+            switchTab(getTabFromUrl(), false);
+        });
 
         // ==========================================
         // 1. GENERADOR DE CONTRASEÑAS (LÓGICA PRIVACIDAD)
@@ -754,6 +826,13 @@
             }
             generatePassword();
             setTimeout(typeEffect, 1000);
+
+            // Cargar pestaña inicial basada en la URL activa
+            const initialTab = getTabFromUrl();
+            const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+            if (initialTab !== 'pass' || (currentPath !== '/' && currentPath !== ROUTES['pass'].slug)) {
+                switchTab(initialTab, false);
+            }
         });
     </script>
 </body>
