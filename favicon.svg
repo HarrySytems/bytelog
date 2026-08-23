@@ -1,0 +1,28 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="byteRedGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ea3831" />
+      <stop offset="50%" stop-color="#d32d27" />
+      <stop offset="100%" stop-color="#a81c17" />
+    </linearGradient>
+    <linearGradient id="letterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f1f5f9" />
+    </linearGradient>
+    <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Rounded Squircle Base -->
+  <rect width="512" height="512" rx="120" fill="url(#byteRedGrad)" />
+
+  <!-- Modern Tech 'B' Symbol -->
+  <path d="M 152 108 H 288 C 352 108 392 144 392 198 C 392 236 366 260 330 270 C 374 280 404 310 404 358 C 404 420 356 452 284 452 H 152 V 108 Z M 230 172 V 242 H 280 C 314 242 332 228 332 207 C 332 186 314 172 280 172 H 230 Z M 230 304 V 388 H 286 C 322 388 344 372 344 346 C 344 320 322 304 286 304 H 230 Z" 
+        fill="url(#letterGrad)" 
+        filter="url(#subtleShadow)" />
+        
+  <!-- Digital Bit Accent -->
+  <circle cx="415" cy="98" r="14" fill="#ffffff" opacity="0.8" />
+  <circle cx="415" cy="98" r="7" fill="#d32d27" />
+</svg>
