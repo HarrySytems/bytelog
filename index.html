@@ -102,16 +102,16 @@
     <!-- HEADER LIMPIO Y CORPORATIVO -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-2 shrink-0 pr-4 cursor-pointer select-none" onclick="switchTab('pass')">
+            <div class="flex items-center gap-2 shrink-0 pr-4 cursor-pointer select-none" onclick="handleNav(event, 'pass')">
                 <span class="text-[var(--lp-red)] text-2xl font-bold tracking-tight">ByteLog</span>
                 <span class="text-gray-500 text-sm font-medium border-l border-gray-300 pl-2 ml-2 hidden sm:inline-block">Tools</span>
             </div>
             
             <nav class="hidden lg:flex items-center justify-center gap-6 flex-1">
-                <button id="tabPass" class="tab-active pb-1 transition-colors whitespace-nowrap" onclick="switchTab('pass')">Generador de contraseñas</button>
-                <button id="tabNick" class="tab-inactive pb-1 transition-colors whitespace-nowrap" onclick="switchTab('nick')">Generador de usernames</button>
-                <button id="tabFaq" class="tab-inactive pb-1 transition-colors whitespace-nowrap" onclick="switchTab('faq')">Preguntas frecuentes</button>
-                <button id="tabAbout" class="tab-inactive pb-1 transition-colors whitespace-nowrap" onclick="switchTab('about')">Quiénes somos</button>
+                <a href="/generador-de-contrasenas" id="tabPass" class="tab-active pb-1 transition-colors whitespace-nowrap cursor-pointer" onclick="handleNav(event, 'pass')">Generador de contraseñas</a>
+                <a href="/generador-de-usernames" id="tabNick" class="tab-inactive pb-1 transition-colors whitespace-nowrap cursor-pointer" onclick="handleNav(event, 'nick')">Generador de usernames</a>
+                <a href="/preguntas-frecuentes" id="tabFaq" class="tab-inactive pb-1 transition-colors whitespace-nowrap cursor-pointer" onclick="handleNav(event, 'faq')">Preguntas frecuentes</a>
+                <a href="/quienes-somos" id="tabAbout" class="tab-inactive pb-1 transition-colors whitespace-nowrap cursor-pointer" onclick="handleNav(event, 'about')">Quiénes somos</a>
             </nav>
             
             <div class="w-24 hidden lg:block shrink-0"></div> <!-- Espaciador para centrar nav -->
@@ -119,10 +119,10 @@
         
         <!-- Menú Móvil -->
         <div class="lg:hidden flex border-t border-gray-100 px-4 overflow-x-auto custom-x-scrollbar">
-            <button id="tabPassMobile" class="tab-active py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('pass')">Generador de contraseñas</button>
-            <button id="tabNickMobile" class="tab-inactive py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('nick')">Generador de usernames</button>
-            <button id="tabFaqMobile" class="tab-inactive py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('faq')">Preguntas frecuentes</button>
-            <button id="tabAboutMobile" class="tab-inactive py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('about')">Quiénes somos</button>
+            <a href="/generador-de-contrasenas" id="tabPassMobile" class="tab-active py-3 px-4 text-sm whitespace-nowrap cursor-pointer" onclick="handleNav(event, 'pass')">Generador de contraseñas</a>
+            <a href="/generador-de-usernames" id="tabNickMobile" class="tab-inactive py-3 px-4 text-sm whitespace-nowrap cursor-pointer" onclick="handleNav(event, 'nick')">Generador de usernames</a>
+            <a href="/preguntas-frecuentes" id="tabFaqMobile" class="tab-inactive py-3 px-4 text-sm whitespace-nowrap cursor-pointer" onclick="handleNav(event, 'faq')">Preguntas frecuentes</a>
+            <a href="/quienes-somos" id="tabAboutMobile" class="tab-inactive py-3 px-4 text-sm whitespace-nowrap cursor-pointer" onclick="handleNav(event, 'about')">Quiénes somos</a>
         </div>
     </header>
 
@@ -438,6 +438,11 @@
             if (rawPath.includes('quienes') || rawPath.includes('about') || rawPath.includes('nosotros') || rawHash.includes('quienes')) return 'about';
 
             return 'pass';
+        }
+
+        function handleNav(event, type) {
+            if (event) event.preventDefault();
+            switchTab(type, true);
         }
 
         function switchTab(type, updateHistory = true) {
